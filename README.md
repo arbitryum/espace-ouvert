@@ -66,7 +66,7 @@ Sample data: `bin/rails db:seed`, or one part at a time:
 ## Tests
 
 ```sh
-bin/ci           # RuboCop, audits, Brakeman and tests: the same checks as CircleCI
+bin/ci           # Standard, audits, Brakeman and tests: the same checks as CircleCI
 bin/rails test
 ```
 

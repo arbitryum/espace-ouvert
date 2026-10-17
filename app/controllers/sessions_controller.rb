@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     end
 
     if @error
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     else
       start_new_session_for user
       redirect_to after_authentication_url

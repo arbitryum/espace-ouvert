@@ -1,0 +1,8 @@
+# Ruby style: https://github.com/standardrb/standard
+plugins:
+  - standard-rails
+
+ignore:
+  # Madmin's `scope` declares admin filters, not Active Record scopes.
+  - "app/madmin/resources/**/*":
+      - Rails/DuplicateScope

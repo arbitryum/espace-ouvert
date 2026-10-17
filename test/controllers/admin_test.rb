@@ -21,7 +21,7 @@ class AdminTest < ActionDispatch::IntegrationTest
 
     get madmin_ehpad_profiles_path
     assert_response :success
-    patch madmin_ehpad_profile_path(profile), params: { ehpad_profile: { status: "approved" } }
+    patch madmin_ehpad_profile_path(profile), params: {ehpad_profile: {status: "approved"}}
 
     assert profile.reload.approved?
     assert users(:pending).can_sign_in?
@@ -29,10 +29,10 @@ class AdminTest < ActionDispatch::IntegrationTest
 
   test "saving a care home with a new address geocodes it" do
     sign_in_as users(:admin)
-    geocoded = { label: "x", city: "Paris", latitude: 48.85, longitude: 2.35 }
+    geocoded = {label: "x", city: "Paris", latitude: 48.85, longitude: 2.35}
 
     Geocoder.stub(:geocode, ->(_) { geocoded }) do
-      post madmin_care_homes_path, params: { care_home: { name: "Maison Neuve", address: "1 rue Neuve, 75001 Paris" } }
+      post madmin_care_homes_path, params: {care_home: {name: "Maison Neuve", address: "1 rue Neuve, 75001 Paris"}}
     end
 
     assert_equal "Paris", CareHome.find_by!(name: "Maison Neuve").address_details.city

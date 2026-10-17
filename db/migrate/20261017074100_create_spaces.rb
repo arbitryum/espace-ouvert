@@ -1,7 +1,7 @@
 class CreateSpaces < ActiveRecord::Migration[8.1]
   def change
     create_table :spaces do |t|
-      t.references :care_home, null: false, foreign_key: { on_delete: :cascade }
+      t.references :care_home, null: false, foreign_key: {on_delete: :cascade}
       t.text :name, null: false
       t.text :availability, null: false, default: ""
       t.text :description, null: false, default: ""
@@ -13,7 +13,7 @@ class CreateSpaces < ActiveRecord::Migration[8.1]
     end
 
     create_table :space_images do |t|
-      t.references :space, null: false, foreign_key: { on_delete: :cascade }
+      t.references :space, null: false, foreign_key: {on_delete: :cascade}
       t.string :alt_text, null: false, default: ""
       t.integer :position, null: false, default: 0
 
@@ -22,7 +22,7 @@ class CreateSpaces < ActiveRecord::Migration[8.1]
 
     # weekday: 0 = Monday … 6 = Sunday.
     create_table :recurring_availabilities do |t|
-      t.references :space, null: false, foreign_key: { on_delete: :cascade }
+      t.references :space, null: false, foreign_key: {on_delete: :cascade}
       t.integer :weekday, null: false
       t.time :start_time, null: false
       t.time :end_time, null: false

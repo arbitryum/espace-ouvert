@@ -6,8 +6,8 @@ class SpaceImage < ApplicationRecord
   # Uploads are full-size phone photos (4032×3024, ~3 MB): pages show these
   # resized WebP versions instead.
   has_one_attached :image do |attachable|
-    attachable.variant :card, resize_to_limit: [ 800, 600 ], format: :webp, saver: { quality: 80, strip: true }
-    attachable.variant :large, resize_to_limit: [ 1600, 1200 ], format: :webp, saver: { quality: 80, strip: true }
+    attachable.variant :card, resize_to_limit: [800, 600], format: :webp, saver: {quality: 80, strip: true}
+    attachable.variant :large, resize_to_limit: [1600, 1200], format: :webp, saver: {quality: 80, strip: true}
   end
 
   validates :image, presence: true

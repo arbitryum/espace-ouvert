@@ -4,7 +4,7 @@ class SpaceImageTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   def create_image
-    create_space(name: "Photo space").images.create!(image: { io: file_fixture("photo.jpg").open, filename: "photo.jpg" })
+    create_space(name: "Photo space").images.create!(image: {io: file_fixture("photo.jpg").open, filename: "photo.jpg"})
   end
 
   test "processes the variants that page URLs resolve to" do

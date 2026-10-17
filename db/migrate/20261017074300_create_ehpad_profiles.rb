@@ -1,7 +1,7 @@
 class CreateEhpadProfiles < ActiveRecord::Migration[8.1]
   def change
     create_table :ehpad_profiles do |t|
-      t.references :user, null: false, index: { unique: true }, foreign_key: { on_delete: :cascade }
+      t.references :user, null: false, index: {unique: true}, foreign_key: {on_delete: :cascade}
       t.string :establishment_name, null: false
       t.string :establishment_address, null: false
       t.string :contact_name, null: false

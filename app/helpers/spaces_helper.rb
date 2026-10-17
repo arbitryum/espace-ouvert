@@ -28,6 +28,6 @@ module SpacesHelper
   end
 
   def weekly_slots_label(count)
-    count == 1 ? "1 créneau hebdomadaire" : "#{count} créneaux hebdomadaires"
+    (count == 1) ? "1 créneau hebdomadaire" : "#{count} créneaux hebdomadaires"
   end
 end

@@ -5,7 +5,7 @@ class EhpadRegistration
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  MODULES = { "spaces" => "Espace Ouvert", "coworking" => "Coworking" }.freeze
+  MODULES = {"spaces" => "Espace Ouvert", "coworking" => "Coworking"}.freeze
 
   attribute :establishment_name, :string
   attribute :establishment_address, :string
@@ -16,8 +16,8 @@ class EhpadRegistration
   attribute :modules, default: -> { [] }
 
   validates :establishment_name, :establishment_address, :contact_name, presence: true
-  validates :establishment_name, :contact_name, length: { maximum: 200 }
-  validates :establishment_address, length: { maximum: 255 }
+  validates :establishment_name, :contact_name, length: {maximum: 200}
+  validates :establishment_address, length: {maximum: 255}
   validate :at_least_one_module
 
   def modules=(values)
@@ -42,11 +42,12 @@ class EhpadRegistration
   end
 
   private
-    def user
-      @user ||= User.new(email_address:, password:, password_confirmation:)
-    end
 
-    def at_least_one_module
-      errors.add(:modules, "Sélectionnez au moins un dispositif.") if modules.empty?
-    end
+  def user
+    @user ||= User.new(email_address:, password:, password_confirmation:)
+  end
+
+  def at_least_one_module
+    errors.add(:modules, "Sélectionnez au moins un dispositif.") if modules.empty?
+  end
 end

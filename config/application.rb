@@ -35,9 +35,9 @@ module EspacesOuverts
     #
     config.time_zone = "Paris"
     config.i18n.default_locale = :fr
-    config.i18n.available_locales = [ :fr ]
+    config.i18n.available_locales = [:fr]
     # Weekly slots (RecurringAvailability) are wall-clock times: only datetimes follow the time zone.
-    config.active_record.time_zone_aware_types = [ :datetime ]
+    config.active_record.time_zone_aware_types = [:datetime]
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

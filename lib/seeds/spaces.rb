@@ -18,33 +18,34 @@ module Seeds
       @output.puts "Clearing existing care homes and spaces..."
       CareHome.destroy_all
 
-      care_homes = @data["care_homes"].to_h { |attributes| [ attributes["name"], create_care_home(attributes) ] }
+      care_homes = @data["care_homes"].to_h { |attributes| [attributes["name"], create_care_home(attributes)] }
       @data["spaces"].each { |attributes| create_space(care_homes.fetch(attributes["care_home"]), attributes) }
 
       @output.puts "Done: #{CareHome.count} care homes, #{Space.count} spaces, #{SpaceImage.count} images (from #{@images_dir})."
     end
 
     private
-      def create_care_home(attributes)
-        care_home = CareHome.create!(attributes)
-        care_home.refresh_address_details!
-        @output.puts "  ✓ #{care_home.name}"
-        care_home
-      rescue Geocoder::Error => error
-        @output.puts "  ⚠ #{care_home.name} created without coordinates (#{error.message}); retry with bin/rails geocode:care_homes"
-        care_home
-      end
 
-      def create_space(care_home, attributes)
-        space = care_home.spaces.create!(attributes.slice("name", "description", "availability", "status").merge(published_at: Time.current))
-        attached = attributes.fetch("images", []).each_with_index.count do |filename, index|
-          path = @images_dir.join(filename)
-          next false unless path.exist?
+    def create_care_home(attributes)
+      care_home = CareHome.create!(attributes)
+      care_home.refresh_address_details!
+      @output.puts "  ✓ #{care_home.name}"
+      care_home
+    rescue Geocoder::Error => error
+      @output.puts "  ⚠ #{care_home.name} created without coordinates (#{error.message}); retry with bin/rails geocode:care_homes"
+      care_home
+    end
 
-          space.images.create!(alt_text: "#{space.name} - Image #{index + 1}", position: index + 1,
-            image: { io: path.open, filename: })
-        end
-        @output.puts "  ✓ #{space} + #{attached}/#{attributes.fetch('images', []).size} image(s)"
+    def create_space(care_home, attributes)
+      space = care_home.spaces.create!(attributes.slice("name", "description", "availability", "status").merge(published_at: Time.current))
+      attached = attributes.fetch("images", []).each_with_index.count do |filename, index|
+        path = @images_dir.join(filename)
+        next false unless path.exist?
+
+        space.images.create!(alt_text: "#{space.name} - Image #{index + 1}", position: index + 1,
+          image: {io: path.open, filename:})
       end
+      @output.puts "  ✓ #{space} + #{attached}/#{attributes.fetch("images", []).size} image(s)"
+    end
   end
 end

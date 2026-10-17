@@ -3,7 +3,7 @@ class SpacesController < ApplicationController
     @search = SpaceSearch.new(params.permit(:care_home, :location, :near_lat, :near_lon, :near_mode, :radius_km))
     @spaces = @search.results
     flash.now[:alert] = @search.warning if @search.warning
-    @view_mode = params[:view_mode] == "map" ? "map" : "list"
+    @view_mode = (params[:view_mode] == "map") ? "map" : "list"
     @care_home_options = CareHome.where(id: Space.listed.select(:care_home_id)).order(:name)
   end
 

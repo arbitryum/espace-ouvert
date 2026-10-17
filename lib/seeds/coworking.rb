@@ -38,7 +38,7 @@ module Seeds
       PROJECTS.each do |attributes|
         care_home = CareHome.create_with(address: attributes[:care_home_address]).find_or_create_by!(name: attributes[:care_home])
         project = CoworkingProject.find_or_initialize_by(name: attributes[:name])
-        output.puts "#{project.new_record? ? 'Created' : 'Updated'}: #{project.name}"
+        output.puts "#{project.new_record? ? "Created" : "Updated"}: #{project.name}"
         project.update!(attributes.except(:name, :care_home, :care_home_address).merge(care_home:))
       end
       output.puts "#{CoworkingProject.count} coworking projects."

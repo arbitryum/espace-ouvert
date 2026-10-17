@@ -10,7 +10,10 @@ class CareHomeTest < ActiveSupport::TestCase
   test "refresh address details creates a normalized address" do
     care_home = create_care_home(name: "Alice Prin", address: "9 Rue Maria Helena Vieira da Silva,  75014 Paris")
     queries = []
-    geocode = ->(query) { queries << query; GEOCODED }
+    geocode = ->(query) {
+      queries << query
+      GEOCODED
+    }
 
     result = Geocoder.stub(:geocode, geocode) { care_home.refresh_address_details! }
 
@@ -20,7 +23,7 @@ class CareHomeTest < ActiveSupport::TestCase
     assert_equal "Paris", details.city
     assert_equal "75", details.department_code
     assert_equal 48.8301, details.latitude
-    assert_equal [ "9 Rue Maria Helena Vieira da Silva, 75014 Paris" ], queries
+    assert_equal ["9 Rue Maria Helena Vieira da Silva, 75014 Paris"], queries
   end
 
   test "refresh address details keeps the care home unchanged when nothing is found" do
