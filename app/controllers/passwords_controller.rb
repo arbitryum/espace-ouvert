@@ -9,9 +9,8 @@ class PasswordsController < ApplicationController
   # Same answer whether the email has an account or not, so the form doesn't
   # tell who is registered.
   def create
-    if (user = User.find_by(email_address: params[:email_address].to_s.strip.downcase))
-      PasswordsMailer.reset(user).deliver_later
-    end
+    user = User.find_by(email_address: params.expect(:email_address))
+    PasswordsMailer.reset(user).deliver_later if user
     redirect_to new_session_path, notice: "Si un compte existe pour cette adresse, vous allez recevoir un email pour choisir un nouveau mot de passe."
   end
 

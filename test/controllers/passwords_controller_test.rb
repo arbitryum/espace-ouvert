@@ -26,6 +26,12 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     assert_match "Si un compte existe", flash[:notice]
   end
 
+  test "a request without email is a bad request" do
+    post passwords_path
+
+    assert_response :bad_request
+  end
+
   test "the emailed link lets the user choose a new password and signs them out elsewhere" do
     @user.sessions.create!
     token = @user.password_reset_token
