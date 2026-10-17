@@ -20,7 +20,7 @@ class SeedsTest < ActiveSupport::TestCase
 
     2.times { Seeds::Availability.run(output: StringIO.new) }
 
-    assert_equal [ 1, 3 ], space.recurring_availabilities.pluck(:weekday)
+    assert_equal [1, 3], space.recurring_availabilities.pluck(:weekday)
   end
 
   test "spaces seed data references existing care homes" do

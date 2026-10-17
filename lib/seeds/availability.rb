@@ -2,9 +2,9 @@ module Seeds
   # Adds weekly time slots to the spaces with these names (weekday 0 = Monday).
   class Availability
     SCHEDULES = {
-      "Le forum" => [ [ 1, "09:00", "17:00" ], [ 3, "09:00", "17:00" ] ],
-      "Bibliothèque" => [ [ 0, "14:00", "18:00" ], [ 4, "09:00", "12:00" ] ],
-      "Salle polyvalente" => [ [ 2, "10:00", "16:00" ] ]
+      "Le forum" => [[1, "09:00", "17:00"], [3, "09:00", "17:00"]],
+      "Bibliothèque" => [[0, "14:00", "18:00"], [4, "09:00", "12:00"]],
+      "Salle polyvalente" => [[2, "10:00", "16:00"]]
     }.freeze
 
     def self.run(output: $stdout)

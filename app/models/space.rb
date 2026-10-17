@@ -1,6 +1,6 @@
 class Space < ApplicationRecord
-  STATUS_LABELS = { "available" => "Disponible", "full" => "Complet", "limited" => "Limité" }.freeze
-  PUBLICATION_STATUS_LABELS = { "draft" => "Brouillon", "published" => "Publié", "archived" => "Archivé" }.freeze
+  STATUS_LABELS = {"available" => "Disponible", "full" => "Complet", "limited" => "Limité"}.freeze
+  PUBLICATION_STATUS_LABELS = {"draft" => "Brouillon", "published" => "Publié", "archived" => "Archivé"}.freeze
 
   belongs_to :care_home
   has_many :images, -> { order(:position, :created_at) }, class_name: "SpaceImage", dependent: :destroy

@@ -23,15 +23,26 @@ executors:
           POSTGRES_DB: espaces_ouverts_test
           POSTGRES_PASSWORD: password
 
+commands:
+  remove-old-libvips:
+    description: Remove the image's libvips 8.12
+    steps:
+      - run:
+          # Ubuntu 22.04 only ships libvips 8.12, and Active Storage refuses to boot
+          # with libvips < 8.13. The tests don't process images, so CI runs without it.
+          name: Remove old libvips
+          command: sudo apt-get remove -y --purge libvips42 > /dev/null
+
 jobs:
   lint:
     executor: rails
     steps:
       - checkout
+      - remove-old-libvips
       - ruby/install-deps
       - run:
-          name: RuboCop
-          command: bin/rubocop
+          name: Standard
+          command: bundle exec standardrb --parallel
       - run:
           name: Brakeman
           command: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
@@ -46,6 +57,7 @@ jobs:
     executor: rails_with_postgres
     steps:
       - checkout
+      - remove-old-libvips
       - ruby/install-deps
       - run:
           name: Wait for DB

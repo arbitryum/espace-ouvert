@@ -4,7 +4,7 @@ class EhpadRegistrationTest < ActiveSupport::TestCase
   VALID = {
     establishment_name: "EHPAD Les Tilleuls", establishment_address: "1 rue des Tilleuls, Paris", contact_name: "Marie Dupont",
     email_address: "contact@example.org",
-    password: "A-strong-password-123", password_confirmation: "A-strong-password-123", modules: [ "coworking" ]
+    password: "A-strong-password-123", password_confirmation: "A-strong-password-123", modules: ["coworking"]
   }.freeze
 
   test "creates a user with a pending profile" do
@@ -18,7 +18,7 @@ class EhpadRegistrationTest < ActiveSupport::TestCase
   end
 
   test "requires a module" do
-    registration = EhpadRegistration.new(VALID.merge(modules: [ "" ]))
+    registration = EhpadRegistration.new(VALID.merge(modules: [""]))
 
     assert_not registration.save
     assert_includes registration.errors[:modules], "Sélectionnez au moins un dispositif."

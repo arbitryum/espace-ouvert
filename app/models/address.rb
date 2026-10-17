@@ -32,8 +32,8 @@ class Address < ApplicationRecord
 
     label_parts = label.split(",").map(&:strip).compact_blank
     street = street.presence || label_parts.first || source
-    if street.match?(/\A#{HOUSE_NUMBER}\z/) && label_parts.size > 1
-      house_number = source[/\A\s*(#{HOUSE_NUMBER})\b/, 1] || street
+    if street.match?(/\A#{HOUSE_NUMBER}\z/o) && label_parts.size > 1
+      house_number = source[/\A\s*(#{HOUSE_NUMBER})\b/o, 1] || street
       street = "#{house_number} #{label_parts.second}"
     end
 
@@ -53,7 +53,7 @@ class Address < ApplicationRecord
   def osm_embed_url
     return "" unless coordinates?
 
-    bbox = [ longitude - EMBED_DELTA, latitude - EMBED_DELTA, longitude + EMBED_DELTA, latitude + EMBED_DELTA ]
+    bbox = [longitude - EMBED_DELTA, latitude - EMBED_DELTA, longitude + EMBED_DELTA, latitude + EMBED_DELTA]
       .map { |value| format("%.6f", value) }.join(",")
     "https://www.openstreetmap.org/export/embed.html?bbox=#{bbox}&layer=mapnik&marker=#{latitude}%2C#{longitude}"
   end
@@ -61,9 +61,10 @@ class Address < ApplicationRecord
   def to_s = concise_label
 
   private
-    def refresh_search_text
-      self.search_text = self.class.normalize_for_search(
-        [ raw_address, label, city, postal_code, city_code, department_code, department_name, region_name ].join(" ")
-      )
-    end
+
+  def refresh_search_text
+    self.search_text = self.class.normalize_for_search(
+      [raw_address, label, city, postal_code, city_code, department_code, department_name, region_name].join(" ")
+    )
+  end
 end

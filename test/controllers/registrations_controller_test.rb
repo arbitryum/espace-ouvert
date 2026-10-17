@@ -17,7 +17,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "registration creates a pending profile" do
-    post registrations_path, params: { ehpad_registration: PARAMS.merge(modules: [ "", "coworking" ]) }
+    post registrations_path, params: {ehpad_registration: PARAMS.merge(modules: ["", "coworking"])}
 
     assert_redirected_to pending_registration_path
     profile = User.find_by!(email_address: "contact@example.org").ehpad_profile
@@ -27,7 +27,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "registration requires a module" do
-    post registrations_path, params: { ehpad_registration: PARAMS.merge(modules: [ "" ]) }
+    post registrations_path, params: {ehpad_registration: PARAMS.merge(modules: [""])}
 
     assert_response :unprocessable_entity
     assert_match "Sélectionnez au moins un dispositif.", response.body

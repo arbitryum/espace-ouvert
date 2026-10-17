@@ -12,7 +12,7 @@ class SpaceTest < ActiveSupport::TestCase
     late = space.recurring_availabilities.create!(weekday: 2, start_time: "14:00", end_time: "16:00")
     early = space.recurring_availabilities.create!(weekday: 1, start_time: "09:00", end_time: "11:00")
 
-    assert_equal [ early, late ], space.recurring_availabilities.reload.to_a
+    assert_equal [early, late], space.recurring_availabilities.reload.to_a
   end
 
   test "published recently is false for a future space" do

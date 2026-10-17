@@ -12,14 +12,14 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "approved establishment signs in" do
-    post session_path, params: { email_address: "approved@example.com", password: "password" }
+    post session_path, params: {email_address: "approved@example.com", password: "password"}
 
     assert_redirected_to root_path
     assert cookies[:session_id]
   end
 
   test "pending establishment cannot sign in" do
-    post session_path, params: { email_address: "pending@example.com", password: "password" }
+    post session_path, params: {email_address: "pending@example.com", password: "password"}
 
     assert_response :unprocessable_entity
     assert_match "Votre compte est en attente de validation.", response.body
@@ -27,7 +27,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "wrong password" do
-    post session_path, params: { email_address: "approved@example.com", password: "wrong" }
+    post session_path, params: {email_address: "approved@example.com", password: "wrong"}
 
     assert_response :unprocessable_entity
     assert_match "Email ou mot de passe incorrect.", response.body

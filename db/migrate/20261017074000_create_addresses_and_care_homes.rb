@@ -22,7 +22,7 @@ class CreateAddressesAndCareHomes < ActiveRecord::Migration[8.1]
     create_table :care_homes do |t|
       t.string :name, null: false
       t.string :address, null: false
-      t.references :address_details, foreign_key: { to_table: :addresses, on_delete: :nullify }
+      t.references :address_details, foreign_key: {to_table: :addresses, on_delete: :nullify}
       t.string :legal_status, null: false, default: ""
       t.string :contact_name, null: false, default: ""
       t.string :contact_email, null: false, default: ""

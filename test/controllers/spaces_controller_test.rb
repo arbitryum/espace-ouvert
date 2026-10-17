@@ -47,7 +47,7 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
     get spaces_path(view_mode: "map")
 
     markers = JSON.parse(css_select("[data-controller=spaces-map]").first["data-spaces-map-markers-value"])
-    assert_equal [ "Space map" ], markers.pluck("name")
+    assert_equal ["Space map"], markers.pluck("name")
     assert_equal "9 Rue Maria Helena Vieira da Silva, 75014 Paris", markers.first["address"]
   end
 
@@ -73,7 +73,7 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", "Calendar space"
     assert_select "td", "Lundi"
     assert_select "td", "09:30 – 12:00"
-    assert_select "td", { text: "Mardi", count: 0 }
+    assert_select "td", {text: "Mardi", count: 0}
     assert_match "Le matin", response.body
   end
 
