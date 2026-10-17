@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: ENV.fetch("MAILER_FROM", "Espaces Ouverts <ne-pas-repondre@example.com>")
+  default from: ENV.fetch("MAILER_FROM", "Espaces Ouverts <no-reply@arbitryum.fr>")
   layout "mailer"
 end

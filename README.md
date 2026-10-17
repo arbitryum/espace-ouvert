@@ -53,7 +53,7 @@ which checks access and redirects to storage URLs that expire after 5 minutes.
 The emails readers gave are listed in the admin (`/admin/guide_readers`).
 
 In development, emails are written to `tmp/mails/` instead of being sent.
-Production sends them through the SMTP server configured in `.env.example`.
+Production sends them through Brevo's SMTP relay, configured in `.env.example`.
 
 ## Setup
 
