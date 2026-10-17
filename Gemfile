@@ -62,6 +62,4 @@ gem "madmin", "~> 3.3"
 gem "rails-i18n", "~> 8.1"
 gem "aws-sdk-s3", "~> 1.233"
 
-gem "sqlite3", "~> 2.10", group: :development
-
 gem "minitest-mock", "~> 5.27", group: :test

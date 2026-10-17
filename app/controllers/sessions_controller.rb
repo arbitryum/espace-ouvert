@@ -5,9 +5,9 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.authenticate_by(params.permit(:username, :password))
+    user = User.authenticate_by(params.permit(:email_address, :password))
     if user.nil?
-      @error = "Identifiant ou mot de passe incorrect."
+      @error = "Email ou mot de passe incorrect."
     elsif !user.can_sign_in?
       @error = "Votre compte est en attente de validation."
     end

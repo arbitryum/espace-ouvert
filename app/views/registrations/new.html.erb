@@ -34,15 +34,10 @@
           <legend class="fieldset-legend text-lg">Votre compte</legend>
           <p class="label mb-3">Vous utiliserez ces informations pour suivre votre demande.</p>
           <div class="grid gap-6 sm:grid-cols-2">
-            <label class="form-control w-full">
-              <span class="label-text mb-2 font-medium">Identifiant</span>
-              <%= form.text_field :username, required: true, autocomplete: "username", class: "input input-md w-full" %>
-              <span class="label-text-alt mt-2">Utilisé uniquement pour vous connecter.</span>
-              <%= render "shared/field_errors", model: @registration, field: :username %>
-            </label>
-            <label class="form-control w-full">
+            <label class="form-control w-full sm:col-span-2">
               <span class="label-text mb-2 font-medium">Email professionnel</span>
-              <%= form.email_field :email_address, required: true, autocomplete: "email", class: "input input-md w-full" %>
+              <%= form.email_field :email_address, required: true, autocomplete: "username", class: "input input-md w-full" %>
+              <span class="label-text-alt mt-2">Vous l'utiliserez pour vous connecter.</span>
               <%= render "shared/field_errors", model: @registration, field: :email_address %>
             </label>
             <label class="form-control w-full">

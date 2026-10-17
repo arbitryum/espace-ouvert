@@ -17,8 +17,8 @@
       <% end %>
 
       <label class="form-control w-full">
-        <span class="label-text mb-2 font-medium">Identifiant</span>
-        <%= form.text_field :username, value: params[:username], required: true, autofocus: true,
+        <span class="label-text mb-2 font-medium">Email</span>
+        <%= form.email_field :email_address, value: params[:email_address], required: true, autofocus: true,
               autocomplete: "username", class: "input input-md w-full" %>
       </label>
 
