@@ -1,0 +1,57 @@
+fr:
+  activerecord:
+    attributes:
+      user:
+        email_address: Email
+        password: Mot de passe
+        password_confirmation: Confirmer le mot de passe
+    # Labels of enum values (and of CareHome#legal_status), see ApplicationRecord.human_enum_name.
+    enums:
+      ehpad_profile:
+        status:
+          pending: En attente de validation
+          approved: Validé
+          suspended: Suspendu
+      care_home:
+        legal_status:
+          associatif: Associatif
+          public: Public
+          prive: Privé
+      space:
+        status:
+          available: Disponible
+          full: Complet
+          limited: Limité
+        publication_status:
+          draft: Brouillon
+          published: Publié
+          archived: Archivé
+      coworking_project:
+        status:
+          draft: Brouillon
+          seeking: Recherche d'un établissement
+          matched: Projet mis en relation
+          active: Accueil en cours
+          closed: Terminé
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              only_digits: ne doit pas être uniquement numérique
+  activemodel:
+    attributes:
+      ehpad_registration:
+        establishment_name: Nom de l'établissement
+        establishment_address: Adresse de l'établissement
+        contact_name: Nom du contact
+        email_address: Email professionnel
+        password: Mot de passe
+        password_confirmation: Confirmer le mot de passe
+        modules: Dispositifs
+    errors:
+      models:
+        ehpad_registration:
+          attributes:
+            modules:
+              none_selected: Sélectionnez au moins un dispositif.

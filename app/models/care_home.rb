@@ -1,12 +1,12 @@
 class CareHome < ApplicationRecord
-  LEGAL_STATUSES = {"associatif" => "Associatif", "public" => "Public", "prive" => "Privé"}.freeze
+  LEGAL_STATUSES = %w[associatif public prive].freeze
 
   belongs_to :address_details, class_name: "Address", optional: true, inverse_of: :care_homes
   has_many :spaces, dependent: :destroy
   has_many :coworking_projects, dependent: :nullify
 
   validates :name, :address, presence: true
-  validates :legal_status, inclusion: {in: LEGAL_STATUSES.keys}, allow_blank: true
+  validates :legal_status, inclusion: {in: LEGAL_STATUSES}, allow_blank: true
 
   # Geocodes the address and links the matching Address record.
   # Returns nil when the geocoder finds nothing; raises Geocoder::Error when it is unreachable.

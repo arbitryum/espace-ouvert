@@ -5,7 +5,7 @@ class EhpadRegistration
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  MODULES = {"spaces" => "Espace Ouvert", "coworking" => "Coworking"}.freeze
+  MODULES = %w[spaces coworking].freeze
 
   attribute :establishment_name, :string
   attribute :establishment_address, :string
@@ -21,7 +21,7 @@ class EhpadRegistration
   validate :at_least_one_module
 
   def modules=(values)
-    super(Array(values).compact_blank & MODULES.keys)
+    super(Array(values).compact_blank & MODULES)
   end
 
   def save
@@ -48,6 +48,6 @@ class EhpadRegistration
   end
 
   def at_least_one_module
-    errors.add(:modules, "Sélectionnez au moins un dispositif.") if modules.empty?
+    errors.add(:modules, :none_selected) if modules.empty?
   end
 end

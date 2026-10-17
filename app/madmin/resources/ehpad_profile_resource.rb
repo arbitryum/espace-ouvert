@@ -4,7 +4,7 @@ class EhpadProfileResource < Madmin::Resource
   attribute :establishment_name, index: true
   attribute :contact_name, index: true
   attribute :user, form: false
-  attribute :status, :select, collection: EhpadProfile::STATUS_LABELS.invert.to_a, index: true
+  attribute :status, :select, collection: EhpadProfile.human_enum_options(:status), index: true
   attribute :participates_in_spaces, index: true
   attribute :participates_in_coworking, index: true
   attribute :establishment_address

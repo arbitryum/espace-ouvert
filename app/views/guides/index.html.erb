@@ -1,13 +1,10 @@
-<% content_for :title, "Le guide du coworking en EHPAD - Espaces Ouverts" %>
+<% content_for :title, t("guides.title") %>
 <%= render "header" %>
 
 <div class="mx-auto max-w-4xl">
-  <p class="text-sm font-semibold uppercase tracking-wide text-secondary">Coworking en EHPAD</p>
-  <h1 class="mt-2 text-4xl font-bold">Le guide du coworking en EHPAD</h1>
-  <p class="mt-4 text-lg text-base-content/70">
-    Une boîte à outils pour les établissements : des documents types et des astuces
-    développées par d'autres établissements qui se sont eux aussi lancés dans l'aventure.
-  </p>
+  <p class="text-sm font-semibold uppercase tracking-wide text-secondary"><%= t(".eyebrow") %></p>
+  <h1 class="mt-2 text-4xl font-bold"><%= t("guides.title") %></h1>
+  <p class="mt-4 text-lg text-base-content/70"><%= t(".intro") %></p>
 
   <% if guide_access? %>
     <div class="mt-10 space-y-10">
@@ -30,24 +27,19 @@
   <% else %>
     <%= form_with url: guide_access_path, class: "card mt-10 border border-base-300 bg-base-100 shadow-sm" do |form| %>
       <div class="card-body gap-4 p-6 sm:p-8">
-        <h2 class="card-title text-2xl">Recevoir le guide</h2>
-        <p class="text-base-content/70">
-          Indiquez votre email : nous vous envoyons un lien pour accéder au guide.
-        </p>
+        <h2 class="card-title text-2xl"><%= t(".request.heading") %></h2>
+        <p class="text-base-content/70"><%= t(".request.intro") %></p>
         <label class="form-control w-full">
-          <span class="label-text mb-2 font-medium">Email professionnel</span>
+          <span class="label-text mb-2 font-medium"><%= t(".request.email") %></span>
           <%= form.email_field :email_address, required: true, autocomplete: "email", class: "input input-md w-full" %>
         </label>
-        <p class="text-sm text-base-content/60">
-          Nous conservons votre adresse pour vous donner accès au guide et savoir qui l'utilise.
-          Elle n'est pas partagée.
-        </p>
+        <p class="text-sm text-base-content/60"><%= t(".request.privacy") %></p>
         <div class="card-actions justify-end">
-          <button class="btn btn-secondary" type="submit">Recevoir le lien d'accès</button>
+          <button class="btn btn-secondary" type="submit"><%= t(".request.submit") %></button>
         </div>
         <% unless authenticated? %>
           <p class="text-sm text-base-content/60">
-            Vous avez un compte établissement ? <%= link_to "Connectez-vous", new_session_path, class: "link" %> pour y accéder directement.
+            <%= t(".request.sign_in_html", link: link_to(t(".request.sign_in_link"), new_session_path, class: "link")) %>
           </p>
         <% end %>
       </div>

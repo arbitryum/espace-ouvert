@@ -3,7 +3,7 @@ class CoworkingProjectResource < Madmin::Resource
   attribute :name, index: true
   attribute :organization_name, index: true
   attribute :location, index: true
-  attribute :status, :select, collection: CoworkingProject::STATUS_LABELS.invert.to_a, index: true
+  attribute :status, :select, collection: CoworkingProject.human_enum_options(:status), index: true
   attribute :published, index: true
   attribute :care_home
   attribute :description

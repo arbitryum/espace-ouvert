@@ -1,7 +1,7 @@
 # "Mot de passe oublié": emails a link to choose a new password.
 class PasswordsController < ApplicationController
   before_action :set_user_by_token, only: %i[edit update]
-  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_password_path, alert: "Réessayez plus tard." }
+  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_password_path, alert: t("passwords.create.rate_limited") }
 
   def new
   end
@@ -11,7 +11,7 @@ class PasswordsController < ApplicationController
   def create
     user = User.find_by(email_address: params.expect(:email_address))
     PasswordsMailer.reset(user).deliver_later if user
-    redirect_to new_session_path, notice: "Si un compte existe pour cette adresse, vous allez recevoir un email pour choisir un nouveau mot de passe."
+    redirect_to new_session_path, notice: t(".notice")
   end
 
   def edit
@@ -23,7 +23,7 @@ class PasswordsController < ApplicationController
 
     if @user.errors.none? && @user.update(params.permit(:password, :password_confirmation))
       @user.sessions.destroy_all
-      redirect_to new_session_path, notice: "Votre mot de passe a été modifié. Vous pouvez vous connecter."
+      redirect_to new_session_path, notice: t(".notice")
     else
       render :edit, status: :unprocessable_content
     end
@@ -34,6 +34,6 @@ class PasswordsController < ApplicationController
   def set_user_by_token
     @user = User.find_by_password_reset_token!(params[:token])
   rescue ActiveSupport::MessageVerifier::InvalidSignature
-    redirect_to new_password_path, alert: "Ce lien n'est plus valable. Demandez-en un nouveau."
+    redirect_to new_password_path, alert: t("passwords.invalid_link")
   end
 end

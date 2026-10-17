@@ -4,7 +4,9 @@ class SpaceSearch
   EARTH_RADIUS_KM = 6371.0
   DEFAULT_RADIUS_KM = "20"
 
-  attr_reader :care_home, :location, :near_mode, :radius_km, :near_lat, :near_lon, :warning
+  attr_reader :care_home, :location, :near_mode, :radius_km, :near_lat, :near_lon
+  # Why results are degraded, if they are: :geocoder_unavailable or :invalid_radius.
+  attr_reader :warning
 
   def initialize(params)
     @care_home = params[:care_home].to_s.strip
@@ -31,10 +33,6 @@ class SpaceSearch
 
   def radius_label = format("%g", radius)
 
-  def location_input_value
-    around_me? ? "Autour de moi (#{radius_label}km)" : location
-  end
-
   private
 
   def base_scope
@@ -52,7 +50,7 @@ class SpaceSearch
     begin
       terms += Geocoder.resolve_terms(location).to_a
     rescue Geocoder::Error
-      @warning = "Recherche de localisation indisponible, résultats basés sur les données locales."
+      @warning = :geocoder_unavailable
       return matches
     end
     spaces.merge(address_matching(terms))
@@ -71,7 +69,7 @@ class SpaceSearch
 
   def filter_by_distance(spaces)
     if radius.nil? || radius <= 0
-      @warning = "Rayon invalide pour la recherche autour de moi."
+      @warning = :invalid_radius
       return spaces
     end
 

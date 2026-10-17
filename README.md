@@ -26,6 +26,15 @@ Notable code:
 - `EhpadRegistration` (app/models): sign-up form creating the user and its pending profile.
 - Stimulus controllers (app/javascript/controllers): carousel, Leaflet map, location filter, password visibility and rules.
 
+## Texts
+
+The interface is in French, with every text in `config/locales/*.fr.yml`, one
+file per area (`accounts`, `spaces`, `coworking`, `guides`, `mailers`, `models`
+and app-wide `fr.yml`). Views and controllers use lazy lookups (`t(".title")`),
+enum labels come from `activerecord.enums` (`Space.human_enum_name(:status, "full")`),
+and Stimulus controllers receive their texts as a `messages` value. A missing
+translation raises in development and test.
+
 ## Pages
 
 | Path | Page |

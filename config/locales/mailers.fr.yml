@@ -1,0 +1,18 @@
+# Emails. Each mailer action's subject is picked up by Action Mailer.
+fr:
+  guide_mailer:
+    access_link:
+      subject: Votre accès au guide du coworking en EHPAD
+      greeting: Bonjour,
+      intro: "Voici votre accès au guide du coworking en EHPAD, à destination des EHPAD :"
+      cta: Accéder au guide
+      validity: Ce lien est valable %{days} jours. Une fois ouvert, le guide reste accessible depuis ce navigateur.
+      signature: L'équipe Espaces Ouverts
+  passwords_mailer:
+    reset:
+      subject: Choisir un nouveau mot de passe - Espaces Ouverts
+      greeting: Bonjour,
+      intro: "Vous avez demandé à changer le mot de passe de votre compte Espaces Ouverts :"
+      cta: Choisir un nouveau mot de passe
+      validity: "Ce lien est valable %{minutes} minutes. Si vous n'avez rien demandé, ignorez cet email : votre mot de passe reste inchangé."
+      signature: L'équipe Espaces Ouverts

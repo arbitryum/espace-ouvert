@@ -14,13 +14,13 @@
 
     <% if images.size > 1 %>
       <button type="button" class="absolute left-3 top-1/2 -translate-y-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/30 hover:bg-black/50 rounded-full p-1.5 cursor-pointer"
-              data-action="carousel#previous" aria-label="Image précédente">
+              data-action="carousel#previous" aria-label="<%= t(".previous") %>">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="white" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
       </button>
       <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/30 hover:bg-black/50 rounded-full p-1.5 cursor-pointer"
-              data-action="carousel#next" aria-label="Image suivante">
+              data-action="carousel#next" aria-label="<%= t(".next") %>">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="white" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5L15.75 12l-7.5 7.5" />
         </svg>
@@ -30,7 +30,7 @@
         <% images.each_with_index do |_, index| %>
           <button type="button" class="h-2 rounded-full transition-all duration-200 <%= index.zero? ? "bg-primary w-6" : "bg-base-100/60 hover:bg-base-100/80 w-2" %>"
                   data-carousel-target="dot" data-action="carousel#goTo" data-carousel-index-param="<%= index %>"
-                  aria-label="Aller à l'image <%= index + 1 %>"></button>
+                  aria-label="<%= t(".go_to", number: index + 1) %>"></button>
         <% end %>
       </div>
     <% end %>

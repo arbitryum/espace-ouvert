@@ -1,29 +1,25 @@
-<% content_for :title, "Nouveau mot de passe - Espaces Ouverts" %>
+<% content_for :title, t(".title") %>
 
 <div class="mx-auto max-w-2xl">
   <div class="mb-10">
-    <h1 class="text-4xl font-bold tracking-tight">Nouveau mot de passe</h1>
-    <p class="mt-4 text-lg text-base-content/70">Pour <%= @user.email_address %>.</p>
+    <h1 class="text-4xl font-bold tracking-tight"><%= t(".title") %></h1>
+    <p class="mt-4 text-lg text-base-content/70"><%= t(".for_account", email: @user.email_address) %></p>
   </div>
 
   <%= form_with url: password_path(params[:token]), method: :put, class: "card border border-base-300 bg-base-100 shadow-sm" do |form| %>
     <div class="card-body gap-6 p-6 sm:p-8" data-controller="password-rules">
       <label class="form-control w-full">
-        <span class="label-text mb-2 font-medium">Mot de passe</span>
+        <span class="label-text mb-2 font-medium"><%= User.human_attribute_name(:password) %></span>
         <%= render "shared/password_field", form:, field: :password, autocomplete: "new-password" %>
-        <ul class="mt-3 space-y-1 text-sm" aria-live="polite">
-          <li data-password-rules-target="rule" data-rule="length"><span aria-hidden="true">○</span> Au moins 8 caractères</li>
-          <li data-password-rules-target="rule" data-rule="numeric"><span aria-hidden="true">○</span> Ne pas être uniquement numérique</li>
-          <li data-password-rules-target="rule" data-rule="match"><span aria-hidden="true">○</span> Les deux mots de passe correspondent</li>
-        </ul>
+        <%= render "shared/password_rules" %>
         <%= render "shared/field_errors", model: @user, field: :password %>
       </label>
       <label class="form-control w-full">
-        <span class="label-text mb-2 font-medium">Confirmer le mot de passe</span>
+        <span class="label-text mb-2 font-medium"><%= User.human_attribute_name(:password_confirmation) %></span>
         <%= render "shared/password_field", form:, field: :password_confirmation, autocomplete: "new-password" %>
         <%= render "shared/field_errors", model: @user, field: :password_confirmation %>
       </label>
-      <button class="btn btn-primary btn-block" type="submit">Enregistrer le mot de passe</button>
+      <button class="btn btn-primary btn-block" type="submit"><%= t(".submit") %></button>
     </div>
   <% end %>
 </div>

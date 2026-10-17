@@ -28,5 +28,5 @@ class SpaceImage < ApplicationRecord
     image.blob.representation(image.variant(name).variation.key)
   end
 
-  def to_s = "#{space.name} - Image #{position}"
+  def to_s = "#{space.name} ##{position}"
 end

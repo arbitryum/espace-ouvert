@@ -1,12 +1,10 @@
-<% content_for :title, "Projets coworking - Espaces Ouverts" %>
+<% content_for :title, t(".title") %>
 
 <div class="mb-10">
-  <%= link_to "← Retour au coworking", coworking_path, class: "link link-hover text-sm font-medium" %>
-  <p class="mt-8 text-sm font-semibold uppercase tracking-wide text-secondary">Coworking</p>
-  <h1 class="mt-2 text-4xl font-bold">Les projets à découvrir</h1>
-  <p class="mt-4 max-w-2xl text-lg text-base-content/70">
-    Découvrez les projets publiés et les établissements qui ouvrent leurs portes au coworking.
-  </p>
+  <%= link_to t(".back"), coworking_path, class: "link link-hover text-sm font-medium" %>
+  <p class="mt-8 text-sm font-semibold uppercase tracking-wide text-secondary"><%= t(".eyebrow") %></p>
+  <h1 class="mt-2 text-4xl font-bold"><%= t(".heading") %></h1>
+  <p class="mt-4 max-w-2xl text-lg text-base-content/70"><%= t(".intro") %></p>
 </div>
 
 <% if @projects.any? %>
@@ -14,7 +12,7 @@
     <% @projects.each do |project| %>
       <article class="card border border-base-300 bg-base-100 shadow-sm">
         <div class="card-body">
-          <div class="badge badge-secondary"><%= project.status_label %></div>
+          <div class="badge badge-secondary"><%= project.human_enum_name(:status) %></div>
           <h2 class="card-title"><%= project.name %></h2>
           <p class="text-sm font-medium"><%= project.organization_name %> · <%= project.location %></p>
           <p class="text-base-content/70"><%= project.description %></p>
@@ -24,6 +22,6 @@
   </div>
 <% else %>
   <div class="alert alert-info">
-    <span>Aucun projet coworking n'est publié pour le moment.</span>
+    <span><%= t(".empty") %></span>
   </div>
 <% end %>

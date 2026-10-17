@@ -9,7 +9,7 @@ module Madmin
     end
 
     def refresh_address_details
-      flash[:alert] = "Aucun résultat de géocodage pour cette adresse." if @record.refresh_address_details!.nil?
+      flash[:alert] = t("admin.care_homes.no_geocoding_result") if @record.refresh_address_details!.nil?
     rescue Geocoder::Error => error
       flash[:alert] = error.message
     end

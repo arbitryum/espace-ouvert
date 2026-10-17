@@ -1,14 +1,11 @@
 class Space < ApplicationRecord
-  STATUS_LABELS = {"available" => "Disponible", "full" => "Complet", "limited" => "Limité"}.freeze
-  PUBLICATION_STATUS_LABELS = {"draft" => "Brouillon", "published" => "Publié", "archived" => "Archivé"}.freeze
-
   belongs_to :care_home
   has_many :images, -> { order(:position, :created_at) }, class_name: "SpaceImage", dependent: :destroy
   has_many :recurring_availabilities, -> { order(:weekday, :start_time) }, dependent: :destroy
   accepts_nested_attributes_for :images, :recurring_availabilities, allow_destroy: true
 
-  enum :status, STATUS_LABELS.keys.index_by(&:itself), default: "available"
-  enum :publication_status, PUBLICATION_STATUS_LABELS.keys.index_by(&:itself), default: "published"
+  enum :status, %w[available full limited].index_by(&:itself), default: "available"
+  enum :publication_status, %w[draft published archived].index_by(&:itself), default: "published"
 
   validates :name, :published_at, presence: true
 

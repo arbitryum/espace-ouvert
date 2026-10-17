@@ -1,0 +1,36 @@
+fr:
+  coworking:
+    show:
+      title: Coworking en EHPAD
+      heading: Des espaces de travail ouverts sur leur quartier
+      intro: >-
+        Découvrez les établissements qui accueillent des équipes en coworking et
+        préparez votre projet avec notre boîte à outils.
+      directory_cta: Découvrir l'annuaire
+      guide_cta: Le guide du coworking
+      register_cta: Référencer son établissement
+      directory:
+        heading: L'annuaire coworking arrive bientôt
+        intro: >-
+          Cette entrée est séparée de l'annuaire espace-ouvert afin de garder des
+          parcours adaptés aux besoins des coworkers et des associations.
+        features:
+          - title: Trouver un établissement
+            text: Filtrer les établissements par localisation et capacité d'accueil.
+          - title: Présenter son projet
+            text: Cadrez votre demande avec un formulaire simple et guidé.
+          - title: Être accompagné
+            text: Accédez aux ressources pour réussir l'accueil en coworking.
+      registration:
+        heading: Vous souhaitez accueillir une équipe ?
+        text: >-
+          Le formulaire d'inscription des établissements sera partagé avec les deux
+          dispositifs, avec des questions adaptées à votre choix.
+    projects:
+      index:
+        title: Projets coworking
+        back: "← Retour au coworking"
+        eyebrow: Coworking
+        heading: Les projets à découvrir
+        intro: Découvrez les projets publiés et les établissements qui ouvrent leurs portes au coworking.
+        empty: Aucun projet coworking n'est publié pour le moment.

@@ -1,7 +1,4 @@
 class RecurringAvailability < ApplicationRecord
-  # 0 = Monday … 6 = Sunday (unlike Ruby's Date#wday, which starts on Sunday).
-  WEEKDAYS = %w[Lundi Mardi Mercredi Jeudi Vendredi Samedi Dimanche].freeze
-
   belongs_to :space
 
   validates :weekday, inclusion: {in: 0..6}
@@ -9,7 +6,10 @@ class RecurringAvailability < ApplicationRecord
 
   scope :active, -> { where(active: true) }
 
-  def weekday_name = WEEKDAYS.fetch(weekday)
+  # weekday: 0 = Monday … 6 = Sunday, while I18n's day names start on Sunday.
+  def self.weekday_name(weekday) = I18n.t("date.day_names").rotate(1).fetch(weekday).capitalize
+
+  def weekday_name = self.class.weekday_name(weekday)
 
   def time_range = "#{start_time.strftime("%H:%M")} – #{end_time.strftime("%H:%M")}"
 
