@@ -20,6 +20,15 @@ Rails.application.routes.draw do
     get "projets", to: "projects#index", as: :projects
   end
 
+  # Coworking guide, readable after requesting access by email.
+  scope "coworking/guide" do
+    get "/", to: "guides#index", as: :guide
+    post "acces", to: "guide_accesses#create", as: :guide_access
+    get "acces/:token", to: "guide_accesses#show", as: :guide_access_link
+    get "images/:id", to: "guide_images#show", as: :guide_image
+    get ":slug", to: "guides#show", as: :guide_page
+  end
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   get "up" => "rails/health#show", :as => :rails_health_check
 end

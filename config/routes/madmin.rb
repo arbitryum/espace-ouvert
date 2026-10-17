@@ -7,6 +7,8 @@ namespace :madmin, path: "admin" do
   resources :space_images
   resources :recurring_availabilities
   resources :coworking_projects
+  resources :guide_pages
+  resources :guide_readers
   resources :nonprofit_organizations
   resources :users
   root to: "dashboard#show"

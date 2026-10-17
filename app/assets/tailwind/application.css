@@ -22,3 +22,32 @@
 .leaflet-popup.spaces-map-popup .leaflet-popup-content {
   margin: 0;
 }
+
+/* Coworking guide pages, imported from Notion (see GuideImport). */
+.guide-content .callout {
+  @apply my-6 rounded-box bg-base-200 px-5 py-1;
+}
+
+.guide-content .column-list {
+  @apply grid gap-4 sm:grid-cols-2;
+}
+
+.guide-content details {
+  @apply my-4 rounded-box border border-base-300 px-4;
+}
+
+.guide-content summary {
+  @apply cursor-pointer py-3 font-semibold;
+}
+
+.guide-content mark {
+  @apply bg-secondary/15 text-inherit;
+}
+
+.guide-content .to-do-list {
+  @apply list-none pl-0;
+}
+
+.guide-content img {
+  @apply rounded-box;
+}
