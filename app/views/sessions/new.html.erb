@@ -1,13 +1,11 @@
-<% content_for :title, "Connexion - Espaces Ouverts" %>
+<% content_for :title, t(".title") %>
 
 <div class="mx-auto max-w-2xl">
   <div class="mb-10">
-    <%= link_to "← Retour à l'accueil", root_path, class: "link link-hover text-sm font-medium" %>
-    <p class="mt-8 text-sm font-semibold uppercase tracking-wide text-primary">Espace établissement</p>
-    <h1 class="mt-2 text-4xl font-bold tracking-tight">Bienvenue</h1>
-    <p class="mt-4 text-lg text-base-content/70">
-      Connectez-vous pour gérer les informations de votre établissement.
-    </p>
+    <%= link_to t("back_home"), root_path, class: "link link-hover text-sm font-medium" %>
+    <p class="mt-8 text-sm font-semibold uppercase tracking-wide text-primary"><%= t(".eyebrow") %></p>
+    <h1 class="mt-2 text-4xl font-bold tracking-tight"><%= t(".heading") %></h1>
+    <p class="mt-4 text-lg text-base-content/70"><%= t(".intro") %></p>
   </div>
 
   <%= form_with url: session_path, class: "card border border-base-300 bg-base-100 shadow-sm" do |form| %>
@@ -17,20 +15,20 @@
       <% end %>
 
       <label class="form-control w-full">
-        <span class="label-text mb-2 font-medium">Email</span>
+        <span class="label-text mb-2 font-medium"><%= User.human_attribute_name(:email_address) %></span>
         <%= form.email_field :email_address, value: params[:email_address], required: true, autofocus: true,
               autocomplete: "username", class: "input input-md w-full" %>
       </label>
 
       <label class="form-control w-full">
-        <span class="label-text mb-2 font-medium">Mot de passe</span>
+        <span class="label-text mb-2 font-medium"><%= User.human_attribute_name(:password) %></span>
         <%= render "shared/password_field", form:, field: :password, autocomplete: "current-password" %>
-        <%= link_to "Mot de passe oublié ?", new_password_path, class: "link link-hover mt-2 self-end text-sm" %>
+        <%= link_to t(".forgot_password"), new_password_path, class: "link link-hover mt-2 self-end text-sm" %>
       </label>
 
-      <button class="btn btn-primary btn-block" type="submit">Se connecter</button>
-      <div class="divider my-0 text-sm text-base-content/50">ou</div>
-      <%= link_to "Référencer un établissement", new_registration_path, class: "btn btn-ghost btn-block" %>
+      <button class="btn btn-primary btn-block" type="submit"><%= t(".submit") %></button>
+      <div class="divider my-0 text-sm text-base-content/50"><%= t(".or") %></div>
+      <%= link_to t(".register"), new_registration_path, class: "btn btn-ghost btn-block" %>
     </div>
   <% end %>
 </div>

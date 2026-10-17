@@ -1,9 +1,9 @@
-<% content_for :title, "#{@page.title} - Le guide du coworking en EHPAD" %>
+<% content_for :title, t(".title", page: @page.title) %>
 <%= render "header" %>
 
 <div class="grid gap-10 lg:grid-cols-[16rem_minmax(0,1fr)]">
-  <nav class="order-last lg:order-first" aria-label="Sommaire du guide">
-    <%= link_to "← Le guide", guide_path, class: "link link-hover text-sm font-medium" %>
+  <nav class="order-last lg:order-first" aria-label="<%= t(".contents") %>">
+    <%= link_to t(".back"), guide_path, class: "link link-hover text-sm font-medium" %>
     <% @sections.each do |section, pages| %>
       <h2 class="mt-6 mb-2 text-sm font-semibold uppercase tracking-wide text-base-content/60"><%= section %></h2>
       <ul class="menu menu-sm w-full p-0">

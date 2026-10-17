@@ -2,8 +2,8 @@ class SpaceResource < Madmin::Resource
   attribute :id, form: false
   attribute :name, index: true
   attribute :care_home, index: true
-  attribute :status, :select, collection: Space::STATUS_LABELS.invert.to_a, index: true
-  attribute :publication_status, :select, collection: Space::PUBLICATION_STATUS_LABELS.invert.to_a, index: true
+  attribute :status, :select, collection: Space.human_enum_options(:status), index: true
+  attribute :publication_status, :select, collection: Space.human_enum_options(:publication_status), index: true
   attribute :published_at, index: true
   attribute :description
   attribute :availability

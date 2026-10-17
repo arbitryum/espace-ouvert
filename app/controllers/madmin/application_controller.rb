@@ -7,7 +7,7 @@ module Madmin
     private
 
     def require_admin
-      redirect_to main_app.root_path, alert: "Accès réservé aux administrateurs." unless Current.user&.admin?
+      redirect_to main_app.root_path, alert: t("admin.access_denied") unless Current.user&.admin?
     end
 
     def new_session_path = main_app.new_session_path

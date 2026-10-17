@@ -1,7 +1,7 @@
 class RecurringAvailabilityResource < Madmin::Resource
   attribute :id, form: false
   attribute :space, index: true
-  attribute :weekday, :select, collection: RecurringAvailability::WEEKDAYS.each_with_index.to_a, index: true
+  attribute :weekday, :select, collection: (0..6).map { [RecurringAvailability.weekday_name(it), it] }, index: true
   attribute :start_time, index: true
   attribute :end_time, index: true
   attribute :notes

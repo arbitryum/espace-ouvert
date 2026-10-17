@@ -1,0 +1,71 @@
+# Establishment accounts: sign-in, sign-up, password reset.
+fr:
+  sessions:
+    new:
+      title: Connexion
+      eyebrow: Espace établissement
+      heading: Bienvenue
+      intro: Connectez-vous pour gérer les informations de votre établissement.
+      forgot_password: Mot de passe oublié ?
+      submit: Se connecter
+      or: ou
+      register: Référencer un établissement
+    create:
+      invalid_credentials: Email ou mot de passe incorrect.
+      pending_approval: Votre compte est en attente de validation.
+      rate_limited: Réessayez plus tard.
+  registrations:
+    new:
+      title: Inscrire un établissement
+      heading: Référencer votre établissement
+      intro: >-
+        Créez votre compte en quelques étapes. Votre demande sera vérifiée avant
+        la publication de vos espaces.
+      establishment:
+        legend: Votre établissement
+        help: Ces informations nous permettent d'identifier votre structure.
+      account:
+        legend: Votre compte
+        help: Vous utiliserez ces informations pour suivre votre demande.
+        email_help: Vous l'utiliserez pour vous connecter.
+        password_help: Au moins 8 caractères, sans être uniquement numérique.
+      modules:
+        legend: Choisissez vos dispositifs
+        help: Sélectionnez au moins un parcours pour votre établissement.
+        spaces:
+          label: Espace Ouvert
+          description: Proposer des espaces aux associations.
+        coworking:
+          label: Coworking
+          description: Accueillir des équipes en coworking.
+      cancel: Annuler
+      submit: Envoyer la demande
+      next_steps:
+        heading: Après votre inscription
+        items:
+          - Votre demande est envoyée.
+          - Notre équipe vérifie les informations.
+          - Votre compte est activé après validation.
+    create:
+      notice: Votre demande a été envoyée. Elle sera examinée par notre équipe.
+    pending:
+      title: Demande envoyée
+      heading: Demande envoyée
+      text: Votre établissement sera visible et accessible après validation par notre équipe.
+      back_home: Retour à l'accueil
+  passwords:
+    invalid_link: Ce lien n'est plus valable. Demandez-en un nouveau.
+    new:
+      title: Mot de passe oublié
+      back: "← Retour à la connexion"
+      intro: "Indiquez l'email de votre compte : nous vous envoyons un lien pour choisir un nouveau mot de passe."
+      submit: Recevoir le lien
+    create:
+      notice: Si un compte existe pour cette adresse, vous allez recevoir un email pour choisir un nouveau mot de passe.
+      rate_limited: Réessayez plus tard.
+    edit:
+      title: Nouveau mot de passe
+      for_account: Pour %{email}.
+      submit: Enregistrer le mot de passe
+    update:
+      notice: Votre mot de passe a été modifié. Vous pouvez vous connecter.

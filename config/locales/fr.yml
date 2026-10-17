@@ -1,16 +1,47 @@
+# App-wide texts. Each area has its own file: accounts, spaces, coworking,
+# guides, mailers, models (Active Record names, enums and errors).
 fr:
-  activerecord:
-    attributes:
-      user:
-        email_address: Email
-        password: Mot de passe
-        password_confirmation: Confirmer le mot de passe
-  activemodel:
-    attributes:
-      ehpad_registration:
-        establishment_name: Nom de l'établissement
-        establishment_address: Adresse de l'établissement
-        contact_name: Nom du contact
-        email_address: Email professionnel
-        password: Mot de passe
-        password_confirmation: Confirmer le mot de passe
+  app_name: Espaces Ouverts
+  back_home: "← Retour à l'accueil"
+  layouts:
+    application:
+      title: "%{page} - Espaces Ouverts"
+      contact: "💌 Écrivez-nous : %{email}"
+      copyright_html: "&copy; %{year} Espaces Ouverts. Tous droits réservés."
+  shared:
+    home_button:
+      label: Accueil
+    password_field:
+      show: Afficher le mot de passe
+      hide: Masquer le mot de passe
+    password_rules:
+      length: Au moins 8 caractères
+      numeric: Ne pas être uniquement numérique
+      match: Les deux mots de passe correspondent
+  admin:
+    access_denied: Accès réservé aux administrateurs.
+    care_homes:
+      no_geocoding_result: Aucun résultat de géocodage pour cette adresse.
+  home:
+    index:
+      eyebrow: Espaces Ouverts
+      heading: Des lieux qui créent du lien
+      intro: >-
+        Choisissez votre parcours pour découvrir les espaces et les initiatives
+        qui rapprochent les EHPAD de leur quartier.
+      products_heading: Que recherchez-vous ?
+      products_intro: Explorez l'un de nos deux dispositifs.
+      spaces:
+        badge: Associations
+        title: Espace Ouvert
+        text: >-
+          Trouvez un espace disponible en EHPAD pour organiser des activités
+          associatives ouvertes aux habitants du quartier.
+        cta: Découvrir les espaces
+      coworking:
+        badge: Coworking
+        title: Coworking en EHPAD
+        text: >-
+          Découvrez les établissements qui accueillent des équipes de coworking
+          et préparez votre projet avec les bonnes ressources.
+        cta: Découvrir le coworking

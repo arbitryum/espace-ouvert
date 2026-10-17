@@ -4,7 +4,7 @@ class CareHomeResource < Madmin::Resource
   attribute :name, index: true
   attribute :address, index: true
   attribute :address_details, form: false, index: true
-  attribute :legal_status, :select, collection: [["", ""], *CareHome::LEGAL_STATUSES.invert.to_a]
+  attribute :legal_status, :select, collection: [["", ""], *CareHome::LEGAL_STATUSES.map { [CareHome.human_enum_name(:legal_status, it), it] }]
   attribute :contact_name
   attribute :contact_email
   attribute :group_name

@@ -1,4 +1,4 @@
-<% content_for :title, "Coworking en EHPAD - Espaces Ouverts" %>
+<% content_for :title, t(".title") %>
 
 <% content_for :header do %>
   <div class="bg-base-200">
@@ -11,16 +11,13 @@
 <section class="hero min-h-[28rem] rounded-box bg-secondary text-secondary-content">
   <div class="hero-content max-w-4xl text-center">
     <div>
-      <p class="mb-3 text-sm font-semibold uppercase tracking-wide">Coworking en EHPAD</p>
-      <h1 class="text-4xl font-bold md:text-5xl">Des espaces de travail ouverts sur leur quartier</h1>
-      <p class="py-6 text-lg">
-        Découvrez les établissements qui accueillent des équipes en coworking et
-        préparez votre projet avec notre boîte à outils.
-      </p>
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide"><%= t(".title") %></p>
+      <h1 class="text-4xl font-bold md:text-5xl"><%= t(".heading") %></h1>
+      <p class="py-6 text-lg"><%= t(".intro") %></p>
       <div class="flex flex-wrap justify-center gap-3">
-        <%= link_to "Découvrir l'annuaire", coworking_projects_path, class: "btn btn-primary" %>
-        <%= link_to "Le guide du coworking", guide_path, class: "btn btn-outline" %>
-        <a class="btn btn-outline" href="#inscription">Référencer son établissement</a>
+        <%= link_to t(".directory_cta"), coworking_projects_path, class: "btn btn-primary" %>
+        <%= link_to t(".guide_cta"), guide_path, class: "btn btn-outline" %>
+        <a class="btn btn-outline" href="#inscription"><%= t(".register_cta") %></a>
       </div>
     </div>
   </div>
@@ -28,22 +25,15 @@
 
 <section class="py-12" id="annuaire">
   <div class="mb-6">
-    <h2 class="text-3xl font-bold text-primary">L'annuaire coworking arrive bientôt</h2>
-    <p class="mt-2 text-base-content/70">
-      Cette entrée est séparée de l'annuaire espace-ouvert afin de garder des
-      parcours adaptés aux besoins des coworkers et des associations.
-    </p>
+    <h2 class="text-3xl font-bold text-primary"><%= t(".directory.heading") %></h2>
+    <p class="mt-2 text-base-content/70"><%= t(".directory.intro") %></p>
   </div>
   <div class="grid gap-6 md:grid-cols-3">
-    <% [
-      [ "Trouver un établissement", "Filtrer les établissements par localisation et capacité d'accueil." ],
-      [ "Présenter son projet", "Cadrez votre demande avec un formulaire simple et guidé." ],
-      [ "Être accompagné", "Accédez aux ressources pour réussir l'accueil en coworking." ]
-    ].each do |title, text| %>
+    <% t(".directory.features").each do |feature| %>
       <div class="card border border-base-300 bg-base-100 shadow-sm">
         <div class="card-body">
-          <h3 class="card-title"><%= title %></h3>
-          <p><%= text %></p>
+          <h3 class="card-title"><%= feature[:title] %></h3>
+          <p><%= feature[:text] %></p>
         </div>
       </div>
     <% end %>
@@ -51,10 +41,7 @@
 </section>
 
 <section class="rounded-box bg-base-200 p-8" id="inscription">
-  <h2 class="text-2xl font-bold">Vous souhaitez accueillir une équipe ?</h2>
-  <p class="mt-2 max-w-2xl text-base-content/70">
-    Le formulaire d'inscription des établissements sera partagé avec les deux
-    dispositifs, avec des questions adaptées à votre choix.
-  </p>
-  <button class="btn btn-primary mt-5" type="button" disabled>Référencer son établissement</button>
+  <h2 class="text-2xl font-bold"><%= t(".registration.heading") %></h2>
+  <p class="mt-2 max-w-2xl text-base-content/70"><%= t(".registration.text") %></p>
+  <button class="btn btn-primary mt-5" type="button" disabled><%= t(".register_cta") %></button>
 </section>

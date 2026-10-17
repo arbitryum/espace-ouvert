@@ -5,7 +5,8 @@ const PARIS = [48.8566, 2.3522]
 
 // Leaflet map of the spaces listed on the index page.
 export default class extends Controller {
-  static values = { markers: Array }
+  // messages: texts from config/locales/spaces.fr.yml (spaces.map.popup)
+  static values = { markers: Array, messages: Object }
 
   connect() {
     this.map = L.map(this.element).setView(PARIS, 12)
@@ -53,10 +54,10 @@ export default class extends Controller {
     if (marker.address) this.append(wrapper, "p", "text-xs text-base-content/90 mb-2", marker.address)
     if (marker.distance_km != null) {
       const distance = Number(marker.distance_km).toFixed(1).replace(".", ",")
-      this.append(wrapper, "div", "badge badge-outline badge-sm rounded-sm! mb-2", `à ${distance} km`)
+      this.append(wrapper, "div", "badge badge-outline badge-sm rounded-sm! mb-2", this.messagesValue.distance.replace("%{distance}", distance))
     }
     if (marker.availability) this.append(wrapper, "p", "text-xs text-base-content/90 mb-3 whitespace-pre-wrap", marker.availability)
-    const link = this.append(wrapper, "a", "btn btn-sm btn-outline w-full", "Plus d'infos")
+    const link = this.append(wrapper, "a", "btn btn-sm btn-outline w-full", this.messagesValue.more)
     link.href = marker.detail_url
 
     return wrapper

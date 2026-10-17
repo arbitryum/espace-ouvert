@@ -5,11 +5,12 @@
 
 <div class="card bg-base-200 shadow-md mb-6">
   <div class="card-body p-0">
-    <div class="w-full h-[32rem] rounded-box" data-controller="spaces-map" data-spaces-map-markers-value="<%= markers.to_json %>"></div>
+    <div class="w-full h-[32rem] rounded-box" data-controller="spaces-map" data-spaces-map-markers-value="<%= markers.to_json %>"
+         data-spaces-map-messages-value="<%= t(".popup").to_json %>"></div>
   </div>
 </div>
 <% if markers.empty? %>
   <div class="alert alert-info mb-6">
-    <span>Aucun repère cartographique disponible pour les résultats actuels.</span>
+    <span><%= t(".no_markers") %></span>
   </div>
 <% end %>

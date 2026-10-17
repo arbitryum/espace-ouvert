@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_path, alert: "Réessayez plus tard." }
+  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_path, alert: t("sessions.create.rate_limited") }
 
   def new
   end
@@ -7,9 +7,9 @@ class SessionsController < ApplicationController
   def create
     user = User.authenticate_by(params.permit(:email_address, :password))
     if user.nil?
-      @error = "Email ou mot de passe incorrect."
+      @error = t(".invalid_credentials")
     elsif !user.can_sign_in?
-      @error = "Votre compte est en attente de validation."
+      @error = t(".pending_approval")
     end
 
     if @error

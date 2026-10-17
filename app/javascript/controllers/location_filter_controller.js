@@ -7,7 +7,8 @@ export default class extends Controller {
     "dropdown", "input", "panel", "radius", "suggestions", "searchStatus", "status",
     "aroundMeChip", "aroundMeLabel", "latitude", "longitude", "mode",
   ]
-  static values = { suggestionsUrl: String }
+  // messages: texts from config/locales/spaces.fr.yml (spaces.index.location_filter)
+  static values = { suggestionsUrl: String, messages: Object }
 
   connect() {
     this.refreshAroundMe()
@@ -35,7 +36,7 @@ export default class extends Controller {
     const query = this.inputTarget.value.trim()
     clearTimeout(this.searchTimer)
     if (query.length < 2) {
-      this.searchStatusTarget.textContent = "Tapez au moins 2 caractères"
+      this.searchStatusTarget.textContent = this.message("type_more")
       return
     }
 
@@ -43,7 +44,7 @@ export default class extends Controller {
   }
 
   async fetchSuggestions(query) {
-    this.searchStatusTarget.textContent = "Recherche…"
+    this.searchStatusTarget.textContent = this.message("searching")
     try {
       const response = await fetch(`${this.suggestionsUrlValue}?q=${encodeURIComponent(query)}`)
       if (!response.ok) throw new Error("Suggestion request failed")
@@ -51,20 +52,20 @@ export default class extends Controller {
       this.renderSuggestions(payload.results || [])
     } catch {
       this.clearSuggestions()
-      this.searchStatusTarget.textContent = "Service de suggestions indisponible."
+      this.searchStatusTarget.textContent = this.message("unavailable")
     }
   }
 
   renderSuggestions(items) {
     this.suggestionsTarget.replaceChildren(
-      this.suggestionButton("Autour de moi", "Utiliser ma position actuelle", () => this.activateAroundMe()),
+      this.suggestionButton(this.message("around_me"), this.message("use_my_position"), () => this.activateAroundMe()),
       ...items.map((item) => {
         const subtitle = [item.type, item.city, item.postcode].filter(Boolean).join(" • ")
         return this.suggestionButton(item.label || item.name || "", subtitle, () => this.select(item))
       }),
     )
     this.suggestionsTarget.classList.remove("hidden")
-    this.searchStatusTarget.textContent = items.length ? `${items.length} suggestion(s)` : "Aucune suggestion."
+    this.searchStatusTarget.textContent = items.length ? this.message("suggestions", { count: items.length }) : this.message("no_suggestions")
   }
 
   suggestionButton(title, subtitle, onClick) {
@@ -103,11 +104,11 @@ export default class extends Controller {
 
   activateAroundMe() {
     if (!navigator.geolocation) {
-      this.statusTarget.textContent = "La géolocalisation n'est pas disponible sur ce navigateur."
+      this.statusTarget.textContent = this.message("geolocation_unsupported")
       return
     }
 
-    this.statusTarget.textContent = "Localisation en cours…"
+    this.statusTarget.textContent = this.message("locating")
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setCoordinates(position.coords.latitude, position.coords.longitude, "around_me")
@@ -116,12 +117,8 @@ export default class extends Controller {
         this.clearSuggestions()
       },
       (error) => {
-        const messages = {
-          1: "Vous avez refusé la géolocalisation.",
-          2: "Position introuvable.",
-          3: "La géolocalisation a expiré.",
-        }
-        this.statusTarget.textContent = messages[error?.code] || "Impossible de récupérer votre position."
+        const errors = { 1: "geolocation_denied", 2: "position_unavailable", 3: "geolocation_timeout" }
+        this.statusTarget.textContent = this.message(errors[error?.code] || "geolocation_failed")
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
     )
@@ -154,6 +151,11 @@ export default class extends Controller {
   }
 
   get aroundMeText() {
-    return `Autour de moi (${this.radiusTarget.value}km)`
+    return this.message("around_me_radius", { radius: this.radiusTarget.value })
+  }
+
+  // A message with its %{placeholders} filled in.
+  message(key, params = {}) {
+    return Object.entries(params).reduce((text, [name, value]) => text.replace(`%{${name}}`, value), this.messagesValue[key] ?? key)
   }
 }

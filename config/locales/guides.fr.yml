@@ -1,0 +1,32 @@
+# Coworking guide, readable after requesting access by email.
+fr:
+  guides:
+    title: Le guide du coworking en EHPAD
+    header:
+      coworking: Coworking
+    index:
+      eyebrow: Coworking en EHPAD
+      intro: >-
+        Une boîte à outils pour les établissements : des documents types et des astuces
+        développées par d'autres établissements qui se sont eux aussi lancés dans l'aventure.
+      request:
+        heading: Recevoir le guide
+        intro: "Indiquez votre email : nous vous envoyons un lien pour accéder au guide."
+        email: Email professionnel
+        privacy: >-
+          Nous conservons votre adresse pour vous donner accès au guide et savoir qui l'utilise.
+          Elle n'est pas partagée.
+        submit: Recevoir le lien d'accès
+        sign_in_html: Vous avez un compte établissement ? %{link} pour y accéder directement.
+        sign_in_link: Connectez-vous
+    show:
+      title: "%{page} - Le guide du coworking en EHPAD"
+      contents: Sommaire du guide
+      back: "← Le guide"
+  guide_accesses:
+    create:
+      notice: "C'est envoyé ! Ouvrez le lien reçu par email à %{email} pour accéder au guide."
+      invalid_email: Cette adresse email n'est pas valide.
+      rate_limited: Trop de demandes, réessayez plus tard.
+    show:
+      expired: Ce lien a expiré. Saisissez à nouveau votre email pour en recevoir un nouveau.

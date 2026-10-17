@@ -26,8 +26,4 @@ module SpacesHelper
   def view_mode_url(mode)
     url_for(request.query_parameters.merge(view_mode: mode))
   end
-
-  def weekly_slots_label(count)
-    (count == 1) ? "1 créneau hebdomadaire" : "#{count} créneaux hebdomadaires"
-  end
 end

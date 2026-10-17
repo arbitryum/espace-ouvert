@@ -1,8 +1,8 @@
-Bonjour,
+<%= t(".greeting") %>
 
-Vous avez demandé à changer le mot de passe de votre compte Espaces Ouverts :
+<%= t(".intro") %>
 <%= @url %>
 
-Ce lien est valable <%= @validity %> minutes. Si vous n'avez rien demandé, ignorez cet email : votre mot de passe reste inchangé.
+<%= t(".validity", minutes: @validity) %>
 
-L'équipe Espaces Ouverts
+<%= t(".signature") %>

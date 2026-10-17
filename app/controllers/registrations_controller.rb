@@ -6,7 +6,7 @@ class RegistrationsController < ApplicationController
   def create
     @registration = EhpadRegistration.new(registration_params)
     if @registration.save
-      redirect_to pending_registration_path, notice: "Votre demande a été envoyée. Elle sera examinée par notre équipe."
+      redirect_to pending_registration_path, notice: t(".notice")
     else
       render :new, status: :unprocessable_content
     end

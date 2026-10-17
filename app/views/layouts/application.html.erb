@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <title><%= content_for?(:title) ? yield(:title) : "Espaces Ouverts - Associations" %></title>
+    <title><%= content_for?(:title) ? t(".title", page: yield(:title)) : t("app_name") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="application-name" content="Espaces Ouverts">
+    <meta name="application-name" content="<%= t("app_name") %>">
     <%# Required by the OpenStreetMap tile policy: send the origin as referrer on tile requests. %>
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <%= csrf_meta_tags %>
@@ -31,8 +31,8 @@
     </div>
 
     <footer id="footer" class="bg-gray-100 py-4 text-center text-sm text-gray-600">
-      <p class="pb-8">💌 Écrivez-nous : mathilde.boulet@arbitryum.fr</p>
-      &copy; <%= Date.current.year %> Espaces Ouverts. Tous droits réservés.
+      <p class="pb-8"><%= t(".contact", email: "mathilde.boulet@arbitryum.fr") %></p>
+      <%= t(".copyright_html", year: Date.current.year) %>
     </footer>
   </body>
 </html>

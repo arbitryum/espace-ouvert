@@ -1,0 +1,69 @@
+# Space directory (Espace Ouvert).
+fr:
+  spaces:
+    index:
+      title: Associations
+      heading_html: Trouvez l'espace dont les associations<br>de votre territoire ont besoin
+      care_home: Établissement
+      all_care_homes: Tous les établissements
+      location: Localisation
+      location_placeholder: Ajouter une localisation
+      remove_around_me: Retirer autour de moi
+      radius: Rayon
+      radius_option: "%{km} km"
+      submit: Filtrer
+      reset: Réinitialiser
+      view_modes:
+        list: Liste
+        map: Carte
+      empty: Aucun espace disponible pour le moment.
+      geocoder_unavailable: Recherche de localisation indisponible, résultats basés sur les données locales.
+      invalid_radius: Rayon invalide pour la recherche autour de moi.
+      # Used by the location-filter Stimulus controller.
+      location_filter:
+        type_more: Tapez au moins 2 caractères
+        searching: Recherche…
+        unavailable: Service de suggestions indisponible.
+        suggestions: "%{count} suggestion(s)"
+        no_suggestions: Aucune suggestion.
+        around_me: Autour de moi
+        around_me_radius: Autour de moi (%{radius}km)
+        use_my_position: Utiliser ma position actuelle
+        locating: Localisation en cours…
+        geolocation_unsupported: La géolocalisation n'est pas disponible sur ce navigateur.
+        geolocation_denied: Vous avez refusé la géolocalisation.
+        position_unavailable: Position introuvable.
+        geolocation_timeout: La géolocalisation a expiré.
+        geolocation_failed: Impossible de récupérer votre position.
+    space_card:
+      distance: à %{distance} km
+      name: Nom espace
+      recurring_availability: Disponibilité récurrente
+      weekly_slots:
+        one: 1 créneau hebdomadaire
+        other: "%{count} créneaux hebdomadaires"
+      more: Plus d'infos
+    carousel:
+      previous: Image précédente
+      next: Image suivante
+      go_to: Aller à l'image %{number}
+    map:
+      no_markers: Aucun repère cartographique disponible pour les résultats actuels.
+      # Used by the spaces-map Stimulus controller.
+      popup:
+        distance: à %{distance} km
+        more: Plus d'infos
+    show:
+      all_spaces: Tous les espaces
+      about: À propos de cet espace
+      availability: Disponibilités
+      day: Jour
+      hours: Horaires
+      care_home: Établissement
+      back_to_list: Retour à la liste
+      contact: Contacter
+      location: Localisation
+      map_title: Carte de localisation de %{care_home}
+      larger_map: Voir la carte en grand
+      no_coordinates: Coordonnées GPS indisponibles pour cet établissement.
+      gallery: Galerie photos

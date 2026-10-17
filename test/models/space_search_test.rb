@@ -72,7 +72,7 @@ class SpaceSearchTest < ActiveSupport::TestCase
     Geocoder.stub(:resolve_terms, ->(_) { raise Geocoder::Error, "down" }) do
       assert_empty search.results
     end
-    assert_match "indisponible", search.warning
+    assert_equal :geocoder_unavailable, search.warning
   end
 
   test "filters around me within the radius, sorted by distance" do
@@ -93,6 +93,6 @@ class SpaceSearchTest < ActiveSupport::TestCase
 
     assert_equal [space], search.results.to_a
     assert_not search.around_me?
-    assert_equal "Rayon invalide pour la recherche autour de moi.", search.warning
+    assert_equal :invalid_radius, search.warning
   end
 end
