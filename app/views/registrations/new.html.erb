@@ -1,0 +1,106 @@
+<% content_for :title, "Inscrire un établissement - Espaces Ouverts" %>
+
+<div class="mx-auto max-w-4xl">
+  <div class="mb-10 max-w-2xl">
+    <%= link_to "← Retour à l'accueil", root_path, class: "link link-hover text-sm font-medium" %>
+    <p class="mt-8 text-sm font-semibold uppercase tracking-wide text-primary">Espace établissement</p>
+    <h1 class="mt-2 text-4xl font-bold tracking-tight">Référencer votre établissement</h1>
+    <p class="mt-4 text-lg text-base-content/70">
+      Créez votre compte en quelques étapes. Votre demande sera vérifiée avant
+      la publication de vos espaces.
+    </p>
+  </div>
+
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_16rem]">
+    <%= form_with model: @registration, url: registrations_path, class: "card border border-base-300 bg-base-100 shadow-sm" do |form| %>
+      <div class="card-body gap-8 p-6 sm:p-8">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend text-lg">Votre établissement</legend>
+          <p class="label mb-3">Ces informations nous permettent d'identifier votre structure.</p>
+          <div class="grid gap-6 sm:grid-cols-2">
+            <% [ :establishment_name, :establishment_address, :contact_name ].each do |field| %>
+              <label class="form-control w-full <%= "sm:col-span-2" if field == :establishment_address %>">
+                <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(field) %></span>
+                <%= form.text_field field, required: true, class: "input input-md w-full" %>
+                <%= render "shared/field_errors", model: @registration, field: %>
+              </label>
+            <% end %>
+          </div>
+        </fieldset>
+
+        <div class="divider my-0"></div>
+
+        <fieldset class="fieldset" data-controller="password-rules">
+          <legend class="fieldset-legend text-lg">Votre compte</legend>
+          <p class="label mb-3">Vous utiliserez ces informations pour suivre votre demande.</p>
+          <div class="grid gap-6 sm:grid-cols-2">
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium">Identifiant</span>
+              <%= form.text_field :username, required: true, autocomplete: "username", class: "input input-md w-full" %>
+              <span class="label-text-alt mt-2">Utilisé uniquement pour vous connecter.</span>
+              <%= render "shared/field_errors", model: @registration, field: :username %>
+            </label>
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium">Email professionnel</span>
+              <%= form.email_field :email_address, required: true, autocomplete: "email", class: "input input-md w-full" %>
+              <%= render "shared/field_errors", model: @registration, field: :email_address %>
+            </label>
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium">Mot de passe</span>
+              <%= render "shared/password_field", form:, field: :password, autocomplete: "new-password" %>
+              <span class="label-text-alt mt-2">Au moins 8 caractères, sans être uniquement numérique.</span>
+              <ul class="mt-3 space-y-1 text-sm" aria-live="polite">
+                <li data-password-rules-target="rule" data-rule="length"><span aria-hidden="true">○</span> Au moins 8 caractères</li>
+                <li data-password-rules-target="rule" data-rule="numeric"><span aria-hidden="true">○</span> Ne pas être uniquement numérique</li>
+                <li data-password-rules-target="rule" data-rule="match"><span aria-hidden="true">○</span> Les deux mots de passe correspondent</li>
+              </ul>
+              <%= render "shared/field_errors", model: @registration, field: :password %>
+            </label>
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium">Confirmer le mot de passe</span>
+              <%= render "shared/password_field", form:, field: :password_confirmation, autocomplete: "new-password" %>
+              <%= render "shared/field_errors", model: @registration, field: :password_confirmation %>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="divider my-0"></div>
+
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend text-lg">Choisissez vos dispositifs</legend>
+          <p class="label mb-3">Sélectionnez au moins un parcours pour votre établissement.</p>
+          <% @registration.errors[:modules].each do |message| %>
+            <p class="mb-3 text-sm text-error"><%= message %></p>
+          <% end %>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <%= form.collection_check_boxes :modules, EhpadRegistration::MODULES, :first, :last do |choice| %>
+              <label class="flex cursor-pointer items-start gap-3 rounded-box border border-base-300 p-4 transition hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                <%= choice.check_box class: "checkbox checkbox-primary mt-1" %>
+                <span>
+                  <span class="block font-semibold"><%= choice.text %></span>
+                  <span class="mt-1 block text-sm text-base-content/60">
+                    <%= choice.value == "spaces" ? "Proposer des espaces aux associations." : "Accueillir des équipes en coworking." %>
+                  </span>
+                </span>
+              </label>
+            <% end %>
+          </div>
+        </fieldset>
+
+        <div class="card-actions items-center justify-end gap-3">
+          <%= link_to "Annuler", root_path, class: "btn btn-ghost" %>
+          <button class="btn btn-primary" type="submit">Envoyer la demande</button>
+        </div>
+      </div>
+    <% end %>
+
+    <aside class="h-fit rounded-box bg-base-200 p-5">
+      <h2 class="font-semibold">Après votre inscription</h2>
+      <ul class="mt-4 space-y-4 text-sm text-base-content/70">
+        <li class="flex gap-3"><span class="badge badge-primary badge-sm mt-0.5">1</span><span>Votre demande est envoyée.</span></li>
+        <li class="flex gap-3"><span class="badge badge-primary badge-sm mt-0.5">2</span><span>Notre équipe vérifie les informations.</span></li>
+        <li class="flex gap-3"><span class="badge badge-primary badge-sm mt-0.5">3</span><span>Votre compte est activé après validation.</span></li>
+      </ul>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<% content_for :title, "Coworking en EHPAD - Espaces Ouverts" %>
+
+<% content_for :header do %>
+  <div class="bg-base-200">
+    <div class="mx-auto flex max-w-6xl px-4 py-4">
+      <%= render "shared/home_button" %>
+    </div>
+  </div>
+<% end %>
+
+<section class="hero min-h-[28rem] rounded-box bg-secondary text-secondary-content">
+  <div class="hero-content max-w-4xl text-center">
+    <div>
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide">Coworking en EHPAD</p>
+      <h1 class="text-4xl font-bold md:text-5xl">Des espaces de travail ouverts sur leur quartier</h1>
+      <p class="py-6 text-lg">
+        Découvrez les établissements qui accueillent des équipes en coworking et
+        préparez votre projet avec notre boîte à outils.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <%= link_to "Découvrir l'annuaire", coworking_projects_path, class: "btn btn-primary" %>
+        <a class="btn btn-outline" href="#inscription">Référencer son établissement</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-12" id="annuaire">
+  <div class="mb-6">
+    <h2 class="text-3xl font-bold text-primary">L'annuaire coworking arrive bientôt</h2>
+    <p class="mt-2 text-base-content/70">
+      Cette entrée est séparée de l'annuaire espace-ouvert afin de garder des
+      parcours adaptés aux besoins des coworkers et des associations.
+    </p>
+  </div>
+  <div class="grid gap-6 md:grid-cols-3">
+    <% [
+      [ "Trouver un établissement", "Filtrer les établissements par localisation et capacité d'accueil." ],
+      [ "Présenter son projet", "Cadrez votre demande avec un formulaire simple et guidé." ],
+      [ "Être accompagné", "Accédez aux ressources pour réussir l'accueil en coworking." ]
+    ].each do |title, text| %>
+      <div class="card border border-base-300 bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title"><%= title %></h3>
+          <p><%= text %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<section class="rounded-box bg-base-200 p-8" id="inscription">
+  <h2 class="text-2xl font-bold">Vous souhaitez accueillir une équipe ?</h2>
+  <p class="mt-2 max-w-2xl text-base-content/70">
+    Le formulaire d'inscription des établissements sera partagé avec les deux
+    dispositifs, avec des questions adaptées à votre choix.
+  </p>
+  <button class="btn btn-primary mt-5" type="button" disabled>Référencer son établissement</button>
+</section>

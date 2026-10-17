@@ -1,0 +1,68 @@
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@3.0.0
+
+executors:
+  rails:
+    docker:
+      - &ruby_image
+        image: cimg/ruby:3.4.11
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
+          DATABASE_URL: postgresql://espaces_ouverts:password@localhost:5432/espaces_ouverts_test
+  rails_with_postgres:
+    docker:
+      - *ruby_image
+      - image: cimg/postgres:17.11
+        environment:
+          POSTGRES_USER: espaces_ouverts
+          POSTGRES_DB: espaces_ouverts_test
+          POSTGRES_PASSWORD: password
+
+jobs:
+  lint:
+    executor: rails
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: RuboCop
+          command: bin/rubocop
+      - run:
+          name: Brakeman
+          command: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+      - run:
+          name: Gem audit
+          command: bin/bundler-audit
+      - run:
+          name: Importmap audit
+          command: bin/importmap audit
+
+  rails_test:
+    executor: rails_with_postgres
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bin/rails db:prepare
+      - run:
+          name: Rails tests
+          command: bin/rails test
+      - store_artifacts:
+          path: log/test.log
+
+workflows:
+  build_and_test:
+    jobs:
+      - lint
+      - rails_test:
+          requires:
+            - lint

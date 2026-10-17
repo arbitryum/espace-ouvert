@@ -1,2 +1,2 @@
-web: bash bin/start.sh
-postdeploy: bash bin/post_deploy.sh
+web: bundle exec puma -C config/puma.rb
+postdeploy: bundle exec rails db:migrate

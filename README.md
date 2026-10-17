@@ -1,207 +1,86 @@
-# Open Spaces
+# Espaces Ouverts
 
-Web application that allows care homes to publish spaces they make available
-to nonprofit organizations, and allows those organizations to browse them.
+Web application that lets care homes (EHPAD) publish the spaces they open to
+nonprofit organizations, and lets those organizations browse them. A second
+track, coworking, lists projects hosted in care homes.
 
-The project is currently a Django prototype. The main models are:
+Rails 8.1, PostgreSQL, Hotwire (Turbo + Stimulus, importmap), Tailwind CSS 4
+with daisyUI 5, Active Storage, and [Madmin](https://github.com/excid3/madmin)
+for the back office.
 
-- `CareHome`: a care home;
-- `NonprofitOrganization`: a nonprofit organization;
-- `Space`: a space offered by a care home.
+## Domain
 
-## Requirements
+| Model | What it is |
+| --- | --- |
+| `CareHome` | A care home; its address is geocoded into an `Address` (`address_details`). |
+| `Address` | Geocoded address with coordinates and a normalized `search_text`. |
+| `Space` | A space offered by a care home, with `images` (`SpaceImage`) and weekly `recurring_availabilities`. |
+| `CoworkingProject` | A coworking project, optionally hosted by a care home. |
+| `User` / `EhpadProfile` | An establishment account. It can sign in once an admin approves its profile; admins (`users.admin`) can always sign in. |
+| `NonprofitOrganization` | Not used by any page yet. |
 
-- Python 3.13+ (managed via [mise](https://mise.jdx.dev/) if available)
-- Node.js 20+ (managed via mise)
-- PostgreSQL running locally
+Notable code:
 
-The current configuration uses the PostgreSQL database
-`espaces_ouverts_development` on `localhost`, with the default local
-PostgreSQL user. Adapt `app/settings.py` or your PostgreSQL configuration if
-necessary.
+- `SpaceSearch` (app/models): filters of the space directory (care home, free-text location, distance around a point).
+- `Geocoder` (app/services): Nominatim (OpenStreetMap) client used for care home addresses and the location autocomplete.
+- `EhpadRegistration` (app/models): sign-up form creating the user and its pending profile.
+- Stimulus controllers (app/javascript/controllers): carousel, Leaflet map, location filter, password visibility and rules.
 
-## Installation
+## Pages
 
-### Using mise (recommended)
+| Path | Page |
+| --- | --- |
+| `/` | Home, choose between the two tracks |
+| `/spaces`, `/spaces/:id` | Space directory (list or map) and detail |
+| `/coworking`, `/coworking/projets` | Coworking home and published projects |
+| `/comptes/inscription`, `/comptes/connexion` | Establishment sign-up and sign-in |
+| `/admin` | Back office (admins only) |
 
-If you have [mise](https://mise.jdx.dev/) installed, it will automatically install the correct Python and Node.js versions:
+## Setup
 
-```sh
-mise install
-```
-
-### Using uv for Python dependencies
-
-Install Python dependencies using [uv](https://docs.astral.sh/uv/):
-
-```sh
-uv sync
-```
-
-This creates a virtual environment and installs all dependencies from `pyproject.toml` and `uv.lock`.
-
-Activate the virtual environment:
-
-```sh
-source .venv/bin/activate
-```
-
-### Setup the database
-
-Create the PostgreSQL database if it does not already exist:
+Requirements: Ruby (see `.ruby-version`), PostgreSQL running locally. No Node.js:
+Tailwind runs through `tailwindcss-rails` and daisyUI is vendored in
+`app/assets/tailwind/daisyui.mjs`.
 
 ```sh
-createdb espaces_ouverts_development
+bin/setup        # installs gems, prepares the database, starts the server
+bin/dev          # web server + Tailwind watcher on http://localhost:3000
 ```
 
-Apply the migrations:
+Create an admin to use `/admin`:
 
 ```sh
-python manage.py migrate
+bin/rails runner 'User.create!(username: "admin", email_address: "admin@example.com", password: "…", admin: true)'
 ```
 
-Seed the database with example data:
+## Data
+
+Sample data: `bin/rails db:seed`, or one part at a time:
+
+- `bin/rails seed:spaces`: **replaces** all care homes and spaces with `lib/seeds/spaces.yml`, geocodes them, and attaches the photos found in `SEED_IMAGES_DIR` (default `tmp/seed_images`, not versioned).
+- `bin/rails seed:coworking`: creates or updates three coworking projects.
+- `bin/rails seed:availability`: adds weekly slots to some spaces.
+- `bin/rails geocode:care_homes` (`FORCE=1` to redo all): geocodes care homes without coordinates.
+
+The data of the former Django prototype can be imported into an empty database
+(ids are kept; imported users get a random password):
 
 ```sh
-python manage.py seed_database
+bin/rails django:import DJANGO_DB=path/to/db.sqlite3 DJANGO_MEDIA=path/to/media
 ```
 
-Seed the coworking directory with sample published and draft projects:
+## Tests
 
 ```sh
-python manage.py seed_coworking
+bin/ci           # RuboCop, audits, Brakeman and tests: the same checks as CircleCI
+bin/rails test
 ```
 
-Add recurring availability examples to existing spaces:
+CircleCI runs them on every push (`.circleci/config.yml`).
 
-```sh
-python manage.py seed_availability
-```
+## Deployment
 
-## Start the project
-
-### Terminal 1: Django development server
-
-```sh
-python manage.py runserver
-```
-
-The application is then available at `http://127.0.0.1:8000/`.
-
-The admin interface is available at `http://127.0.0.1:8000/admin/`.
-
-Create an administrator account:
-
-```sh
-python manage.py createsuperuser
-```
-
-### Terminal 2: Tailwind CSS development watcher
-
-```sh
-cd theme/static_src
-npm run dev
-```
-
-This watches for changes in `src/styles.css` and automatically regenerates the CSS.
-
-## Deployment to Scalingo
-
-The application is deployed to Scalingo using:
-- Node.js buildpack (for Tailwind CSS compilation)
-- Python buildpack (for Django application)
-
-Deployment automatically:
-1. Installs Node.js dependencies and builds Tailwind CSS
-2. Installs Python dependencies using uv
-3. Runs database migrations
-4. Collects static files
-
-### File Storage Configuration
-
-#### Development (Local Storage)
-
-By default, uploaded files (images) are stored locally in the `media/` directory.
-
-#### Production (S3 or S3-Compatible Storage)
-
-To enable S3 storage in production, set the following environment variables:
-
-```bash
-# Enable S3 storage
-USE_S3=True
-
-# AWS S3 credentials and bucket configuration
-AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_STORAGE_BUCKET_NAME=your-bucket-name
-AWS_S3_REGION_NAME=eu-west-1
-
-# Optional: for S3-compatible services (MinIO, DigitalOcean Spaces, etc.)
-AWS_S3_ENDPOINT_URL=https://your-endpoint.example.com
-AWS_S3_USE_SSL=True
-
-# Optional: custom CDN domain for serving files
-AWS_S3_CUSTOM_DOMAIN=cdn.example.com
-```
-
-For Scaleway Object Storage specifically:
-
-```bash
-USE_S3=True
-AWS_ACCESS_KEY_ID=SCWXXXXXXXXXXXXXXXXX
-AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-AWS_STORAGE_BUCKET_NAME=your-bucket-name
-AWS_S3_REGION_NAME=fr-par
-AWS_S3_ENDPOINT_URL=https://s3.fr-par.scw.cloud
-AWS_S3_USE_SSL=True
-```
-
-The `SpaceImage` model will automatically use the configured storage backend. Images uploaded in production will be stored on S3, while development uses the local filesystem.
-
-## Useful commands
-
-Check the Django configuration:
-
-```sh
-python manage.py check
-```
-
-Create a migration after changing the models:
-
-```sh
-python manage.py makemigrations
-python manage.py migrate
-```
-
-Run the tests:
-
-```sh
-python manage.py test
-```
-
-Open a Django shell:
-
-```sh
-python manage.py shell
-```
-
-Update Python dependencies (after changing `pyproject.toml`):
-
-```sh
-uv lock
-```
-
-## Main structure
-
-```text
-app/                  Django project configuration
-spaces/               Application code and models
-coworking/            Separate coworking application and public entry point
-theme/static_src/     Tailwind CSS source (Node.js + npm)
-static/               Generated CSS and static files
-bin/                  Deployment scripts
-manage.py             Django administration command
-pyproject.toml        Python project configuration and dependencies
-uv.lock               Lockfile for reproducible Python dependency resolution
-```
+Deployed on Scalingo with the Ruby buildpack (`Procfile`: Puma, and migrations on
+`postdeploy`). Uploaded photos go to Scaleway Object Storage through Active
+Storage (`scaleway` service in `config/storage.yml`). Environment variables are
+listed in `.env.example`.
