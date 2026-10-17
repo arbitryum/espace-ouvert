@@ -1,0 +1,56 @@
+<% content_for :title, "Le guide du coworking en EHPAD - Espaces Ouverts" %>
+<%= render "header" %>
+
+<div class="mx-auto max-w-4xl">
+  <p class="text-sm font-semibold uppercase tracking-wide text-secondary">Coworking en EHPAD</p>
+  <h1 class="mt-2 text-4xl font-bold">Le guide du coworking en EHPAD</h1>
+  <p class="mt-4 text-lg text-base-content/70">
+    Une boîte à outils pour les établissements : des documents types et des astuces
+    développées par d'autres établissements qui se sont eux aussi lancés dans l'aventure.
+  </p>
+
+  <% if guide_access? %>
+    <div class="mt-10 space-y-10">
+      <% @sections.each do |section, pages| %>
+        <section>
+          <h2 class="mb-4 text-2xl font-bold"><%= section %></h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <% pages.each do |page| %>
+              <%= link_to guide_page_path(page), class: "card border border-base-300 bg-base-100 shadow-sm transition hover:border-secondary" do %>
+                <div class="card-body flex-row items-center gap-3 p-5">
+                  <span class="text-2xl" aria-hidden="true"><%= page.icon %></span>
+                  <span class="font-semibold"><%= page.title %></span>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </div>
+  <% else %>
+    <%= form_with url: guide_access_path, class: "card mt-10 border border-base-300 bg-base-100 shadow-sm" do |form| %>
+      <div class="card-body gap-4 p-6 sm:p-8">
+        <h2 class="card-title text-2xl">Recevoir le guide</h2>
+        <p class="text-base-content/70">
+          Indiquez votre email : nous vous envoyons un lien pour accéder au guide.
+        </p>
+        <label class="form-control w-full">
+          <span class="label-text mb-2 font-medium">Email professionnel</span>
+          <%= form.email_field :email_address, required: true, autocomplete: "email", class: "input input-md w-full" %>
+        </label>
+        <p class="text-sm text-base-content/60">
+          Nous conservons votre adresse pour vous donner accès au guide et savoir qui l'utilise.
+          Elle n'est pas partagée.
+        </p>
+        <div class="card-actions justify-end">
+          <button class="btn btn-secondary" type="submit">Recevoir le lien d'accès</button>
+        </div>
+        <% unless authenticated? %>
+          <p class="text-sm text-base-content/60">
+            Vous avez un compte établissement ? <%= link_to "Connectez-vous", new_session_path, class: "link" %> pour y accéder directement.
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

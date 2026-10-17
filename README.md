@@ -33,8 +33,27 @@ Notable code:
 | `/` | Home, choose between the two tracks |
 | `/spaces`, `/spaces/:id` | Space directory (list or map) and detail |
 | `/coworking`, `/coworking/projets` | Coworking home and published projects |
+| `/coworking/guide` | Coworking guide, readable after requesting access by email |
 | `/comptes/inscription`, `/comptes/connexion` | Establishment sign-up and sign-in |
 | `/admin` | Back office (admins only) |
+
+## Coworking guide
+
+The guide's pages (`GuidePage`) are imported from a Notion "HTML" export, which
+replaces all of them:
+
+```sh
+bin/rails guide:import DIR="path/to/Notion export"
+```
+
+The guide isn't public. Visitors give their email (saved as a `GuideReader`) and
+receive a link, valid 7 days, that lets their browser read the guide; signed-in
+users can read it directly. Images are served through `GuideImagesController`,
+which checks access and redirects to storage URLs that expire after 5 minutes.
+The emails readers gave are listed in the admin (`/admin/guide_readers`).
+
+In development, emails are written to `tmp/mails/` instead of being sent.
+Production sends them through the SMTP server configured in `.env.example`.
 
 ## Setup
 
