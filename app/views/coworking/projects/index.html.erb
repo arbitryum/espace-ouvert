@@ -1,0 +1,29 @@
+<% content_for :title, "Projets coworking - Espaces Ouverts" %>
+
+<div class="mb-10">
+  <%= link_to "← Retour au coworking", coworking_path, class: "link link-hover text-sm font-medium" %>
+  <p class="mt-8 text-sm font-semibold uppercase tracking-wide text-secondary">Coworking</p>
+  <h1 class="mt-2 text-4xl font-bold">Les projets à découvrir</h1>
+  <p class="mt-4 max-w-2xl text-lg text-base-content/70">
+    Découvrez les projets publiés et les établissements qui ouvrent leurs portes au coworking.
+  </p>
+</div>
+
+<% if @projects.any? %>
+  <div class="grid gap-6 md:grid-cols-2">
+    <% @projects.each do |project| %>
+      <article class="card border border-base-300 bg-base-100 shadow-sm">
+        <div class="card-body">
+          <div class="badge badge-secondary"><%= project.status_label %></div>
+          <h2 class="card-title"><%= project.name %></h2>
+          <p class="text-sm font-medium"><%= project.organization_name %> · <%= project.location %></p>
+          <p class="text-base-content/70"><%= project.description %></p>
+        </div>
+      </article>
+    <% end %>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    <span>Aucun projet coworking n'est publié pour le moment.</span>
+  </div>
+<% end %>

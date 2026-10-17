@@ -1,0 +1,77 @@
+<% content_for :header do %>
+  <div class="bg-yellow-100">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+      <%= render "shared/home_button" %>
+      <div class="max-w-6xl mx-auto py-8">
+        <h1 class="text-4xl md:text-5xl font-bold text-blue-950 text-center">
+          Trouvez l'espace dont les associations<br>de votre territoire ont besoin
+        </h1>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= form_with url: spaces_path, method: :get, class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8",
+      data: { controller: "location-filter", turbo: false,
+              location_filter_suggestions_url_value: location_suggestions_spaces_path,
+              action: "click@document->location-filter#closeOnOutsideClick" } do |form| %>
+  <label class="form-control w-full">
+    <div class="label"><span class="label-text">Établissement</span></div>
+    <%= form.select :care_home, options_from_collection_for_select(@care_home_options, :id, :name, @search.care_home),
+          { include_blank: "Tous les établissements" }, class: "select select-bordered w-full" %>
+  </label>
+
+  <div class="form-control w-full">
+    <div class="label"><span class="label-text opacity-0 select-none">Localisation</span></div>
+    <div class="dropdown w-full" data-location-filter-target="dropdown">
+      <%= form.text_field :location, value: @search.location_input_value, placeholder: "Ajouter une localisation",
+            class: "input input-bordered w-full", autocomplete: "off",
+            data: { location_filter_target: "input", action: "input->location-filter#search focus->location-filter#open" } %>
+      <div class="dropdown-content z-40 mt-2 p-4 shadow bg-base-100 rounded-box w-full min-w-72 border border-base-300 hidden" data-location-filter-target="panel">
+        <div class="<%= @search.around_me? ? "flex" : "hidden" %> mb-3" data-location-filter-target="aroundMeChip">
+          <div class="badge badge-info badge-lg rounded-field gap-2">
+            <span data-location-filter-target="aroundMeLabel">Autour de moi<%= " (#{@search.radius_label}km)" if @search.around_me? %></span>
+            <button type="button" class="btn btn-ghost btn-xs btn-circle" aria-label="Retirer autour de moi" data-action="location-filter#clearAroundMe">✕</button>
+          </div>
+        </div>
+        <label class="form-control w-full mb-3">
+          <div class="label"><span class="label-text">Rayon</span></div>
+          <%= form.select :radius_km, SpacesHelper::RADIUS_OPTIONS_KM.map { |km| [ "#{km} km", km ] }, { selected: @search.radius_km },
+                class: "select select-bordered w-full", data: { location_filter_target: "radius", action: "location-filter#refreshAroundMe" } %>
+        </label>
+        <p class="text-xs text-base-content/70 mb-2" data-location-filter-target="searchStatus">Tapez au moins 2 caractères</p>
+        <div class="menu w-full bg-base-100 rounded-box border border-base-300 hidden max-h-56 overflow-y-auto p-0" data-location-filter-target="suggestions"></div>
+      </div>
+    </div>
+  </div>
+
+  <%= hidden_field_tag :near_lat, @search.near_lat, data: { location_filter_target: "latitude" } %>
+  <%= hidden_field_tag :near_lon, @search.near_lon, data: { location_filter_target: "longitude" } %>
+  <%= hidden_field_tag :near_mode, @search.near_mode, data: { location_filter_target: "mode" } %>
+  <%= hidden_field_tag :view_mode, @view_mode %>
+
+  <div class="md:col-span-2 lg:col-span-2 flex items-end gap-2">
+    <button type="submit" class="btn btn-primary flex-1">Filtrer</button>
+    <%= link_to "Réinitialiser", spaces_path, class: "btn btn-outline flex-1" %>
+  </div>
+
+  <p class="text-sm text-base-content/70 md:col-span-2 lg:col-span-4" data-location-filter-target="status"></p>
+<% end %>
+
+<div class="join mb-6">
+  <%= link_to "Liste", view_mode_url("list"), class: "btn join-item #{@view_mode == "list" ? "btn-primary" : "btn-outline"}" %>
+  <%= link_to "Carte", view_mode_url("map"), class: "btn join-item #{@view_mode == "map" ? "btn-primary" : "btn-outline"}" %>
+</div>
+
+<% if @spaces.empty? %>
+  <div class="alert alert-info">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <span>Aucun espace disponible pour le moment.</span>
+  </div>
+<% elsif @view_mode == "map" %>
+  <%= render "map", markers: spaces_map_markers(@spaces) %>
+<% else %>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <%= render partial: "space_card", collection: @spaces, as: :space %>
+  </div>
+<% end %>

@@ -1,0 +1,14 @@
+approved:
+  user: approved
+  establishment_name: EHPAD Les Tilleuls
+  establishment_address: 1 rue des Tilleuls, Paris
+  contact_name: Marie Dupont
+  status: approved
+  participates_in_spaces: true
+
+pending:
+  user: pending
+  establishment_name: EHPAD Les Lilas
+  establishment_address: 2 rue des Lilas, Paris
+  contact_name: Paul Martin
+  status: pending

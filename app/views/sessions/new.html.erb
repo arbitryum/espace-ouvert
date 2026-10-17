@@ -1,0 +1,35 @@
+<% content_for :title, "Connexion - Espaces Ouverts" %>
+
+<div class="mx-auto max-w-2xl">
+  <div class="mb-10">
+    <%= link_to "← Retour à l'accueil", root_path, class: "link link-hover text-sm font-medium" %>
+    <p class="mt-8 text-sm font-semibold uppercase tracking-wide text-primary">Espace établissement</p>
+    <h1 class="mt-2 text-4xl font-bold tracking-tight">Bienvenue</h1>
+    <p class="mt-4 text-lg text-base-content/70">
+      Connectez-vous pour gérer les informations de votre établissement.
+    </p>
+  </div>
+
+  <%= form_with url: session_path, class: "card border border-base-300 bg-base-100 shadow-sm" do |form| %>
+    <div class="card-body gap-6 p-6 sm:p-8">
+      <% if @error %>
+        <div class="alert alert-error" role="alert"><span><%= @error %></span></div>
+      <% end %>
+
+      <label class="form-control w-full">
+        <span class="label-text mb-2 font-medium">Identifiant</span>
+        <%= form.text_field :username, value: params[:username], required: true, autofocus: true,
+              autocomplete: "username", class: "input input-md w-full" %>
+      </label>
+
+      <label class="form-control w-full">
+        <span class="label-text mb-2 font-medium">Mot de passe</span>
+        <%= render "shared/password_field", form:, field: :password, autocomplete: "current-password" %>
+      </label>
+
+      <button class="btn btn-primary btn-block" type="submit">Se connecter</button>
+      <div class="divider my-0 text-sm text-base-content/50">ou</div>
+      <%= link_to "Référencer un établissement", new_registration_path, class: "btn btn-ghost btn-block" %>
+    </div>
+  <% end %>
+</div>
