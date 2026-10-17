@@ -34,3 +34,6 @@ scaleway:
   region: <%= ENV.fetch("AWS_S3_REGION_NAME", "fr-par") %>
   endpoint: <%= ENV.fetch("AWS_S3_ENDPOINT_URL", "https://s3.fr-par.scw.cloud") %>
   bucket: <%= ENV["AWS_STORAGE_BUCKET_NAME"] %>
+  # Files never change once uploaded (a new upload gets a new key).
+  upload:
+    cache_control: "public, max-age=31536000, immutable"

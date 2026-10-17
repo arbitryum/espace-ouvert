@@ -27,3 +27,14 @@ namespace :geocode do
     end
   end
 end
+
+namespace :images do
+  desc "Generate the resized versions of space photos that don't have them yet"
+  task variants: :environment do
+    SpaceImage.with_attached_image.find_each do |space_image|
+      %i[card large].each { |name| space_image.image.variant(name).processed }
+      print "."
+    end
+    puts " #{SpaceImage.count} photos done."
+  end
+end

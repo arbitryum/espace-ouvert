@@ -1,11 +1,13 @@
 <%# Image carousel for a space. Locals: images, size (:small on the list, :large on the detail page) %>
 <% height = size == :large ? "h-96" : "h-48" %>
+<% variant = size == :large ? :large : :card %>
 <% if images.any? %>
   <div class="relative w-full overflow-hidden bg-gray-100 group <%= height %>" data-controller="carousel">
     <div class="carousel carousel-center w-full h-full scroll-smooth" data-carousel-target="track" data-action="scroll->carousel#sync">
-      <% images.each do |space_image| %>
+      <% images.each_with_index do |space_image, index| %>
         <div class="carousel-item relative w-full h-full min-w-full" data-carousel-target="slide">
-          <%= image_tag space_image.image, alt: space_image.alt_text, class: "w-full h-full object-cover" %>
+          <%= image_tag space_image.image.variant(variant), alt: space_image.alt_text, class: "w-full h-full object-cover",
+                loading: size == :large && index.zero? ? "eager" : "lazy" %>
         </div>
       <% end %>
     </div>
