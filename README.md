@@ -72,10 +72,11 @@ bin/rails django:import DJANGO_DB=path/to/db.sqlite3 DJANGO_MEDIA=path/to/media
 ## Tests
 
 ```sh
+bin/ci           # RuboCop, audits, Brakeman and tests: the same checks as CircleCI
 bin/rails test
-bin/rubocop
-bin/brakeman
 ```
+
+CircleCI runs them on every push (`.circleci/config.yml`).
 
 ## Deployment
 
