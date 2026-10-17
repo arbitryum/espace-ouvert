@@ -32,7 +32,7 @@ namespace :images do
   desc "Generate the resized versions of space photos that don't have them yet"
   task variants: :environment do
     SpaceImage.with_attached_image.find_each do |space_image|
-      %i[card large].each { |name| space_image.image.variant(name).processed }
+      space_image.process_variants!
       print "."
     end
     puts " #{SpaceImage.count} photos done."
