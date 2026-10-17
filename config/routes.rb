@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     get "connexion", to: "sessions#new", as: :new_session
     post "connexion", to: "sessions#create", as: :session
     delete "deconnexion", to: "sessions#destroy", as: :destroy_session
+    resources :passwords, path: "mot-de-passe", param: :token, only: %i[new create edit update],
+      path_names: {new: "oublie", edit: "nouveau"}
   end
 
   resources :spaces, only: %i[index show] do

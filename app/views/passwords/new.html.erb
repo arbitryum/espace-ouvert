@@ -1,0 +1,21 @@
+<% content_for :title, "Mot de passe oublié - Espaces Ouverts" %>
+
+<div class="mx-auto max-w-2xl">
+  <div class="mb-10">
+    <%= link_to "← Retour à la connexion", new_session_path, class: "link link-hover text-sm font-medium" %>
+    <h1 class="mt-8 text-4xl font-bold tracking-tight">Mot de passe oublié</h1>
+    <p class="mt-4 text-lg text-base-content/70">
+      Indiquez l'email de votre compte : nous vous envoyons un lien pour choisir un nouveau mot de passe.
+    </p>
+  </div>
+
+  <%= form_with url: passwords_path, class: "card border border-base-300 bg-base-100 shadow-sm" do |form| %>
+    <div class="card-body gap-6 p-6 sm:p-8">
+      <label class="form-control w-full">
+        <span class="label-text mb-2 font-medium">Email</span>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", class: "input input-md w-full" %>
+      </label>
+      <button class="btn btn-primary btn-block" type="submit">Recevoir le lien</button>
+    </div>
+  <% end %>
+</div>

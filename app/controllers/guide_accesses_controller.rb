@@ -5,7 +5,7 @@ class GuideAccessesController < ApplicationController
 
   # Saves the email and sends the access link.
   def create
-    reader = GuideReader.find_or_initialize_by(email_address: params[:email_address].to_s.strip.downcase)
+    reader = GuideReader.find_or_initialize_by(email_address: params.expect(:email_address))
     if reader.save
       GuideMailer.access_link(reader).deliver_later
       redirect_to guide_path, notice: "C'est envoyé ! Ouvrez le lien reçu par email à #{reader.email_address} pour accéder au guide."

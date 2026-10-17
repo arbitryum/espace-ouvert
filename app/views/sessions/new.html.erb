@@ -25,6 +25,7 @@
       <label class="form-control w-full">
         <span class="label-text mb-2 font-medium">Mot de passe</span>
         <%= render "shared/password_field", form:, field: :password, autocomplete: "current-password" %>
+        <%= link_to "Mot de passe oublié ?", new_password_path, class: "link link-hover mt-2 self-end text-sm" %>
       </label>
 
       <button class="btn btn-primary btn-block" type="submit">Se connecter</button>

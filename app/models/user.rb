@@ -1,5 +1,8 @@
 class User < ApplicationRecord
-  has_secure_password
+  PASSWORD_RESET_VALIDITY = 1.hour
+
+  # The reset token also stops working once the password has changed.
+  has_secure_password reset_token: {expires_in: PASSWORD_RESET_VALIDITY}
   has_many :sessions, dependent: :destroy
   has_one :ehpad_profile, dependent: :destroy
 
