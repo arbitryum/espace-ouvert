@@ -20,7 +20,7 @@ class CreateSpaces < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    # weekday: 0 = Monday … 6 = Sunday (same convention as the Django prototype).
+    # weekday: 0 = Monday … 6 = Sunday.
     create_table :recurring_availabilities do |t|
       t.references :space, null: false, foreign_key: { on_delete: :cascade }
       t.integer :weekday, null: false

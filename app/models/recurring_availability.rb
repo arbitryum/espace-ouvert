@@ -1,5 +1,5 @@
 class RecurringAvailability < ApplicationRecord
-  # 0 = Monday, as in the Django prototype (Ruby's Date#wday starts on Sunday).
+  # 0 = Monday … 6 = Sunday (unlike Ruby's Date#wday, which starts on Sunday).
   WEEKDAYS = %w[Lundi Mardi Mercredi Jeudi Vendredi Samedi Dimanche].freeze
 
   belongs_to :space

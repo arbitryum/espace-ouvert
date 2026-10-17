@@ -1,17 +1,14 @@
 <% password_digest = BCrypt::Password.create("password") %>
 
 admin:
-  username: admin
   email_address: admin@example.com
   password_digest: <%= password_digest %>
   admin: true
 
 approved:
-  username: approved
   email_address: approved@example.com
   password_digest: <%= password_digest %>
 
 pending:
-  username: pending
   email_address: pending@example.com
   password_digest: <%= password_digest %>

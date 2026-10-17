@@ -3,12 +3,9 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_one :ehpad_profile, dependent: :destroy
 
-  normalizes :username, with: ->(username) { username.strip }
   normalizes :email_address, with: ->(email) { email.strip.downcase }
 
-  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 150 },
-    format: { with: /\A[\w.@+-]+\z/, message: "ne peut contenir que des lettres, chiffres et @/./+/-/_" }
-  validates :email_address, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, length: { minimum: 8 }, format: { without: /\A\d+\z/, message: "ne doit pas être uniquement numérique" },
     allow_nil: true
 
@@ -17,5 +14,5 @@ class User < ApplicationRecord
     admin? || ehpad_profile&.approved?
   end
 
-  def to_s = username
+  def to_s = email_address
 end

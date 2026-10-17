@@ -10,7 +10,6 @@ class EhpadRegistration
   attribute :establishment_name, :string
   attribute :establishment_address, :string
   attribute :contact_name, :string
-  attribute :username, :string
   attribute :email_address, :string
   attribute :password, :string
   attribute :password_confirmation, :string
@@ -44,7 +43,7 @@ class EhpadRegistration
 
   private
     def user
-      @user ||= User.new(username:, email_address:, password:, password_confirmation:)
+      @user ||= User.new(email_address:, password:, password_confirmation:)
     end
 
     def at_least_one_module

@@ -3,7 +3,7 @@ require "test_helper"
 class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   PARAMS = {
     establishment_name: "EHPAD Les Tilleuls", establishment_address: "1 rue des Tilleuls, Paris", contact_name: "Marie Dupont",
-    username: "ehpad-contact", email_address: "contact@example.org",
+    email_address: "contact@example.org",
     password: "A-strong-password-123", password_confirmation: "A-strong-password-123"
   }.freeze
 
@@ -20,7 +20,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     post registrations_path, params: { ehpad_registration: PARAMS.merge(modules: [ "", "coworking" ]) }
 
     assert_redirected_to pending_registration_path
-    profile = User.find_by!(username: "ehpad-contact").ehpad_profile
+    profile = User.find_by!(email_address: "contact@example.org").ehpad_profile
     assert profile.pending?
     assert_not profile.participates_in_spaces
     assert profile.participates_in_coworking
@@ -31,6 +31,6 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_match "Sélectionnez au moins un dispositif.", response.body
-    assert_not User.exists?(username: "ehpad-contact")
+    assert_not User.exists?(email_address: "contact@example.org")
   end
 end

@@ -1,6 +1,5 @@
 class UserResource < Madmin::Resource
   attribute :id, form: false
-  attribute :username, index: true
   attribute :email_address, index: true
   attribute :admin, index: true
   attribute :ehpad_profile, form: false, index: true

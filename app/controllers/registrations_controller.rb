@@ -18,6 +18,6 @@ class RegistrationsController < ApplicationController
   private
     def registration_params
       params.expect(ehpad_registration: [ :establishment_name, :establishment_address, :contact_name,
-        :username, :email_address, :password, :password_confirmation, modules: [] ])
+        :email_address, :password, :password_confirmation, modules: [] ])
     end
 end

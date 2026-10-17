@@ -1,4 +1,4 @@
-# Back office, the equivalent of the Django admin. Restricted to admin users.
+# Back office, restricted to admin users.
 namespace :madmin, path: "admin" do
   resources :ehpad_profiles
   resources :care_homes
