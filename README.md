@@ -2,11 +2,28 @@
 
 Web application that lets care homes (EHPAD) publish the spaces they open to
 nonprofit organizations, and lets those organizations browse them. A second
-track, coworking, lists projects hosted in care homes.
+track, coworking, lists projects hosted in care homes and offers establishments
+a private guide.
 
 Rails 8.1, PostgreSQL, Hotwire (Turbo + Stimulus, importmap), Tailwind CSS 4
-with daisyUI 5, Active Storage, and [Madmin](https://github.com/excid3/madmin)
-for the back office.
+with daisyUI 5, Active Storage on Scaleway, and
+[Madmin](https://github.com/excid3/madmin) for the back office. Hosted on
+Scalingo. The interface is in French.
+
+**Before changing anything, read [AGENTS.md](AGENTS.md)**: code rules,
+architecture, known pitfalls, Git and deploy workflow.
+
+## Pages
+
+| Path | Page |
+| --- | --- |
+| `/` | Home, choose between the two tracks |
+| `/spaces`, `/spaces/:id` | Space directory (list or map, filters) and detail |
+| `/coworking`, `/coworking/projets` | Coworking home and published projects |
+| `/coworking/guide` | Coworking guide, readable after requesting access by email |
+| `/comptes/inscription`, `/comptes/connexion` | Establishment sign-up and sign-in |
+| `/comptes/mot-de-passe/oublie` | Password reset by emailed link |
+| `/admin` | Back office (admins only) |
 
 ## Domain
 
@@ -16,59 +33,24 @@ for the back office.
 | `Address` | Geocoded address with coordinates and a normalized `search_text`. |
 | `Space` | A space offered by a care home, with `images` (`SpaceImage`) and weekly `recurring_availabilities`. |
 | `CoworkingProject` | A coworking project, optionally hosted by a care home. |
-| `User` / `EhpadProfile` | An establishment account. It can sign in once an admin approves its profile; admins (`users.admin`) can always sign in. |
+| `User` / `EhpadProfile` | An establishment account, which signs in with its email. It can sign in once an admin approves its profile; admins (`users.admin`) can always sign in. |
+| `GuidePage` / `GuideReader` | Pages of the coworking guide, and the people who requested access by email. |
 | `NonprofitOrganization` | Not used by any page yet. |
 
 Notable code:
 
 - `SpaceSearch` (app/models): filters of the space directory (care home, free-text location, distance around a point).
-- `Geocoder` (app/services): Nominatim (OpenStreetMap) client used for care home addresses and the location autocomplete.
 - `EhpadRegistration` (app/models): sign-up form creating the user and its pending profile.
+- `Geocoder` (app/services): Nominatim (OpenStreetMap) client, for care home addresses and the location autocomplete.
+- `GuideImport` (app/services): imports the guide from a Notion export.
+- `GuideAccess` (controller concern): who may read the guide.
 - Stimulus controllers (app/javascript/controllers): carousel, Leaflet map, location filter, password visibility and rules.
-
-## Texts
-
-The interface is in French, with every text in `config/locales/*.fr.yml`, one
-file per area (`accounts`, `spaces`, `coworking`, `guides`, `mailers`, `models`
-and app-wide `fr.yml`). Views and controllers use lazy lookups (`t(".title")`),
-enum labels come from `activerecord.enums` (`Space.human_enum_name(:status, "full")`),
-and Stimulus controllers receive their texts as a `messages` value. A missing
-translation raises in development and test.
-
-## Pages
-
-| Path | Page |
-| --- | --- |
-| `/` | Home, choose between the two tracks |
-| `/spaces`, `/spaces/:id` | Space directory (list or map) and detail |
-| `/coworking`, `/coworking/projets` | Coworking home and published projects |
-| `/coworking/guide` | Coworking guide, readable after requesting access by email |
-| `/comptes/inscription`, `/comptes/connexion` | Establishment sign-up and sign-in |
-| `/admin` | Back office (admins only) |
-
-## Coworking guide
-
-The guide's pages (`GuidePage`) are imported from a Notion "HTML" export, which
-replaces all of them:
-
-```sh
-bin/rails guide:import DIR="path/to/Notion export"
-```
-
-The guide isn't public. Visitors give their email (saved as a `GuideReader`) and
-receive a link, valid 7 days, that lets their browser read the guide; signed-in
-users can read it directly. Images are served through `GuideImagesController`,
-which checks access and redirects to storage URLs that expire after 5 minutes.
-The emails readers gave are listed in the admin (`/admin/guide_readers`).
-
-In development, emails are written to `tmp/mails/` instead of being sent.
-Production sends them through Brevo's SMTP relay, configured in `.env.example`.
 
 ## Setup
 
-Requirements: Ruby (see `.ruby-version`), PostgreSQL running locally. No Node.js:
-Tailwind runs through `tailwindcss-rails` and daisyUI is vendored in
-`app/assets/tailwind/daisyui.mjs`.
+Requirements: Ruby (see `.ruby-version`) and PostgreSQL running locally. No
+Node.js: Tailwind runs through `tailwindcss-rails` and daisyUI is vendored.
+libvips is needed locally to resize photos (`brew install vips`).
 
 ```sh
 bin/setup        # installs gems, prepares the database, starts the server
@@ -81,6 +63,8 @@ Create an admin to use `/admin`:
 bin/rails runner 'User.create!(email_address: "admin@example.com", password: "…", admin: true)'
 ```
 
+In development, emails are written to `tmp/mails/` instead of being sent.
+
 ## Data
 
 Sample data: `bin/rails db:seed`, or one part at a time:
@@ -90,6 +74,17 @@ Sample data: `bin/rails db:seed`, or one part at a time:
 - `bin/rails seed:availability`: adds weekly slots to some spaces.
 - `bin/rails geocode:care_homes` (`FORCE=1` to redo all): geocodes care homes without coordinates.
 - `bin/rails images:variants`: generates the resized WebP versions of space photos (new uploads get them automatically).
+- `bin/rails guide:import DIR="path/to/Notion export"`: **replaces** the coworking guide with a Notion "HTML" export.
+
+## Coworking guide
+
+The guide isn't public:
+- Visitors give their email, saved as a `GuideReader` and listed in
+  `/admin/guide_readers`.
+- They receive a link, valid 7 days, that lets their browser read the guide.
+- Signed-in users can read it directly.
+- Images are served through `GuideImagesController`, which checks access and
+  redirects to storage URLs expiring after 5 minutes.
 
 ## Tests
 
@@ -102,8 +97,38 @@ CircleCI runs them on every push (`.circleci/config.yml`).
 
 ## Deployment
 
-Deployed on Scalingo with the APT and Ruby buildpacks (`.buildpacks`; the APT one
-installs libvips from `Aptfile` for image variants). `Procfile`: Puma, and migrations
-on `postdeploy`. Uploaded photos go to Scaleway Object Storage through Active
-Storage (`scaleway` service in `config/storage.yml`). Environment variables are
-listed in `.env.example`.
+Merging to `main` deploys the Scalingo app `espaces-ouverts-production`.
+
+- **Build:** the APT buildpack installs libvips from `Aptfile`, then the Ruby
+  buildpack runs (`.buildpacks`).
+- **Run:** `Procfile` starts Puma and runs the migrations on `postdeploy`.
+- **Photos:** stored on Scaleway Object Storage (Active Storage `scaleway`
+  service, `config/storage.yml`).
+- **Emails:** sent through Brevo's SMTP relay, from `no-reply@arbitryum.fr`.
+  Brevo only accepts SMTP from allowlisted IPs, so Scalingo's egress IPs must
+  stay authorized there.
+
+Environment variables are listed in [.env.example](.env.example).
+
+### Production tasks
+
+Data tasks run from a local checkout against the production database, through a
+tunnel. Open the tunnel in one terminal:
+
+```sh
+scalingo --app espaces-ouverts-production db-tunnel --port 10001 SCALINGO_POSTGRESQL_URL
+```
+
+Then run the task in another, reading credentials from Scalingo so none are
+typed or printed. For example, to import the guide:
+
+```sh
+RAILS_ENV=production SECRET_KEY_BASE=dummy ACTIVE_STORAGE_SERVICE=scaleway AWS_STORAGE_BUCKET_NAME=espaces-ouverts-production DATABASE_URL="$(scalingo -a espaces-ouverts-production env-get SCALINGO_POSTGRESQL_URL 2>/dev/null | sed -E 's#@[^/]+/#@127.0.0.1:10001/#')" AWS_ACCESS_KEY_ID="$(scalingo -a espaces-ouverts-production env-get AWS_ACCESS_KEY_ID 2>/dev/null)" AWS_SECRET_ACCESS_KEY="$(scalingo -a espaces-ouverts-production env-get AWS_SECRET_ACCESS_KEY 2>/dev/null)" bin/rails guide:import DIR="path/to/Notion export"
+```
+
+Tasks that only need the app's own environment can run in a Scalingo container
+instead:
+
+```sh
+scalingo --app espaces-ouverts-production run bin/rails images:variants
+```
