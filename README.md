@@ -81,7 +81,8 @@ CircleCI runs them on every push (`.circleci/config.yml`).
 
 ## Deployment
 
-Deployed on Scalingo with the Ruby buildpack (`Procfile`: Puma, and migrations on
-`postdeploy`). Uploaded photos go to Scaleway Object Storage through Active
+Deployed on Scalingo with the APT and Ruby buildpacks (`.buildpacks`; the APT one
+installs libvips from `Aptfile` for image variants). `Procfile`: Puma, and migrations
+on `postdeploy`. Uploaded photos go to Scaleway Object Storage through Active
 Storage (`scaleway` service in `config/storage.yml`). Environment variables are
 listed in `.env.example`.
