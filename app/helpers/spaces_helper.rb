@@ -14,7 +14,7 @@ module SpacesHelper
         address: details.concise_label.presence || space.care_home.address,
         availability: space.availability,
         distance_km: space.distance_km,
-        image_url: first_image ? url_for(first_image.image) : "",
+        image_url: first_image ? url_for(first_image.image.variant(:card)) : "",
         image_alt: first_image&.alt_text.to_s,
         detail_url: space_path(space),
         latitude: details.latitude,

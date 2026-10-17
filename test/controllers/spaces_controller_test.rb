@@ -26,6 +26,17 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", space_path(space)
   end
 
+  test "pages show resized photos, lazily loaded" do
+    space = create_space(name: "Photo space")
+    space.images.create!(alt_text: "Salle", image: fixture_file_upload("photo.jpg", "image/jpeg"))
+
+    get spaces_path
+    assert_select "img[alt=Salle][loading=lazy][src*='/representations/']"
+
+    get space_path(space)
+    assert_select ".carousel img[alt=Salle][loading=eager][src*='/representations/']"
+  end
+
   test "map mode includes one marker per geocoded space" do
     care_home = create_care_home(name: "Maison Carte")
     care_home.update!(address_details: create_address(raw_address: "9 Rue Maria Helena Vieira da Silva, 75014 Paris",

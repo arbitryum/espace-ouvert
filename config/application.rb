@@ -38,6 +38,8 @@ module EspacesOuverts
     config.i18n.available_locales = [ :fr ]
     # Weekly slots (RecurringAvailability) are wall-clock times: only datetimes follow the time zone.
     config.active_record.time_zone_aware_types = [ :datetime ]
+    # Scalingo provides ImageMagick but not libvips.
+    config.active_storage.variant_processor = :mini_magick
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

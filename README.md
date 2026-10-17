@@ -61,6 +61,7 @@ Sample data: `bin/rails db:seed`, or one part at a time:
 - `bin/rails seed:coworking`: creates or updates three coworking projects.
 - `bin/rails seed:availability`: adds weekly slots to some spaces.
 - `bin/rails geocode:care_homes` (`FORCE=1` to redo all): geocodes care homes without coordinates.
+- `bin/rails images:variants`: generates the resized WebP versions of space photos (new uploads get them automatically).
 
 The data of the former Django prototype can be imported into an empty database
 (ids are kept; imported users get a random password):

@@ -37,7 +37,7 @@ class SpaceSearch
 
   private
     def base_scope
-      spaces = Space.listed.includes(:recurring_availabilities, images: { image_attachment: :blob }, care_home: :address_details)
+      spaces = Space.listed.includes(:recurring_availabilities, images: { image_attachment: { blob: { variant_records: { image_attachment: :blob } } } }, care_home: :address_details)
       care_home.present? ? spaces.where(care_home_id: care_home) : spaces
     end
 
