@@ -1,0 +1,30 @@
+<%= content_for :title, t(".title") %>
+
+<header class="header">
+  <h1>
+    <%= link_to UserResource.friendly_plural_name, UserResource.index_path %>
+    /
+    <strong><%= t(".title") %></strong>
+  </h1>
+</header>
+
+<%= form_with model: @invitation, url: main_app.madmin_admin_invitations_path do |form| %>
+  <% if @invitation.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @invitation.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :email_address %>
+    <%= form.email_field :email_address, class: "form-input", required: true, autofocus: true %>
+    <div class="form-description"><%= t(".help", days: User::INVITATION_VALIDITY.in_days.to_i) %></div>
+  </div>
+
+  <%= form.submit t(".submit"), class: "btn btn-primary" %>
+  <%= link_to t("madmin.actions.cancel"), UserResource.index_path, class: "btn" %>
+<% end %>

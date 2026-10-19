@@ -22,6 +22,17 @@ fr:
     access_denied: Accès réservé aux administrateurs.
     care_homes:
       no_geocoding_result: Aucun résultat de géocodage pour cette adresse.
+    users:
+      invite: Inviter un administrateur
+  # Back office pages of our own; Madmin's controllers live in the madmin namespace.
+  madmin:
+    admin_invitations:
+      new:
+        title: Inviter un administrateur
+        help: "La personne recevra un lien, valable %{days} jours, pour choisir son mot de passe. Inviter à nouveau un administrateur lui envoie un nouveau lien."
+        submit: Envoyer l'invitation
+      create:
+        notice: Invitation envoyée à %{email}.
   home:
     index:
       eyebrow: Espaces Ouverts

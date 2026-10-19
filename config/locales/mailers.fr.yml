@@ -16,3 +16,11 @@ fr:
       cta: Choisir un nouveau mot de passe
       validity: "Ce lien est valable %{minutes} minutes. Si vous n'avez rien demandé, ignorez cet email : votre mot de passe reste inchangé."
       signature: L'équipe Espaces Ouverts
+  admin_invitations_mailer:
+    invitation:
+      subject: Votre accès administrateur - Espaces Ouverts
+      greeting: Bonjour,
+      intro: "Vous êtes invité à administrer Espaces Ouverts. Choisissez votre mot de passe pour activer votre compte :"
+      cta: Choisir mon mot de passe
+      validity: Ce lien est valable %{days} jours.
+      signature: L'équipe Espaces Ouverts
