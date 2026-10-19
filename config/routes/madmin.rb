@@ -11,5 +11,6 @@ namespace :madmin, path: "admin" do
   resources :guide_readers
   resources :nonprofit_organizations
   resources :users
+  resources :admin_invitations, path: "invitations", only: %i[new create]
   root to: "dashboard#show"
 end

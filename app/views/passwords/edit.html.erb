@@ -6,20 +6,5 @@
     <p class="mt-4 text-lg text-base-content/70"><%= t(".for_account", email: @user.email_address) %></p>
   </div>
 
-  <%= form_with url: password_path(params[:token]), method: :put, class: "card border border-base-300 bg-base-100 shadow-sm" do |form| %>
-    <div class="card-body gap-6 p-6 sm:p-8" data-controller="password-rules">
-      <label class="form-control w-full">
-        <span class="label-text mb-2 font-medium"><%= User.human_attribute_name(:password) %></span>
-        <%= render "shared/password_field", form:, field: :password, autocomplete: "new-password" %>
-        <%= render "shared/password_rules" %>
-        <%= render "shared/field_errors", model: @user, field: :password %>
-      </label>
-      <label class="form-control w-full">
-        <span class="label-text mb-2 font-medium"><%= User.human_attribute_name(:password_confirmation) %></span>
-        <%= render "shared/password_field", form:, field: :password_confirmation, autocomplete: "new-password" %>
-        <%= render "shared/field_errors", model: @user, field: :password_confirmation %>
-      </label>
-      <button class="btn btn-primary btn-block" type="submit"><%= t(".submit") %></button>
-    </div>
-  <% end %>
+  <%= render "shared/new_password_form", url: password_path(params[:token]), user: @user, submit: t(".submit") %>
 </div>

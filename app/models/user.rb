@@ -1,8 +1,11 @@
 class User < ApplicationRecord
   PASSWORD_RESET_VALIDITY = 1.hour
+  INVITATION_VALIDITY = 7.days
 
   # The reset token also stops working once the password has changed.
   has_secure_password reset_token: {expires_in: PASSWORD_RESET_VALIDITY}
+  # Same for the invitation: it is used up once the invited admin has chosen a password.
+  generates_token_for(:invitation, expires_in: INVITATION_VALIDITY) { password_salt.last(10) }
   has_many :sessions, dependent: :destroy
   has_one :ehpad_profile, dependent: :destroy
 

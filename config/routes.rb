@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     delete "deconnexion", to: "sessions#destroy", as: :destroy_session
     resources :passwords, path: "mot-de-passe", param: :token, only: %i[new create edit update],
       path_names: {new: "oublie", edit: "nouveau"}
+    resources :invitations, path: "invitation", param: :token, only: %i[edit update], path_names: {edit: "accepter"}
   end
 
   resources :spaces, only: %i[index show] do

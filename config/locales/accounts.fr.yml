@@ -1,4 +1,4 @@
-# Establishment accounts: sign-in, sign-up, password reset.
+# Accounts: sign-in, sign-up, password reset, admin invitations.
 fr:
   sessions:
     new:
@@ -69,3 +69,11 @@ fr:
       submit: Enregistrer le mot de passe
     update:
       notice: Votre mot de passe a été modifié. Vous pouvez vous connecter.
+  invitations:
+    invalid_link: Cette invitation n'est plus valable. Demandez-en une nouvelle à un administrateur.
+    edit:
+      title: Bienvenue
+      intro: "Vous êtes invité à administrer Espaces Ouverts. Choisissez le mot de passe de votre compte %{email} :"
+      submit: Enregistrer le mot de passe
+    update:
+      notice: Votre mot de passe est enregistré. Bienvenue !

@@ -1,0 +1,10 @@
+<% content_for :title, t(".title") %>
+
+<div class="mx-auto max-w-2xl">
+  <div class="mb-10">
+    <h1 class="text-4xl font-bold tracking-tight"><%= t(".title") %></h1>
+    <p class="mt-4 text-lg text-base-content/70"><%= t(".intro", email: @user.email_address) %></p>
+  </div>
+
+  <%= render "shared/new_password_form", url: invitation_path(params[:token]), user: @user, submit: t(".submit") %>
+</div>

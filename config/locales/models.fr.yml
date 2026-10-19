@@ -41,6 +41,8 @@ fr:
               only_digits: ne doit pas être uniquement numérique
   activemodel:
     attributes:
+      admin_invitation:
+        email_address: Email
       ehpad_registration:
         establishment_name: Nom de l'établissement
         establishment_address: Adresse de l'établissement
@@ -51,6 +53,10 @@ fr:
         modules: Dispositifs
     errors:
       models:
+        admin_invitation:
+          attributes:
+            email_address:
+              not_an_admin: "appartient à un compte établissement : cochez « Admin » sur ce compte pour en faire un administrateur"
         ehpad_registration:
           attributes:
             modules:

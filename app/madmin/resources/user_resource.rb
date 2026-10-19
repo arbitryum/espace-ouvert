@@ -7,5 +7,9 @@ class UserResource < Madmin::Resource
   attribute :password_confirmation, show: false
   attribute :created_at, form: false
 
+  collection_action do
+    link_to t("admin.users.invite"), main_app.new_madmin_admin_invitation_path, class: "btn btn-secondary"
+  end
+
   def self.display_name(record) = record.to_s
 end
