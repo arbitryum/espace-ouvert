@@ -9,6 +9,10 @@ fr:
       contact: "💌 Écrivez-nous : %{email}"
       copyright_html: "&copy; %{year} Espaces Ouverts. Tous droits réservés."
   shared:
+    account_bar:
+      signed_in_as: "Connecté : %{email}"
+      back_office: Administration
+      sign_out: Se déconnecter
     home_button:
       label: Accueil
     password_field:
@@ -20,6 +24,9 @@ fr:
       match: Les deux mots de passe correspondent
   admin:
     access_denied: Accès réservé aux administrateurs.
+    account:
+      site: Voir le site
+      sign_out: Se déconnecter
     care_homes:
       no_geocoding_result: Aucun résultat de géocodage pour cette adresse.
   home:

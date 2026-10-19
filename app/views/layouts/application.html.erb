@@ -19,6 +19,7 @@
   </head>
 
   <body class="bg-base-100">
+    <%= render "shared/account_bar" if authenticated? %>
     <div id="header"><%= yield :header %></div>
 
     <div id="content" class="max-w-6xl mx-auto px-4 py-8">

@@ -1,0 +1,9 @@
+<div class="bg-base-200 text-sm">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-end gap-2 px-4 py-2">
+    <span class="mr-auto text-base-content/70"><%= t(".signed_in_as", email: Current.user.email_address) %></span>
+    <% if Current.user.admin? %>
+      <%= link_to t(".back_office"), madmin_root_path, class: "btn btn-ghost btn-sm" %>
+    <% end %>
+    <%= button_to t(".sign_out"), destroy_session_path, method: :delete, class: "btn btn-outline btn-sm" %>
+  </div>
+</div>
