@@ -48,14 +48,19 @@
                   <table class="table table-sm w-full">
                     <thead><tr><th><%= t(".day") %></th><th><%= t(".hours") %></th></tr></thead>
                     <tbody>
-                      <% slots.each do |slot| %>
-                        <tr><td><%= slot.weekday_name %></td><td><%= slot.time_range %></td></tr>
+                      <%# One row per day, with each of its ranges on a line. %>
+                      <% slots.group_by(&:weekday).each do |weekday, day_slots| %>
+                        <tr>
+                          <td class="align-top"><%= RecurringAvailability.weekday_name(weekday) %></td>
+                          <td><% day_slots.each do |slot| %><span class="block"><%= slot.time_range %></span><% end %></td>
+                        </tr>
                       <% end %>
                     </tbody>
                   </table>
                 </div>
               <% end %>
-              <% if @space.availability.present? %>
+              <%# The free text is where the slots came from: shown only without them. %>
+              <% if slots.empty? && @space.availability.present? %>
                 <div class="mt-3 whitespace-pre-wrap text-base text-base-content/70"><%= @space.availability %></div>
               <% end %>
             </div>
