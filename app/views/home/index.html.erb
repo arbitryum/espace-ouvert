@@ -1,31 +1,47 @@
 <section class="hero rounded-box bg-base-200 py-16">
   <div class="hero-content max-w-3xl text-center">
     <div>
-      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary"><%= t(".eyebrow") %></p>
-      <h1 class="text-4xl font-bold text-primary md:text-5xl"><%= t(".heading") %></h1>
-      <p class="py-6 text-lg text-base-content/70"><%= t(".intro") %></p>
+      <h1 class="text-4xl font-bold text-primary md:text-5xl"><%= t("app_name") %></h1>
+      <p class="mt-6 text-xl font-medium md:text-2xl"><%= t(".tagline") %></p>
+      <p class="mt-4 text-lg text-base-content/70"><%= t(".intro") %></p>
     </div>
   </div>
 </section>
 
-<section class="py-12" aria-labelledby="products-title">
-  <div class="mb-8 text-center">
-    <h2 id="products-title" class="text-3xl font-bold"><%= t(".products_heading") %></h2>
-    <p class="mt-2 text-base-content/70"><%= t(".products_intro") %></p>
-  </div>
+<section class="mx-auto max-w-3xl py-12 text-center" aria-labelledby="about-title">
+  <h2 id="about-title" class="text-3xl font-bold"><%= t(".about.heading") %></h2>
+  <p class="mt-4 text-lg"><%= t(".about.text") %></p>
+  <p class="mt-3 text-base-content/70"><%= t(".about.support") %></p>
+  <%= link_to t(".about.register"), new_registration_path, class: "btn btn-outline btn-primary mt-6" %>
+</section>
 
-  <div class="grid gap-6 md:grid-cols-2">
-    <% [[:spaces, spaces_path, "primary"], [:coworking, coworking_path, "secondary"]].each do |product, path, color| %>
-      <article class="card border border-base-300 bg-base-100 shadow-sm">
+<section class="rounded-box bg-base-200 px-6 py-12" aria-labelledby="how-title">
+  <h2 id="how-title" class="text-center text-3xl font-bold"><%= t(".how.heading") %></h2>
+  <ol class="mx-auto mt-8 grid max-w-5xl gap-6 md:grid-cols-3">
+    <% t(".how.steps").each.with_index(1) do |step, number| %>
+      <li class="card bg-base-100 shadow-sm">
         <div class="card-body">
-          <div class="mb-2 badge badge-<%= color %>"><%= t(".#{product}.badge") %></div>
-          <h3 class="card-title text-2xl"><%= t(".#{product}.title") %></h3>
-          <p><%= t(".#{product}.text") %></p>
-          <div class="card-actions mt-4">
-            <%= link_to t(".#{product}.cta"), path, class: "btn btn-#{color} h-auto min-h-(--size) shrink py-2 text-wrap" %>
-          </div>
+          <span class="flex size-10 items-center justify-center rounded-full bg-primary font-bold text-primary-content" aria-hidden="true"><%= number %></span>
+          <p class="mt-2"><%= step %></p>
         </div>
-      </article>
+      </li>
     <% end %>
+  </ol>
+  <div class="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row">
+    <%= link_to t(".how.coworking"), coworking_path, class: "btn btn-secondary h-auto min-h-(--size) py-2 text-wrap" %>
+    <%= link_to t(".how.spaces"), spaces_path, class: "btn btn-primary h-auto min-h-(--size) py-2 text-wrap" %>
   </div>
 </section>
+
+<% if @care_home_count.positive? %>
+  <section class="py-12 text-center" aria-labelledby="figures-title">
+    <h2 id="figures-title" class="text-3xl font-bold"><%= t(".figures.heading") %></h2>
+    <div class="stats stats-vertical mt-8 border border-base-300 md:stats-horizontal">
+      <div class="stat place-items-center">
+        <div class="stat-value text-primary"><%= @care_home_count %></div>
+        <div class="stat-desc max-w-xs whitespace-normal text-base"><%= t(".figures.care_homes", count: @care_home_count) %></div>
+        <div class="stat-actions"><%= link_to t(".figures.directory"), spaces_path, class: "link link-primary" %></div>
+      </div>
+    </div>
+  </section>
+<% end %>
