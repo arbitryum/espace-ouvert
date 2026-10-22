@@ -23,7 +23,9 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select ".stat-desc", "établissement inscrit dans l'annuaire, prêt à vous accueillir"
   end
 
-  test "home hides key figures without listed spaces" do
+  test "home hides key figures without open spaces" do
+    create_space(name: "Pleine", status: "full")
+
     get root_path
 
     assert_select ".stats", 0

@@ -7,7 +7,7 @@ const PARIS = [48.8566, 2.3522]
 // Hovering a card highlights its marker. See shared/_directory.html.erb.
 export default class extends Controller {
   static targets = ["map", "noMarkers"]
-  // markers: {id, title, subtitle, address, distance_km, text, image_url, image_alt, url, latitude, longitude}
+  // markers: {id, title, subtitle, address, distance_km, text, image_url, image_alt, url, full, tag, latitude, longitude}
   // messages: texts from config/locales/fr.yml (shared.directory.popup)
   static values = { markers: Array, messages: Object }
 
@@ -23,6 +23,7 @@ export default class extends Controller {
         .addTo(this.map)
         .on("click", () => { this.viewBeforePopup = { center: this.map.getCenter(), zoom: this.map.getZoom() } })
         .bindPopup(this.popupContent(marker), { maxWidth: 320, minWidth: 240, autoPan: true, className: "directory-map-popup" })
+      if (marker.full) leafletMarker.getElement()?.classList.add("is-full")
       this.markers.set(String(marker.id), leafletMarker)
       return [marker.latitude, marker.longitude]
     })
@@ -82,6 +83,7 @@ export default class extends Controller {
       image.src = marker.image_url
       image.alt = marker.image_alt || marker.title
     }
+    if (marker.tag) this.append(wrapper, "div", "badge badge-neutral badge-sm mb-2", marker.tag)
     this.append(wrapper, "h3", "font-semibold text-base mb-1", marker.title)
     if (marker.subtitle) this.append(wrapper, "p", "text-sm text-base-content mb-2", marker.subtitle)
     if (marker.address) this.append(wrapper, "p", "text-xs text-base-content/90 mb-2", marker.address)

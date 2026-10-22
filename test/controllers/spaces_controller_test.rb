@@ -130,4 +130,16 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
   end
+
+  test "full spaces are tagged, with a grey pin" do
+    care_home = create_care_home
+    care_home.update!(address_details: create_address(latitude: 48.8566, longitude: 2.3522))
+    create_space(name: "Salle pleine", care_home:, status: "full")
+
+    get spaces_path
+
+    assert_select "[data-directory-map-id-param] .badge", "Complet"
+    marker = JSON.parse(css_select("[data-controller=directory-map]").first["data-directory-map-markers-value"]).first
+    assert_equal [true, "Complet"], marker.values_at("full", "tag")
+  end
 end

@@ -9,6 +9,9 @@
   </div>
   <div class="card-body">
     <h2 class="font-bold text-base"><%= space.name %> (<%= space.care_home.name %>)</h2>
+    <% if space.full? %>
+      <div class="badge badge-neutral badge-sm rounded-sm!"><%= space.human_enum_name(:status) %></div>
+    <% end %>
     <% if space.distance_km %>
       <div class="badge badge-outline badge-sm rounded-sm!"><%= t(".distance", distance: number_with_precision(space.distance_km, precision: 1)) %></div>
     <% end %>

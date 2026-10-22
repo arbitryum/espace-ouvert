@@ -9,14 +9,23 @@ class SpaceSearchTest < ActiveSupport::TestCase
     create_space(name:, care_home:, availability: "Disponible", description: "Test")
   end
 
-  test "lists published available spaces, newest first" do
+  test "lists published spaces, newest first, full ones last" do
     old = create_space(name: "Old", days: -5)
-    recent = create_space(name: "Recent", days: -1)
+    full = create_space(name: "Full", status: "full", days: -1)
+    recent = create_space(name: "Recent", days: -2)
     create_space(name: "Future", days: 5)
     create_space(name: "Draft", publication_status: "draft")
-    create_space(name: "Full", status: "full")
+    create_space(name: "Limited", status: "limited")
 
-    assert_equal [recent, old], search
+    assert_equal [recent, old, full], search
+  end
+
+  test "keeps full spaces last when sorting by distance" do
+    full = space_at("Complet proche", latitude: 48.8566, longitude: 2.3522)
+    full.update!(status: "full")
+    far = space_at("Disponible loin", latitude: 48.90, longitude: 2.40)
+
+    assert_equal [far, full], search(near_lat: "48.8566", near_lon: "2.3522", radius_km: "20")
   end
 
   test "filters by city" do
