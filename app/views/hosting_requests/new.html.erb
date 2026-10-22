@@ -147,7 +147,7 @@
                   </div>
                   <%= hidden_field_tag "hosting_request[slots][]", "", id: nil %>
                 <% else %>
-                  <span class="label-text-alt mb-2 block text-base-content/60"><%= t(".no_slots") %></span>
+                  <span class="label-text-alt mb-2 block text-base-content/70"><%= t(".no_slots") %></span>
                   <%= form.text_area :schedule, rows: 2, class: "textarea w-full" %>
                 <% end %>
                 <%= render "shared/field_errors", model: @hosting_request, field: :slots, full: false %>
@@ -155,7 +155,7 @@
 
               <label class="form-control w-full">
                 <span class="label-text block font-medium"><%= HostingRequest.human_attribute_name(:contribution) %></span>
-                <span class="label-text-alt mb-2 block text-base-content/60"><%= t(".hints.contribution") %></span>
+                <span class="label-text-alt mb-2 block text-base-content/70"><%= t(".hints.contribution") %></span>
                 <%= form.text_area :contribution, rows: 3, class: "textarea w-full" %>
                 <%= render "shared/field_errors", model: @hosting_request, field: :contribution, full: false %>
               </label>
@@ -176,7 +176,7 @@
         <%= text_field_tag :website_url, nil, tabindex: -1, autocomplete: "off" %>
       </div>
 
-      <p class="text-sm text-base-content/60"><%= t(".privacy", care_home: @care_home.name) %></p>
+      <p class="text-sm text-base-content/70"><%= t(".privacy", care_home: @care_home.name) %></p>
       <div class="card-actions justify-end">
         <%= form.submit t(".submit"), class: "btn btn-primary" %>
       </div>
