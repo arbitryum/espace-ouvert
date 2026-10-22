@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 import L from "leaflet"
 
 const PARIS = [48.8566, 2.3522]
-const MARKER_SIZE = 22
 
 // Leaflet map next to the list of spaces on the index page. Hovering a card
 // highlights its marker.
@@ -12,15 +11,14 @@ export default class extends Controller {
   static values = { markers: Array, messages: Object }
 
   connect() {
-    this.map = L.map(this.mapTarget, { scrollWheelZoom: false }).setView(PARIS, 12)
-    // Grayed out in CSS (.spaces-map) so the markers stand out.
+    this.map = L.map(this.mapTarget).setView(PARIS, 12)
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      attribution: "&copy; OpenStreetMap contributors",
     }).addTo(this.map)
 
     this.markers = new Map()
     this.bounds = this.markersValue.map((marker) => {
-      const leafletMarker = L.marker([marker.latitude, marker.longitude], { icon: this.icon(), title: marker.name })
+      const leafletMarker = L.marker([marker.latitude, marker.longitude], { title: marker.name })
         .addTo(this.map)
         .on("click", () => { this.viewBeforePopup = { center: this.map.getCenter(), zoom: this.map.getZoom() } })
         .bindPopup(this.popupContent(marker), { maxWidth: 320, minWidth: 240, autoPan: true, className: "spaces-map-popup" })
@@ -72,15 +70,6 @@ export default class extends Controller {
     if (!marker) return
     marker.getElement()?.classList.remove("is-active")
     marker.setZIndexOffset(0)
-  }
-
-  icon() {
-    return L.divIcon({
-      className: "spaces-map-marker",
-      html: "<span></span>",
-      iconSize: [MARKER_SIZE, MARKER_SIZE],
-      popupAnchor: [0, -MARKER_SIZE / 2],
-    })
   }
 
   popupContent(marker) {
