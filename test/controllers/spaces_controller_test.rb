@@ -44,8 +44,8 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
 
     get spaces_path
 
-    assert_select "[data-controller=spaces-map] [data-spaces-map-id-param]", 1
-    assert_select "[data-controller=spaces-map] [data-spaces-map-target=map]"
+    assert_select "[data-controller=directory-map] [data-directory-map-id-param]", 1
+    assert_select "[data-controller=directory-map] [data-directory-map-target=map]"
     assert_select "select[name=city] option[value=Montreuil]"
     assert_select "p", text: "1 espace"
   end
@@ -68,8 +68,8 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
 
     get spaces_path(view_mode: "map")
 
-    markers = JSON.parse(css_select("[data-controller=spaces-map]").first["data-spaces-map-markers-value"])
-    assert_equal ["Space map"], markers.pluck("name")
+    markers = JSON.parse(css_select("[data-controller=directory-map]").first["data-directory-map-markers-value"])
+    assert_equal ["Space map"], markers.pluck("title")
     assert_equal "9 Rue Maria Helena Vieira da Silva, 75014 Paris", markers.first["address"]
   end
 

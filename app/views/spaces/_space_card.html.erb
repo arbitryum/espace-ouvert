@@ -1,6 +1,6 @@
 <%# Hovering a card highlights its marker on the map next to the list. %>
 <div class="card bg-base-200 hover:shadow-lg transition-shadow overflow-hidden"
-     data-action="mouseenter->spaces-map#highlight mouseleave->spaces-map#unhighlight" data-spaces-map-id-param="<%= space.id %>">
+     data-action="mouseenter->directory-map#highlight mouseleave->directory-map#unhighlight" data-directory-map-id-param="<%= space.id %>">
   <%= render "carousel", images: space.images, size: :small %>
   <div class="absolute top-2 left-2 z-20 max-w-[calc(100%-16px)] pr-2">
     <span class="badge badge-neutral badge-xs rounded-sm! inline-block max-w-full">
