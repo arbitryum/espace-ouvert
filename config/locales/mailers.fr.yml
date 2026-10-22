@@ -38,9 +38,6 @@ fr:
         Vous pouvez consulter le profil de %{organization} et son besoin sur
         votre compte, et %{link}.
       account_link: accepter ou refuser la demande
-      space: "Espace demandé : %{space}"
-      contact: Contact
-      need: Besoin
       reply: Répondez directement à cet email pour écrire à la structure.
       closing: Bonne journée,
     refusal:

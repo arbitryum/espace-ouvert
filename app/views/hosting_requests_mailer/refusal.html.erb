@@ -1,4 +1,4 @@
-<p><%= t(".greeting", name: @request.contact_name) %></p>
+<p><%= t(".greeting", name: @request.greeting_name) %></p>
 <p><%= t(".intro.#{@request.kind}", care_home: @request.care_home.name) %></p>
 <p><%= t(".others_html", link: link_to(t(".map"), @directory_url)) %></p>
 <p><%= t(".closing") %></p>

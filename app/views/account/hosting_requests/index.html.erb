@@ -28,23 +28,12 @@
             <%= hosting_request_status_badge(request) %>
           </div>
 
-          <ul class="text-sm">
-            <li><%= t(".contact") %> : <%= request.contact_name %></li>
-            <li><%= HostingRequest.human_attribute_name(:email) %> : <%= mail_to request.email, class: "link" %></li>
-            <% if request.phone.present? %>
-              <li><%= HostingRequest.human_attribute_name(:phone) %> : <%= request.phone %></li>
+          <dl class="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[12rem_1fr]">
+            <% hosting_request_details(request).each do |label, value| %>
+              <dt class="font-semibold"><%= label %></dt>
+              <dd class="whitespace-pre-line text-base-content/80"><%= value %></dd>
             <% end %>
-          </ul>
-          <div>
-            <h3 class="font-semibold"><%= t(".need") %></h3>
-            <%= simple_format request.message, class: "text-base-content/80" %>
-          </div>
-          <% if request.schedule.present? %>
-            <div>
-              <h3 class="font-semibold"><%= HostingRequest.human_attribute_name(:schedule) %></h3>
-              <%= simple_format request.schedule, class: "text-base-content/80" %>
-            </div>
-          <% end %>
+          </dl>
 
           <% if request.pending? %>
             <div class="card-actions justify-end">

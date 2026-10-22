@@ -1,8 +1,5 @@
-<%= t(".greeting", name: @request.contact_name) %>
+<%= t(".greeting", name: @request.greeting_name) %>
 
 <%= t(".intro", care_home: @request.care_home.name) %>
 
 <%= t(".next") %>
-
-<%= HostingRequest.human_attribute_name(:message) %> :
-<%= @request.message %>

@@ -4,11 +4,27 @@ fr:
       hosting_request:
         kind: Vous cherchez un espace pour
         space: Espace
+        last_name: Nom
+        first_name: Prénom
+        email: Adresse email
         organization_name: Structure
-        contact_name: Votre nom
-        email: Email
+        activity: Activité principale
+        contact_name: Contact
         phone: Téléphone
-        message: Votre besoin
+        website: Site internet (facultatif)
+        team_size: Pour combien de collaborateurs cherchez-vous un espace de travail ?
+        days_per_week: Pour combien de jours par semaine ?
+        weekdays: Précisez les jours
+        flexible_days: Je suis flexible
+        needs: Avez-vous des besoins spécifiques ?
+        needs_other: Autre besoin
+        compensation: Quelle rétribution pouvez-vous envisager pour l'utilisation de l'espace ?
+        activity_type: Quel type d'activité souhaitez-vous organiser avec vos adhérents au sein de l'établissement ?
+        attendees: En moyenne, combien d'adhérents attendez-vous pour chaque activité ?
+        slots: Quels sont les créneaux dont vous auriez besoin pour vos activités ?
+        contribution: Les espaces sont mis à disposition gratuitement, en échange d'une animation qui profite à la résidence. Avez-vous une idée de ce que vous pourriez mettre en place ?
+        extra: Avez-vous quelque chose à ajouter ?
+        message: Besoin
         schedule: Créneaux souhaités
         status: Statut
       user:
@@ -40,6 +56,17 @@ fr:
         kind:
           association: Activités associatives
           coworking: Coworking
+        compensation:
+          moderate_rent: Loyer modéré
+          time: Contrepartie en temps humain
+          both: Les deux
+        # Not an enum (several can be chosen), labelled the same way.
+        needs:
+          wifi: Wifi
+          storage: Stockage
+          parking: Parking
+          lunch: Déjeuner sur place
+          other: Autre
         status:
           pending: En attente
           accepted: Acceptée

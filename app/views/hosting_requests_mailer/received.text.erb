@@ -5,17 +5,8 @@
 <% if @account_url %>
 <%= t(".account", organization: @request.organization_name, url: @account_url) %>
 <% else %>
-<% if @request.space %><%= t(".space", space: @request.space.name) %>
-<% end %>
-<%= t(".contact") %> : <%= @request.contact_name %>
-<%= HostingRequest.human_attribute_name(:email) %> : <%= @request.email %>
-<% if @request.phone.present? %><%= HostingRequest.human_attribute_name(:phone) %> : <%= @request.phone %>
-<% end %>
-<%= t(".need") %> :
-<%= @request.message %>
-<% if @request.schedule.present? %>
-<%= HostingRequest.human_attribute_name(:schedule) %> :
-<%= @request.schedule %>
+<% hosting_request_details(@request).each do |label, value| %>
+<%= label %> : <%= value %>
 <% end %>
 
 <%= t(".reply") %>

@@ -8,8 +8,25 @@ class HostingRequestResource < Madmin::Resource
   attribute :status, :select, collection: HostingRequest.human_enum_options(:status), index: true
   attribute :created_at, index: true
   attribute :space
-  attribute :contact_name
+  attribute :first_name
+  attribute :last_name
   attribute :email
+  attribute :activity
+  attribute :website
+  attribute :team_size
+  attribute :days_per_week
+  attribute :weekdays
+  attribute :flexible_days
+  attribute :needs
+  attribute :needs_other
+  attribute :compensation
+  attribute :activity_type
+  attribute :attendees
+  attribute :slots
+  attribute :contribution
+  attribute :extra
+  # Requests sent before the questions split.
+  attribute :contact_name
   attribute :phone
   attribute :message
   attribute :schedule
