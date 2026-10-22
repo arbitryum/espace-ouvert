@@ -8,8 +8,11 @@ class CareHomeResource < Madmin::Resource
   attribute :contact_name
   attribute :contact_email
   attribute :group_name
+  # The account that receives its hosting requests.
+  attribute :ehpad_profile
   attribute :spaces, form: false
   attribute :coworking_projects, form: false
+  attribute :hosting_requests, form: false
 
   def self.default_sort_column = "name"
   def self.default_sort_direction = "asc"

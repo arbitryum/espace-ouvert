@@ -1,4 +1,5 @@
-# Accounts: sign-in, sign-up, password reset, admin invitations.
+# Accounts: sign-in, sign-up, password reset, admin invitations, and the
+# requests an establishment answers from its account.
 fr:
   sessions:
     new:
@@ -77,3 +78,48 @@ fr:
       submit: Enregistrer le mot de passe
     update:
       notice: Votre mot de passe est enregistré. Bienvenue !
+  account:
+    hosting_requests:
+      no_profile: Cette page est réservée aux comptes établissement validés.
+      index:
+        title: Mes demandes d'accueil
+        intro: Les demandes envoyées à %{care_homes} depuis Espace-ouvert.
+        no_care_home: >-
+          Aucun établissement n'est encore rattaché à votre compte. Écrivez-nous
+          pour que nous le fassions : vous recevrez alors ses demandes ici.
+        empty: Aucune demande pour le moment.
+        received: Reçue le %{date}
+        contact: Contact
+        need: Besoin
+        accept: Accepter
+        refuse: Refuser
+        write: Écrire à %{organization}
+        accepted_hint: Acceptée le %{date}. Écrivez-leur pour organiser l'accueil.
+        refused_hint: Refusée le %{date}. Nous les en avons informés.
+      accept:
+        notice: "Demande acceptée : %{organization}. Écrivez-leur pour organiser l'accueil."
+      refusal:
+        title: Refuser la demande de %{organization}
+        back: "← Mes demandes"
+        intro: >-
+          Nous écrirons à %{organization} que vous ne pouvez pas les accueillir
+          pour le moment, et leur indiquerons l'annuaire des autres établissements.
+        reason: Pourquoi refusez-vous ? (facultatif)
+        reason_hint: Pour l'équipe Espace-ouvert uniquement, ce n'est pas transmis à la structure.
+        cancel: Annuler
+        submit: Refuser la demande
+      refuse:
+        notice: "Demande refusée : %{organization}. Nous les en avons informés."
+      # The email the establishment edits before sending, opened by "Écrire à".
+      acceptance_mail:
+        subject: Votre demande d'accueil à %{care_home}
+        body: |-
+          Bonjour %{name},
+
+          Merci pour votre demande. %{care_home} serait heureux d'accueillir %{organization}.
+
+          Pouvons-nous convenir d'un moment pour en parler et préparer votre venue ?
+
+          Bien cordialement,
+          %{signature}
+          %{care_home}

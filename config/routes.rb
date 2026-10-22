@@ -14,8 +14,23 @@ Rails.application.routes.draw do
     resources :invitations, path: "invitation", param: :token, only: %i[edit update], path_names: {edit: "accepter"}
   end
 
+  # The establishment's own space: the requests sent to its care homes.
+  namespace :account, path: "comptes/etablissement" do
+    resources :hosting_requests, path: "demandes", only: :index do
+      member do
+        patch :accept, path: "accepter"
+        get :refusal, path: "refuser"
+        patch :refuse, path: "refuser"
+      end
+    end
+  end
+
   resources :spaces, only: %i[index show] do
     get "location-suggestions", on: :collection, to: "location_suggestions#index", as: :location_suggestions
+  end
+
+  resources :care_homes, path: "etablissements", only: :show do
+    resources :hosting_requests, path: "demandes", only: %i[new create], path_names: {new: "nouvelle"}
   end
 
   get "coworking", to: "coworking#show", as: :coworking

@@ -8,6 +8,7 @@ class EhpadProfileResource < Madmin::Resource
   attribute :participates_in_spaces, index: true
   attribute :participates_in_coworking, index: true
   attribute :establishment_address
+  attribute :care_homes, form: false
   attribute :created_at, form: false
 
   scope :pending
