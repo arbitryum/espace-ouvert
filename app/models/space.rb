@@ -13,8 +13,10 @@ class Space < ApplicationRecord
   attribute :distance_km, :float
 
   scope :already_published, -> { published.where(published_at: ..Time.current) }
-  # What visitors see in the directory.
-  scope :listed, -> { already_published.available.order(published_at: :desc) }
+  # What visitors see in the directory: full spaces too, tagged and last.
+  scope :listed, -> { already_published.in_order_of(:status, %w[available full]).order(published_at: :desc) }
+  # Listed spaces that can host someone now.
+  scope :open, -> { listed.available }
 
   def public? = published? && !full?
 

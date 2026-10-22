@@ -24,9 +24,10 @@ class SpaceSearch
     @moment = params[:moment].to_s.strip.presence_in(MOMENTS.keys)
   end
 
-  # Spaces to display. When searching around a point, sorted by distance and
-  # responding to #distance_km. When filtering by slot, spaces with a matching
-  # slot come first, then those without any slot (see #slots_unknown?).
+  # Spaces to display, full ones last. When searching around a point, sorted
+  # by distance and responding to #distance_km. When filtering by slot, spaces
+  # with a matching slot come first, then those without any slot (see
+  # #slots_unknown?).
   def results
     @results ||= begin
       spaces = base_scope
@@ -39,7 +40,9 @@ class SpaceSearch
       else
         spaces
       end
-      slot_filter? ? filter_by_slot(spaces) : spaces
+      spaces = filter_by_slot(spaces) if slot_filter?
+      # Arrays come sorted by distance or slot: full spaces still go last.
+      spaces.is_a?(Array) ? spaces.partition { |space| !space.full? }.flatten : spaces
     end
   end
 

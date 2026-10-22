@@ -18,6 +18,8 @@ module SpacesHelper
         image_url: first_image ? url_for(first_image.image.variant(:card)) : "",
         image_alt: first_image&.alt_text.to_s,
         url: space_path(space),
+        full: space.full?,
+        tag: (space.human_enum_name(:status) if space.full?),
         latitude: details.latitude,
         longitude: details.longitude
       }
