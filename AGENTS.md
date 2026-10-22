@@ -142,8 +142,18 @@ The `.agents/skills/daisyui` skill documents daisyUI components.
   bundler-audit, importmap audit), then `rails_test`. GitHub Actions aren't used.
 - **Merging to `main` deploys production** (Scalingo app
   `espaces-ouverts-production`): migrations run on `postdeploy`. After a merge,
-  check that the deploy succeeded and that `/up` returns 200. A failed deploy
-  keeps the previous release running.
+  check that:
+  - the deploy succeeded and `/up` returns 200 (a failed deploy keeps the
+    previous release running);
+  - its log shows `Postdeploy hook succeeded`
+    (`scalingo --app espaces-ouverts-production deployment-logs <id>`): a
+    deploy that followed another within a minute once skipped it, and the
+    new table's page answered 500;
+  - no migration is pending: the newest file in `db/migrate` is the latest
+    version in production's `schema_migrations` (read it through the
+    database tunnel, see "Production tasks" in the README). If one is, run
+    `scalingo --app espaces-ouverts-production run --detached bundle exec rails db:migrate`,
+    then restart the app.
 
 ## Working with production
 
