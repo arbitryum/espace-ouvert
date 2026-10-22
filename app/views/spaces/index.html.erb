@@ -74,11 +74,7 @@
 
 <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
   <p class="text-sm text-base-content/70"><%= t(".count", count: @spaces.size) %></p>
-  <%# Phones show the list or the map; wider screens show both side by side. %>
-  <div class="join lg:hidden">
-    <%= link_to t(".view_modes.list"), view_mode_url("list"), class: "btn btn-sm join-item #{@view_mode == "list" ? "btn-primary" : "btn-outline"}" %>
-    <%= link_to t(".view_modes.map"), view_mode_url("map"), class: "btn btn-sm join-item #{@view_mode == "map" ? "btn-primary" : "btn-outline"}" %>
-  </div>
+  <%= render "shared/view_mode_toggle", view_mode: @view_mode %>
 </div>
 
 <% if @spaces.empty? %>
@@ -87,15 +83,9 @@
     <span><%= t(".empty") %></span>
   </div>
 <% else %>
-  <div class="grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]" data-controller="spaces-map"
-       data-spaces-map-markers-value="<%= spaces_map_markers(@spaces).to_json %>" data-spaces-map-messages-value="<%= t("spaces.map.popup").to_json %>">
-    <div class="<%= "hidden lg:block" if @view_mode == "map" %>">
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <%= render partial: "space_card", collection: @spaces, as: :space, locals: { search: @search } %>
-      </div>
+  <%= render layout: "shared/directory", locals: { markers: spaces_map_markers(@spaces), view_mode: @view_mode } do %>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <%= render partial: "space_card", collection: @spaces, as: :space, locals: { search: @search } %>
     </div>
-    <div class="<%= "hidden lg:block" if @view_mode == "list" %>">
-      <%= render "map" %>
-    </div>
-  </div>
+  <% end %>
 <% end %>

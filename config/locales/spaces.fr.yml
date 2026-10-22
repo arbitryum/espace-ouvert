@@ -25,9 +25,6 @@ fr:
         zero: Aucun espace
         one: 1 espace
         other: "%{count} espaces"
-      view_modes:
-        list: Liste
-        map: Carte
       empty: Aucun espace disponible pour le moment.
       places_unavailable: Recherche de communes indisponible, résultats basés sur les adresses des établissements.
       invalid_radius: Rayon invalide pour la recherche autour de moi.
@@ -62,12 +59,6 @@ fr:
       previous: Image précédente
       next: Image suivante
       go_to: Aller à l'image %{number}
-    map:
-      no_markers: Aucun repère cartographique disponible pour les résultats actuels.
-      # Used by the spaces-map Stimulus controller.
-      popup:
-        distance: à %{distance} km
-        more: Plus d'infos
     show:
       all_spaces: Tous les espaces
       about: À propos de cet espace

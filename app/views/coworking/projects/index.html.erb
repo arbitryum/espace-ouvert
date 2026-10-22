@@ -8,18 +8,29 @@
 </div>
 
 <% if @projects.any? %>
-  <div class="grid gap-6 md:grid-cols-2">
-    <% @projects.each do |project| %>
-      <article class="card border border-base-300 bg-base-100 shadow-sm">
-        <div class="card-body">
-          <div class="badge badge-secondary"><%= project.human_enum_name(:status) %></div>
-          <h2 class="card-title"><%= project.name %></h2>
-          <p class="text-sm font-medium"><%= project.organization_name %> · <%= project.location %></p>
-          <p class="text-base-content/70"><%= project.description %></p>
-        </div>
-      </article>
-    <% end %>
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+    <p class="text-sm text-base-content/70"><%= t(".count", count: @projects.size) %></p>
+    <%= render "shared/view_mode_toggle", view_mode: @view_mode %>
   </div>
+
+  <%= render layout: "shared/directory", locals: { markers: coworking_project_markers(@projects), view_mode: @view_mode } do %>
+    <div class="grid gap-6 sm:grid-cols-2">
+      <% @projects.each do |project| %>
+        <article class="card border border-base-300 bg-base-100 shadow-sm transition-shadow hover:shadow-lg"
+                 data-action="mouseenter->directory-map#highlight mouseleave->directory-map#unhighlight" data-directory-map-id-param="<%= project.id %>">
+          <div class="card-body">
+            <div class="badge badge-secondary"><%= project.human_enum_name(:status) %></div>
+            <h2 class="card-title"><%= project.name %></h2>
+            <p class="text-sm font-medium"><%= project.organization_name %> · <%= project.location %></p>
+            <% if project.care_home %>
+              <p class="text-sm text-base-content/70"><%= project.care_home.name %></p>
+            <% end %>
+            <p class="text-base-content/70"><%= project.description %></p>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  <% end %>
 <% else %>
   <div class="alert alert-info">
     <span><%= t(".empty") %></span>
