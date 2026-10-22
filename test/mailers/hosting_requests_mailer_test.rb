@@ -57,7 +57,7 @@ class HostingRequestsMailerTest < ActionMailer::TestCase
     body = HostingRequestsMailer.refusal(@request).text_part.decoded
 
     assert_includes body, "Malheureusement, EHPAD Les Tilleuls ne peut pas vous accueillir en coworking."
-    assert_includes body, "/coworking/projets"
+    assert_includes body, "/coworking/annuaire"
   end
 
   test "an account's email links to its requests page" do

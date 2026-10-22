@@ -35,7 +35,9 @@ Rails.application.routes.draw do
 
   get "coworking", to: "coworking#show", as: :coworking
   namespace :coworking do
-    get "projets", to: "projects#index", as: :projects
+    get "annuaire", to: "care_homes#index", as: :directory
+    # The directory used to list coworking projects.
+    get "projets", to: redirect("/coworking/annuaire")
   end
 
   # Coworking guide, readable after requesting access by email.

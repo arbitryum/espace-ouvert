@@ -15,7 +15,7 @@
       <h1 class="text-4xl font-bold md:text-5xl"><%= t(".heading") %></h1>
       <p class="py-6 text-lg"><%= t(".intro") %></p>
       <div class="flex flex-wrap justify-center gap-3">
-        <%= link_to t(".directory_cta"), coworking_projects_path, class: "btn btn-primary" %>
+        <%= link_to t(".directory_cta"), coworking_directory_path, class: "btn btn-primary" %>
         <%= link_to t(".guide_cta"), guide_path, class: "btn" %>
         <a class="btn" href="#inscription"><%= t(".register_cta") %></a>
       </div>
@@ -38,10 +38,11 @@
       </div>
     <% end %>
   </div>
+  <%= link_to t(".directory_cta"), coworking_directory_path, class: "btn btn-secondary mt-6" %>
 </section>
 
 <section class="rounded-box bg-base-200 p-8" id="inscription">
   <h2 class="text-2xl font-bold"><%= t(".registration.heading") %></h2>
   <p class="mt-2 max-w-2xl text-base-content/70"><%= t(".registration.text") %></p>
-  <button class="btn btn-primary mt-5" type="button" disabled><%= t(".register_cta") %></button>
+  <%= link_to t(".register_cta"), new_registration_path, class: "btn btn-primary mt-5" %>
 </section>
