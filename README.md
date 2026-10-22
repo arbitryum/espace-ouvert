@@ -74,6 +74,7 @@ Sample data: `bin/rails db:seed`, or one part at a time:
 - `bin/rails seed:coworking`: creates or updates three coworking projects.
 - `bin/rails seed:availability`: adds weekly slots to some spaces.
 - `bin/rails geocode:care_homes` (`FORCE=1` to redo all): geocodes care homes without coordinates.
+- `bin/rails spaces:parse_availability`: reads each space's free-text availability into weekly slots, the ones the directory filters by day and moment. Prints the proposals and the guesses it made ("à partir de 17h" ends at 22h, "toute la journée" is 9h–18h…); `APPLY=1` writes them, `REPLACE=1` also replaces spaces' existing slots.
 - `bin/rails images:variants`: generates the resized WebP versions of space photos (new uploads get them automatically).
 - `bin/rails guide:import DIR="path/to/Notion export"`: **replaces** the coworking guide with a Notion "HTML" export.
 
