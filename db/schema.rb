@@ -132,13 +132,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_090000) do
     t.string "contact_name", null: false
     t.string "email", null: false
     t.string "phone", default: "", null: false
-    t.text "message", null: false
+    t.text "message", default: "", null: false
     t.text "schedule", default: "", null: false
     t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "answered_at"
     t.text "refusal_reason", default: "", null: false
+    t.string "first_name", default: "", null: false
+    t.string "last_name", default: "", null: false
+    t.string "activity", default: "", null: false
+    t.text "extra", default: "", null: false
+    t.string "website", default: "", null: false
+    t.integer "team_size"
+    t.integer "days_per_week"
+    t.integer "weekdays", default: [], null: false, array: true
+    t.boolean "flexible_days", default: false, null: false
+    t.string "needs", default: [], null: false, array: true
+    t.string "needs_other", default: "", null: false
+    t.string "compensation"
+    t.text "activity_type", default: "", null: false
+    t.integer "attendees"
+    t.string "slots", default: [], null: false, array: true
+    t.text "contribution", default: "", null: false
     t.index ["care_home_id", "status"], name: "index_hosting_requests_on_care_home_id_and_status"
     t.index ["care_home_id"], name: "index_hosting_requests_on_care_home_id"
     t.index ["space_id"], name: "index_hosting_requests_on_space_id"

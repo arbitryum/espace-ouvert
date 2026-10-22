@@ -1,3 +1,5 @@
-<% model.errors.full_messages_for(field).each do |message| %>
+<%# full: false shows the message without the field's name, for long labels. %>
+<% messages = local_assigns.fetch(:full, true) ? model.errors.full_messages_for(field) : model.errors.messages_for(field) %>
+<% messages.each do |message| %>
   <span class="label-text text-error"><%= message %></span>
 <% end %>

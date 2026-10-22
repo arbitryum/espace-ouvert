@@ -9,8 +9,7 @@ class Account::HostingRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def create_request(care_home, organization, **attributes)
-    care_home.hosting_requests.create!(organization_name: organization, contact_name: "Léa", email: "lea@example.org",
-      message: "Un atelier théâtre le mercredi.", **attributes)
+    create_hosting_request(care_home, organization_name: organization, **attributes)
   end
 
   test "requires an approved establishment account" do
@@ -30,6 +29,8 @@ class Account::HostingRequestsControllerTest < ActionDispatch::IntegrationTest
     get account_hosting_requests_path
 
     assert_equal ["Les Petits Pas", "Déjà acceptée"], css_select("article h2").map(&:text)
+    assert_select "article:first-child dt", "Adhérents par activité"
+    assert_select "article:first-child dd", "Un atelier théâtre le mercredi."
     assert_select "a", text: "Mes demandes"
   end
 

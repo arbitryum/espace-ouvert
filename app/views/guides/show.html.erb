@@ -5,7 +5,7 @@
   <nav class="order-last lg:order-first" aria-label="<%= t(".contents") %>">
     <%= link_to t(".back"), guide_path, class: "link link-hover text-sm font-medium" %>
     <% @sections.each do |section, pages| %>
-      <h2 class="mt-6 mb-2 text-sm font-semibold uppercase tracking-wide text-base-content/60"><%= section %></h2>
+      <h2 class="mt-6 mb-2 text-sm font-semibold uppercase tracking-wide text-base-content/70"><%= section %></h2>
       <ul class="menu menu-sm w-full p-0">
         <% pages.each do |page| %>
           <li><%= link_to "#{page.icon} #{page.title}", guide_page_path(page), class: ("menu-active" if page == @page) %></li>

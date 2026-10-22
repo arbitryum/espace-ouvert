@@ -4,18 +4,11 @@
 <% if @account_url %>
   <p><%= t(".account_html", organization: @request.organization_name, link: link_to(t(".account_link"), @account_url)) %></p>
 <% else %>
-  <% if @request.space %><p><%= t(".space", space: @request.space.name) %></p><% end %>
   <ul>
-    <li><%= t(".contact") %> : <%= @request.contact_name %></li>
-    <li><%= HostingRequest.human_attribute_name(:email) %> : <%= mail_to @request.email %></li>
-    <% if @request.phone.present? %><li><%= HostingRequest.human_attribute_name(:phone) %> : <%= @request.phone %></li><% end %>
+    <% hosting_request_details(@request).each do |label, value| %>
+      <li><strong><%= label %> :</strong> <%= simple_format value, {}, wrapper_tag: "span" %></li>
+    <% end %>
   </ul>
-  <p><strong><%= t(".need") %></strong></p>
-  <%= simple_format @request.message %>
-  <% if @request.schedule.present? %>
-    <p><strong><%= HostingRequest.human_attribute_name(:schedule) %></strong></p>
-    <%= simple_format @request.schedule %>
-  <% end %>
   <p><%= t(".reply") %></p>
 <% end %>
 <p><%= t(".closing") %></p>

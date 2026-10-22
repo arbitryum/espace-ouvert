@@ -2,7 +2,7 @@ module Account::HostingRequestsHelper
   # Opens the establishment's mail app on a pre-written answer to the visitor,
   # with the establishment in copy, to edit before sending.
   def acceptance_mail_to(request, **options, &)
-    texts = {name: request.contact_name, care_home: request.care_home.name, organization: request.organization_name,
+    texts = {name: request.greeting_name, care_home: request.care_home.name, organization: request.organization_name,
              signature: request.care_home.ehpad_profile&.contact_name.to_s}
     mail_to request.email, cc: Current.user.email_address,
       subject: t("account.hosting_requests.acceptance_mail.subject", **texts),

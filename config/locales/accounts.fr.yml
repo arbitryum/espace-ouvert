@@ -119,8 +119,6 @@ fr:
           pour que nous le fassions : vous recevrez alors ses demandes ici.
         empty: Aucune demande pour le moment.
         received: Reçue le %{date}
-        contact: Contact
-        need: Besoin
         accept: Accepter
         refuse: Refuser
         write: Écrire à %{organization}

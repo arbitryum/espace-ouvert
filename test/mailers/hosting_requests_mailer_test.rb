@@ -3,9 +3,7 @@ require "test_helper"
 class HostingRequestsMailerTest < ActionMailer::TestCase
   setup do
     care_home = create_care_home(name: "EHPAD Les Tilleuls", contact_email: "accueil@ehpad.fr")
-    @request = care_home.hosting_requests.create!(space: create_space(name: "Salle polyvalente", care_home:),
-      organization_name: "Les Petits Pas", contact_name: "Léa", email: "lea@example.org",
-      message: "Un atelier théâtre le mercredi.", schedule: "Mercredi 14h-16h")
+    @request = create_hosting_request(care_home, space: create_space(name: "Salle polyvalente", care_home:), schedule: "Mercredi 14h-16h")
   end
 
   test "the care home receives the request and replies to the visitor" do
@@ -17,7 +15,8 @@ class HostingRequestsMailerTest < ActionMailer::TestCase
     assert_equal "Nouvelle demande : Les Petits Pas", mail.subject
     body = mail.text_part.decoded
     assert_includes body, "Vous avez reçu une nouvelle demande de Les Petits Pas pour occuper vos espaces pour des activités associatives."
-    assert_includes body, "Espace demandé : Salle polyvalente"
+    assert_includes body, "Espace : Salle polyvalente"
+    assert_includes body, "Adhérents par activité : 12"
     assert_includes body, "Mercredi 14h-16h"
     assert_includes body, "Bonne journée,\n\nL'Équipe Espace-Ouvert by Arbitryum"
   end
@@ -81,5 +80,19 @@ class HostingRequestsMailerTest < ActionMailer::TestCase
     body = mail.text_part.decoded
     assert_includes body, "Vous avez toujours 3 demandes en attente sur votre compte."
     assert_includes body, "/comptes/etablissement/demandes"
+  end
+
+  test "a coworking request lists its answers" do
+    request = create_hosting_request(@request.care_home, kind: "coworking", organization_name: "Collectif",
+      website: "https://collectif.example", team_size: 3, days_per_week: 2, weekdays: [1, 3], flexible_days: true,
+      needs: %w[wifi other], needs_other: "Imprimante", compensation: "moderate_rent")
+
+    body = HostingRequestsMailer.received(request).text_part.decoded
+
+    assert_includes body, "Collaborateurs : 3"
+    assert_includes body, "Jours : Mardi, Jeudi, Je suis flexible"
+    assert_includes body, "Besoins spécifiques : Wifi, Imprimante"
+    assert_includes body, "Rétribution envisagée : Loyer modéré"
+    assert_not_includes body, "Adhérents"
   end
 end

@@ -14,8 +14,8 @@ class HostingRequestsController < ApplicationController
 
   def create
     @hosting_request = @care_home.hosting_requests.new(hosting_request_params)
-    # Bots fill the hidden "website" field, which people never see: pretend it worked.
-    if params[:website].present?
+    # Bots fill the hidden "website_url" field, which people never see: pretend it worked.
+    if params[:website_url].present?
       redirect_to @care_home, notice: t(".notice")
     elsif @hosting_request.save
       HostingRequestsMailer.received(@hosting_request).deliver_later
@@ -33,6 +33,8 @@ class HostingRequestsController < ApplicationController
   end
 
   def hosting_request_params
-    params.expect(hosting_request: [:kind, :space_id, :organization_name, :contact_name, :email, :phone, :message, :schedule])
+    params.expect(hosting_request: [:kind, :first_name, :last_name, :email, :organization_name, :activity, :extra,
+      :website, :team_size, :days_per_week, :flexible_days, :needs_other, :compensation, {weekdays: [], needs: []},
+      :space_id, :activity_type, :attendees, :contribution, :schedule, {slots: []}])
   end
 end

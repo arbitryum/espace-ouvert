@@ -4,8 +4,7 @@ class HostingRequestRemindersTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
 
   def create_request(care_home, created_at:, status: "pending")
-    care_home.hosting_requests.create!(organization_name: "Structure", contact_name: "Léa", email: "lea@example.org",
-      message: "Un besoin.", status:, created_at:)
+    create_hosting_request(care_home, status:, created_at:)
   end
 
   test "reminds approved accounts with a request pending for a week, counting all pending ones" do
