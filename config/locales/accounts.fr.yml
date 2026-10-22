@@ -25,6 +25,14 @@ fr:
       establishment:
         legend: Votre établissement
         help: Son adresse complète nous permet de le placer sur la carte.
+      # address_autocomplete_controller.js; %{count} is filled in JS.
+      address:
+        hint: Commencez à taper l'adresse, puis choisissez-la dans la liste pour remplir le code postal et la ville.
+        listbox: Adresses suggérées
+        suggestions: "%{count} adresse(s) suggérée(s) : flèches haut et bas pour choisir, Entrée pour valider."
+        no_suggestions: Aucune adresse trouvée.
+        unavailable: Les suggestions d'adresses ne sont pas disponibles.
+        filled: Adresse, code postal et ville remplis.
       account:
         legend: Le référent du projet
         help: >-
