@@ -1,8 +1,8 @@
-# Space directory (Espace Ouvert).
+# Space directory (Accueil d'association).
 fr:
   spaces:
     index:
-      title: Associations
+      title: Accueil d'association
       heading_html: Trouvez l'espace dont les associations<br>de votre territoire ont besoin
       care_home: Établissement
       all_care_homes: Tous les établissements

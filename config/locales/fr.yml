@@ -51,15 +51,15 @@ fr:
       products_intro: Explorez l'un de nos deux dispositifs.
       spaces:
         badge: Associations
-        title: Espace Ouvert
+        title: Accueil d'association
         text: >-
           Trouvez un espace disponible en EHPAD pour organiser des activités
           associatives ouvertes aux habitants du quartier.
-        cta: Découvrir les espaces
+        cta: Je cherche un espace pour mes activités associatives
       coworking:
         badge: Coworking
         title: Coworking en EHPAD
         text: >-
           Découvrez les établissements qui accueillent des équipes de coworking
           et préparez votre projet avec les bonnes ressources.
-        cta: Découvrir le coworking
+        cta: Je cherche un espace pour faire du coworking

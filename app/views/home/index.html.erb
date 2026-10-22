@@ -2,7 +2,7 @@
   <div class="hero-content max-w-3xl text-center">
     <div>
       <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary"><%= t(".eyebrow") %></p>
-      <h1 class="text-4xl font-bold md:text-5xl"><%= t(".heading") %></h1>
+      <h1 class="text-4xl font-bold text-primary md:text-5xl"><%= t(".heading") %></h1>
       <p class="py-6 text-lg text-base-content/70"><%= t(".intro") %></p>
     </div>
   </div>
@@ -22,7 +22,7 @@
           <h3 class="card-title text-2xl"><%= t(".#{product}.title") %></h3>
           <p><%= t(".#{product}.text") %></p>
           <div class="card-actions mt-4">
-            <%= link_to t(".#{product}.cta"), path, class: "btn btn-#{color}" %>
+            <%= link_to t(".#{product}.cta"), path, class: "btn btn-#{color} h-auto min-h-(--size) shrink py-2 text-wrap" %>
           </div>
         </div>
       </article>

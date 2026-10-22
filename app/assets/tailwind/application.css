@@ -7,9 +7,75 @@
 
 /* daisyUI 5.7.22, vendored as the daisyUI docs recommend for Rails:
    https://daisyui.com/docs/install/rails/ */
-@plugin "./daisyui.mjs";
+@plugin "./daisyui.mjs" {
+  themes: false;
+}
+
+/* The colors of the Softr site the app replaces (espace-ouvert.softr.app):
+   deep purple, navy text and cream backgrounds. Light only, like that site. */
+@plugin "./daisyui-theme.mjs" {
+  name: "espaces-ouverts";
+  default: true;
+  color-scheme: light;
+  --color-base-100: #ffffff;
+  --color-base-200: #fef9ec;
+  --color-base-300: #efe6cf;
+  --color-base-content: #152237;
+  --color-primary: #351c75;
+  --color-primary-content: #ffffff;
+  --color-secondary: #6b57a8;
+  --color-secondary-content: #ffffff;
+  --color-accent: #f2b84b;
+  --color-accent-content: #152237;
+  --color-neutral: #152237;
+  --color-neutral-content: #ffffff;
+  --color-info: #3b82c4;
+  --color-info-content: #ffffff;
+  --color-success: #2f8f5b;
+  --color-success-content: #ffffff;
+  --color-warning: #e0a526;
+  --color-warning-content: #152237;
+  --color-error: #c2413b;
+  --color-error-content: #ffffff;
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* Poppins for headings, as on the Softr site. Self-hosted (app/assets/fonts,
+   SIL Open Font License) so pages make no request to Google Fonts. */
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("poppins-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("poppins-latin-700-normal.woff2") format("woff2");
+}
+
+@theme {
+  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  h1, h2, h3, .card-title {
+    font-family: var(--font-heading);
+  }
+}
 
 /* Leaflet popups on the spaces map follow the daisyUI theme. */
 .leaflet-popup.spaces-map-popup .leaflet-popup-content-wrapper,
