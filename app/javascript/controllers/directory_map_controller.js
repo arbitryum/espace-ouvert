@@ -71,11 +71,13 @@ export default class extends Controller {
     this.map.invalidateSize()
     if (this.fitted) return
 
+    // Without animation: the MapLibre layer stops drawing from a zoomstart until
+    // its zoomend, and a first view needn't zoom in from Paris anyway.
     this.fitted = true
     if (this.bounds.length === 1) {
-      this.map.setView(this.bounds[0], 14)
+      this.map.setView(this.bounds[0], 14, { animate: false })
     } else if (this.bounds.length > 1) {
-      this.map.fitBounds(this.bounds, { padding: [30, 30] })
+      this.map.fitBounds(this.bounds, { padding: [30, 30], animate: false })
     }
   }
 
