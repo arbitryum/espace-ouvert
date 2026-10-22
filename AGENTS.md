@@ -102,7 +102,8 @@ The `.agents/skills/daisyui` skill documents daisyUI components.
 - **`time` columns are wall-clock times**
   (`config.active_record.time_zone_aware_types = [:datetime]`). Weekly slots
   must not shift with the time zone.
-- **The coworking guide is private.**
+- **The coworking guide's content is private.** Its section and page titles
+  show to everyone, as boxes; opening one asks for an email.
   - Its images go through `GuideImagesController`, which checks access and
     redirects to storage URLs expiring after 5 minutes. Never link a guide
     attachment directly.

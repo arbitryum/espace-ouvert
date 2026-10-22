@@ -6,43 +6,51 @@
   <h1 class="mt-2 text-4xl font-bold"><%= t("guides.title") %></h1>
   <p class="mt-4 text-lg text-base-content/70"><%= t(".intro") %></p>
 
-  <% if guide_access? %>
-    <div class="mt-10 space-y-10">
-      <% @sections.each do |section, pages| %>
-        <section>
-          <h2 class="mb-4 text-2xl font-bold"><%= section %></h2>
-          <div class="grid gap-4 sm:grid-cols-2">
-            <% pages.each do |page| %>
-              <%= link_to guide_page_path(page), class: "card border border-base-300 bg-base-100 shadow-sm transition hover:border-secondary" do %>
-                <div class="card-body flex-row items-center gap-3 p-5">
-                  <span class="text-2xl" aria-hidden="true"><%= page.icon %></span>
-                  <span class="font-semibold"><%= page.title %></span>
-                </div>
-              <% end %>
+  <%# Everyone sees the boxes; without access, opening one asks for an email. %>
+  <div class="mt-10 space-y-10">
+    <% @sections.each do |section, pages| %>
+      <section>
+        <h2 class="mb-4 text-2xl font-bold"><%= section %></h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <% pages.each do |page| %>
+            <%= link_to guide_access? ? guide_page_path(page) : guide_path(page: page.slug),
+                  class: "card border border-base-300 bg-base-100 shadow-sm transition hover:border-secondary" do %>
+              <div class="card-body flex-row items-center gap-3 p-5">
+                <span class="text-2xl" aria-hidden="true"><%= page.icon %></span>
+                <span class="flex-1 font-semibold"><%= page.title %></span>
+                <% unless guide_access? %>
+                  <span class="badge badge-ghost badge-sm"><%= t(".locked") %></span>
+                <% end %>
+              </div>
             <% end %>
-          </div>
-        </section>
-      <% end %>
-    </div>
-  <% else %>
-    <%= form_with url: guide_access_path, class: "card mt-10 border border-base-300 bg-base-100 shadow-sm" do |form| %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+  </div>
+
+  <% unless guide_access? %>
+    <div class="card mt-10 border border-base-300 bg-base-100 shadow-sm">
       <div class="card-body gap-4 p-6 sm:p-8">
         <h2 class="card-title text-2xl"><%= t(".request.heading") %></h2>
         <p class="text-base-content/70"><%= t(".request.intro") %></p>
-        <label class="form-control w-full">
-          <span class="label-text mb-2 font-medium"><%= t(".request.email") %></span>
-          <%= form.email_field :email_address, required: true, autocomplete: "email", class: "input input-md w-full" %>
-        </label>
-        <p class="text-sm text-base-content/70"><%= t(".request.privacy") %></p>
-        <div class="card-actions justify-end">
-          <button class="btn btn-secondary" type="submit"><%= t(".request.submit") %></button>
-        </div>
-        <% unless authenticated? %>
-          <p class="text-sm text-base-content/70">
-            <%= t(".request.sign_in_html", link: link_to(t(".request.sign_in_link"), new_session_path, class: "link")) %>
-          </p>
-        <% end %>
+        <%= render "access_form", page: nil %>
       </div>
+    </div>
+
+    <% if @requested_page %>
+      <%# Open on load, so it works without JavaScript; the close button is a dialog form. %>
+      <dialog class="modal modal-open" open aria-labelledby="guide-access-title">
+        <div class="modal-box">
+          <h2 id="guide-access-title" class="text-xl font-bold"><%= t(".dialog.heading", page: @requested_page.title) %></h2>
+          <p class="mt-2 mb-4 text-base-content/70"><%= t(".dialog.intro") %></p>
+          <%= render "access_form", page: @requested_page %>
+          <div class="modal-action">
+            <%= link_to t(".dialog.close"), guide_path, class: "btn btn-ghost" %>
+          </div>
+        </div>
+        <%= link_to "", guide_path, class: "modal-backdrop", "aria-label": t(".dialog.close") %>
+      </dialog>
     <% end %>
   <% end %>
 </div>

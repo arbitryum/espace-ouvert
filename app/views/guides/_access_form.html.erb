@@ -1,0 +1,17 @@
+<%# The email form for an access link; page: the guide page to land on afterwards. %>
+<%= form_with url: guide_access_path, class: "space-y-4" do |form| %>
+  <%= hidden_field_tag :page, page&.slug %>
+  <label class="form-control w-full">
+    <span class="label-text mb-2 block font-medium"><%= t("guides.index.request.email") %></span>
+    <%= form.email_field :email_address, required: true, autocomplete: "email", autofocus: page.present?, class: "input input-md w-full" %>
+  </label>
+  <p class="text-sm text-base-content/70"><%= t("guides.index.request.privacy") %></p>
+  <div class="flex justify-end">
+    <button class="btn btn-secondary" type="submit"><%= t("guides.index.request.submit") %></button>
+  </div>
+  <% unless authenticated? %>
+    <p class="text-sm text-base-content/70">
+      <%= t("guides.index.request.sign_in_html", link: link_to(t("guides.index.request.sign_in_link"), new_session_path, class: "link")) %>
+    </p>
+  <% end %>
+<% end %>
