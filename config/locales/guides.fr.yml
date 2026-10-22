@@ -9,6 +9,11 @@ fr:
       intro: >-
         Une boîte à outils pour les établissements : des documents types et des astuces
         développées par d'autres établissements qui se sont eux aussi lancés dans l'aventure.
+      locked: Accès par email
+      dialog:
+        heading: Pour lire « %{page} »
+        intro: "Indiquez votre email : nous vous envoyons un lien d'accès, qui vous mènera directement à cette page."
+        close: Fermer
       request:
         heading: Recevoir le guide
         intro: "Indiquez votre email : nous vous envoyons un lien pour accéder au guide."
