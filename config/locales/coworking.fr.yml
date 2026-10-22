@@ -10,13 +10,13 @@ fr:
       guide_cta: Le guide du coworking
       register_cta: Référencer son établissement
       directory:
-        heading: L'annuaire coworking arrive bientôt
+        heading: L'annuaire coworking
         intro: >-
-          Cette entrée est séparée de l'annuaire espace-ouvert afin de garder des
-          parcours adaptés aux besoins des coworkers et des associations.
+          Les établissements qui ont un espace pour accueillir une petite équipe,
+          sur une carte.
         features:
           - title: Trouver un établissement
-            text: Filtrer les établissements par localisation et capacité d'accueil.
+            text: Repérez sur la carte les établissements près de chez vous.
           - title: Présenter son projet
             text: Cadrez votre demande avec un formulaire simple et guidé.
           - title: Être accompagné
@@ -24,16 +24,23 @@ fr:
       registration:
         heading: Vous souhaitez accueillir une équipe ?
         text: >-
-          Le formulaire d'inscription des établissements sera partagé avec les deux
-          dispositifs, avec des questions adaptées à votre choix.
-    projects:
+          Référencez votre établissement : vous rejoindrez l'annuaire coworking et
+          recevrez les demandes des équipes.
+    care_homes:
       index:
-        title: Projets coworking
+        title: Annuaire coworking
         back: "← Retour au coworking"
-        eyebrow: Coworking
-        heading: Les projets à découvrir
-        intro: Découvrez les projets publiés et les établissements qui ouvrent leurs portes au coworking.
-        empty: Aucun projet coworking n'est publié pour le moment.
+        eyebrow: Coworking en EHPAD
+        heading: Vous cherchez un espace de travail pour votre équipe ?
+        intro: >-
+          Ces établissements ont un espace clos pour accueillir une petite équipe
+          quelques jours par semaine. Contactez-les en présentant votre besoin.
+        register: "Vous voulez accueillir ? Référencez votre établissement"
+        contact: Contacter
+        empty: Aucun établissement n'accueille de coworking pour le moment.
         count:
-          one: 1 projet
-          other: "%{count} projets"
+          one: 1 établissement
+          other: "%{count} établissements"
+      tags:
+        full: Complet
+        hosting: Accueille déjà une équipe

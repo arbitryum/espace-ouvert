@@ -8,7 +8,17 @@ class CareHome < ApplicationRecord
   has_many :coworking_projects, dependent: :nullify
   has_many :hosting_requests, dependent: :destroy
   # Photos of the space offered to a coworking team (registration form).
-  has_many_attached :coworking_photos
+  has_many_attached :coworking_photos do |attachable|
+    attachable.variant :card, resize_to_limit: [800, 600], format: :webp, saver: {quality: 80, strip: true}
+  end
+
+  # The coworking directory: care homes with a space for a team, not waiting
+  # for (or refused) an account approval. Full ones last.
+  scope :in_coworking_directory, -> {
+    where(offers_coworking: true)
+      .merge(where(ehpad_profile_id: nil).or(where(ehpad_profile_id: EhpadProfile.approved.select(:id))))
+      .order(:coworking_full, :name)
+  }
 
   validates :name, :address, presence: true
   validates :legal_status, inclusion: {in: LEGAL_STATUSES}, allow_blank: true
@@ -47,6 +57,9 @@ class CareHome < ApplicationRecord
     account_email = ehpad_profile.user.email_address if ehpad_profile&.approved?
     Array(account_email.presence || contact_email.presence || User.where(admin: true).pluck(:email_address))
   end
+
+  # Already hosts a coworking team: it accepted a coworking request.
+  def hosting_coworking? = hosting_requests.any? { |request| request.coworking? && request.accepted? }
 
   def to_s = name
 end

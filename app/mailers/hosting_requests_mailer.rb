@@ -16,7 +16,7 @@ class HostingRequestsMailer < ApplicationMailer
   def refusal(request)
     @request = request
     # The directory matching what they were looking for.
-    @directory_url = request.coworking? ? coworking_projects_url : spaces_url
+    @directory_url = request.coworking? ? coworking_directory_url : spaces_url
     mail to: request.email, subject: default_i18n_subject(care_home: request.care_home.name)
   end
 

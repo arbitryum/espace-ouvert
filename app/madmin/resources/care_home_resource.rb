@@ -12,6 +12,8 @@ class CareHomeResource < Madmin::Resource
   attribute :ehpad_profile
   # In the coworking directory (has a closed space for a small team).
   attribute :offers_coworking, index: true
+  # Tagged "Complet" in the coworking directory.
+  attribute :coworking_full
   attribute :coworking_photos
   attribute :spaces, form: false
   attribute :coworking_projects, form: false
