@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_110000) do
     t.datetime "updated_at", null: false
     t.bigint "ehpad_profile_id"
     t.boolean "offers_coworking", default: false, null: false
+    t.boolean "coworking_full", default: false, null: false
     t.index ["address_details_id"], name: "index_care_homes_on_address_details_id"
     t.index ["ehpad_profile_id"], name: "index_care_homes_on_ehpad_profile_id"
   end
