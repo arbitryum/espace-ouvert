@@ -62,7 +62,7 @@ Run `bin/ci` (or at least the tests and Standard) before opening a PR.
 
 **Where code goes:**
 - Query and form objects: `app/models` (`SpaceSearch`, `EhpadRegistration`).
-- Clients and importers: `app/services` (`Geocoder`, `GuideImport`).
+- Clients and importers: `app/services` (`Geocoder`, `Places`, `GuideImport`).
 - One-off and seed tasks: `lib/tasks`; seed data and classes: `lib/seeds`.
 - Shared controller behavior: concerns (`Authentication`, `GuideAccess`).
 
@@ -115,8 +115,10 @@ The `.agents/skills/daisyui` skill documents daisyUI components.
     only show in Brevo, not in the app;
   - `deliver_later` runs in-process (async adapter);
   - in development, emails are written to `tmp/mails/`.
-- **Geocoding** uses OpenStreetMap's Nominatim. Be gentle with it, and stub it in
-  tests.
+- **Geocoding** of care home addresses uses OpenStreetMap's Nominatim. Be
+  gentle with it, and stub it in tests. Nominatim forbids autocomplete and
+  searches the whole world, so the location box of `/spaces` uses
+  geo.api.gouv.fr (`Places`) instead.
 
 ## Git, CI and deploys
 

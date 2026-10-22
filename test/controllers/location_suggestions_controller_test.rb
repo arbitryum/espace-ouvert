@@ -1,11 +1,11 @@
 require "test_helper"
 
 class LocationSuggestionsControllerTest < ActionDispatch::IntegrationTest
-  test "returns geocoder suggestions" do
-    suggestion = {label: "Paris (75000)", name: "Paris", latitude: 48.8566, longitude: 2.3522}
+  test "returns place suggestions" do
+    suggestion = {kind: "city", label: "Paris (75)", context: "Paris", latitude: 48.8566, longitude: 2.3522}
     queries = []
 
-    Geocoder.stub(:suggest, ->(query) {
+    Places.stub(:suggest, ->(query) {
       queries << query
       [suggestion]
     }) do
@@ -13,12 +13,12 @@ class LocationSuggestionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_equal "Paris (75000)", response.parsed_body["results"].first["label"]
+    assert_equal "Paris (75)", response.parsed_body["results"].first["label"]
     assert_equal ["par"], queries
   end
 
-  test "short query returns nothing without calling the geocoder" do
-    Geocoder.stub(:suggest, ->(_) { flunk "geocoder called" }) do
+  test "short query returns nothing without calling the places service" do
+    Places.stub(:suggest, ->(_) { flunk "places service called" }) do
       get location_suggestions_spaces_path(q: "p")
     end
 

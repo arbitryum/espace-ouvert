@@ -41,7 +41,8 @@ Notable code:
 
 - `SpaceSearch` (app/models): filters of the space directory (care home, free-text location, distance around a point).
 - `EhpadRegistration` (app/models): sign-up form creating the user and its pending profile.
-- `Geocoder` (app/services): Nominatim (OpenStreetMap) client, for care home addresses and the location autocomplete.
+- `Geocoder` (app/services): Nominatim (OpenStreetMap) client, for care home addresses.
+- `Places` (app/services): geo.api.gouv.fr client for the location box of `/spaces`: suggests French communes and departments, and finds the commune of a typed place.
 - `GuideImport` (app/services): imports the guide from a Notion export.
 - `GuideAccess` (controller concern): who may read the guide.
 - Stimulus controllers (app/javascript/controllers): carousel, Leaflet map, location filter, password visibility and rules.

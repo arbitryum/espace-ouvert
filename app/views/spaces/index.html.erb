@@ -23,7 +23,7 @@
   </label>
 
   <div class="form-control w-full">
-    <div class="label"><span class="label-text opacity-0 select-none"><%= t(".location") %></span></div>
+    <label class="label" for="location"><span class="label-text"><%= t(".location") %></span></label>
     <div class="dropdown w-full" data-location-filter-target="dropdown">
       <%= form.text_field :location, value: (@search.around_me? ? t(".location_filter.around_me_radius", radius: @search.radius_label) : @search.location), placeholder: t(".location_placeholder"),
             class: "input input-bordered w-full", autocomplete: "off",
@@ -49,6 +49,7 @@
   <%= hidden_field_tag :near_lat, @search.near_lat, data: { location_filter_target: "latitude" } %>
   <%= hidden_field_tag :near_lon, @search.near_lon, data: { location_filter_target: "longitude" } %>
   <%= hidden_field_tag :near_mode, @search.near_mode, data: { location_filter_target: "mode" } %>
+  <%= hidden_field_tag :department, @search.department, data: { location_filter_target: "department" } %>
   <%= hidden_field_tag :view_mode, @view_mode %>
 
   <div class="md:col-span-2 lg:col-span-2 flex items-end gap-2">

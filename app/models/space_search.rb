@@ -1,16 +1,18 @@
 # Filters the public space directory from the index page's query parameters:
-# by care home, by free-text location, or around a point ("autour de moi").
+# by care home, then by location: around a point (a chosen commune or "autour
+# de moi"), by department, or by free text.
 class SpaceSearch
   EARTH_RADIUS_KM = 6371.0
   DEFAULT_RADIUS_KM = "20"
 
-  attr_reader :care_home, :location, :near_mode, :radius_km, :near_lat, :near_lon
-  # Why results are degraded, if they are: :geocoder_unavailable or :invalid_radius.
+  attr_reader :care_home, :location, :department, :near_mode, :radius_km, :near_lat, :near_lon
+  # Why results are degraded, if they are: :places_unavailable or :invalid_radius.
   attr_reader :warning
 
   def initialize(params)
     @care_home = params[:care_home].to_s.strip
     @location = params[:location].to_s.strip
+    @department = params[:department].to_s.strip
     @near_mode = params[:near_mode].to_s.strip
     @radius_km = params[:radius_km].to_s.strip.presence || DEFAULT_RADIUS_KM
     @near_lat = params[:near_lat].to_s.strip
@@ -22,8 +24,15 @@ class SpaceSearch
   def results
     @results ||= begin
       spaces = base_scope
-      spaces = filter_by_location(spaces) if location.present? && !coordinates?
-      coordinates? ? filter_by_distance(spaces) : spaces
+      if coordinates?
+        filter_by_distance(spaces)
+      elsif department.present?
+        filter_by_department(spaces)
+      elsif location.present?
+        filter_by_location(spaces)
+      else
+        spaces
+      end
     end
   end
 
@@ -40,31 +49,36 @@ class SpaceSearch
     care_home.present? ? spaces.where(care_home_id: care_home) : spaces
   end
 
-  # Matches the typed text against care home addresses; when nothing matches
-  # locally, asks the geocoder for related place names ("idf" → "Île-de-France").
+  # Matches the typed text against care home addresses; when nothing matches,
+  # searches around the commune of that name ("Bordeaux", "paris 11e").
   def filter_by_location(spaces)
-    terms = [location]
-    matches = spaces.merge(address_matching(terms))
+    matches = spaces.merge(address_matching(location))
     return matches if matches.exists?
 
     begin
-      terms += Geocoder.resolve_terms(location).to_a
-    rescue Geocoder::Error
-      @warning = :geocoder_unavailable
+      commune = Places.find_commune(location)
+    rescue Places::Error
+      @warning = :places_unavailable
       return matches
     end
-    spaces.merge(address_matching(terms))
+    return matches if commune.nil?
+
+    @latitude = commune[:latitude]
+    @longitude = commune[:longitude]
+    filter_by_distance(spaces)
   end
 
-  def address_matching(terms)
+  def address_matching(term)
+    normalized = Address.normalize_for_search(term)
     care_homes = CareHome.left_joins(:address_details)
-    matching_care_homes = terms.flat_map do |term|
-      normalized = Address.normalize_for_search(term)
-      clauses = [care_homes.where("care_homes.address ILIKE ?", "%#{CareHome.sanitize_sql_like(term)}%")]
-      clauses << care_homes.where("addresses.search_text LIKE ?", "%#{CareHome.sanitize_sql_like(normalized)}%") if normalized.present?
-      clauses
-    end.reduce(:or)
+    matching_care_homes = care_homes.where("care_homes.address ILIKE ?", "%#{CareHome.sanitize_sql_like(term)}%")
+    matching_care_homes = matching_care_homes.or(care_homes.where("addresses.search_text LIKE ?", "%#{CareHome.sanitize_sql_like(normalized)}%")) if normalized.present?
     Space.where(care_home_id: matching_care_homes.select(:id))
+  end
+
+  def filter_by_department(spaces)
+    care_homes = CareHome.joins(:address_details).where(addresses: {department_code: department})
+    spaces.where(care_home_id: care_homes.select(:id))
   end
 
   def filter_by_distance(spaces)
@@ -85,9 +99,9 @@ class SpaceSearch
     end.sort_by(&:distance_km)
   end
 
-  def latitude = Float(near_lat, exception: false)
+  def latitude = @latitude || Float(near_lat, exception: false)
 
-  def longitude = Float(near_lon, exception: false)
+  def longitude = @longitude || Float(near_lon, exception: false)
 
   def radius = Float(radius_km, exception: false)
 

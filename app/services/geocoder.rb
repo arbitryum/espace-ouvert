@@ -23,34 +23,6 @@ module Geocoder
     address_components(place).merge(raw_address: query)
   end
 
-  # Search terms (full labels and their comma-separated parts) for a free-text location, or nil.
-  def resolve_terms(query, limit: 10)
-    return if query.blank?
-
-    places = search(query, limit:)
-    return if places.empty?
-
-    places.flat_map { |place| [place["display_name"], *place["display_name"].split(",")] }
-      .map(&:strip).compact_blank.uniq.sort
-  end
-
-  # Autocomplete suggestions; never raises so the search box keeps working.
-  def suggest(query, limit: 6)
-    return [] if query.blank?
-
-    search(query, limit:).map do |place|
-      {
-        label: place["display_name"],
-        name: place["display_name"].split(",").first,
-        latitude: place["lat"].to_f,
-        longitude: place["lon"].to_f
-      }
-    end
-  rescue Error => error
-    Rails.logger.error("[Geocoder] #{error.message}")
-    []
-  end
-
   private
 
   def search(query, limit:)

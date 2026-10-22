@@ -31,15 +31,4 @@ class GeocoderTest < ActiveSupport::TestCase
   test "geocode returns nil when nothing is found" do
     assert_nil Geocoder.stub(:search, ->(*, **) { [] }) { Geocoder.geocode("nowhere") }
   end
-
-  test "resolve terms returns labels and their parts" do
-    terms = Geocoder.stub(:search, ->(*, **) { [PLACE] }) { Geocoder.resolve_terms("perreux") }
-
-    assert_includes terms, "94170 Le Perreux-sur-Marne"
-    assert_includes terms, PLACE["display_name"]
-  end
-
-  test "suggest swallows service errors" do
-    assert_equal [], Geocoder.stub(:search, ->(*, **) { raise Geocoder::Error, "down" }) { Geocoder.suggest("paris") }
-  end
 end
