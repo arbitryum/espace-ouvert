@@ -1,7 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 import L from "leaflet"
+import "@maplibre/maplibre-gl-leaflet"
+import { setWorkerUrl } from "maplibre-gl"
 
 const PARIS = [48.8566, 2.3522]
+
+// MapLibre looks for its worker next to its own file, but assets have
+// fingerprinted names: give it the worker's URL from the import map.
+setWorkerUrl(import.meta.resolve("maplibre-gl-worker"))
 
 // Leaflet map beside the cards of a directory (spaces, coworking projects).
 // Hovering a card highlights its marker. See shared/_directory.html.erb.
@@ -13,8 +19,16 @@ export default class extends Controller {
 
   connect() {
     this.map = L.map(this.mapTarget).setView(PARIS, 12)
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors",
+    // VersaTiles' muted style (open source, no key): much calmer than
+    // OpenStreetMap's own, so the markers stand out. Vector tiles, drawn by
+    // MapLibre inside Leaflet.
+    L.maplibreGL({
+      style: "https://tiles.versatiles.org/assets/styles/muted/style.json",
+      // The plugin would otherwise replace it with the style's own credits once
+      // loaded, which sometimes come back empty.
+      attributionControl: {
+        customAttribution: '&copy; <a href="https://versatiles.org" target="_blank">VersaTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>',
+      },
     }).addTo(this.map)
 
     this.markers = new Map()
