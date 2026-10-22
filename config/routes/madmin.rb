@@ -2,6 +2,7 @@
 namespace :madmin, path: "admin" do
   resources :ehpad_profiles
   resources :care_homes
+  resources :hosting_requests, only: %i[index show]
   resources :addresses
   resources :spaces
   resources :space_images

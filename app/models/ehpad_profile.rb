@@ -1,5 +1,6 @@
 class EhpadProfile < ApplicationRecord
   belongs_to :user
+  has_many :care_homes, dependent: :nullify
 
   enum :status, %w[pending approved suspended].index_by(&:itself), default: "pending"
 

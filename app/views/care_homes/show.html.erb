@@ -1,0 +1,60 @@
+<% content_for :title, @care_home.name %>
+<% details = @care_home.address_details %>
+
+<div class="mx-auto max-w-5xl">
+  <%= link_to t(".all_spaces"), spaces_path, class: "link link-hover text-sm font-medium" %>
+
+  <div class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <div>
+      <h1 class="text-4xl font-bold"><%= @care_home.name %></h1>
+      <ul class="mt-4 space-y-1 text-base-content/70">
+        <li><%= details&.concise_label.presence || @care_home.address %></li>
+        <% if @care_home.legal_status.present? %>
+          <li><%= t(".legal_status", status: @care_home.human_enum_name(:legal_status)) %></li>
+        <% end %>
+        <% if @care_home.group_name.present? %>
+          <li><%= t(".group", group: @care_home.group_name) %></li>
+        <% end %>
+      </ul>
+
+      <h2 class="mt-10 text-2xl font-bold"><%= t(".spaces", count: @spaces.size) %></h2>
+      <% if @spaces.any? %>
+        <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+          <% @spaces.each do |space| %>
+            <li>
+              <%= link_to space_path(space), class: "card h-full border border-base-300 bg-base-100 shadow-sm transition hover:shadow-md" do %>
+                <div class="card-body gap-2 p-5">
+                  <h3 class="font-semibold"><%= space.name %></h3>
+                  <% if space.full? %>
+                    <div class="badge badge-neutral badge-sm"><%= space.human_enum_name(:status) %></div>
+                  <% end %>
+                  <% slot_count = space.recurring_availabilities.count(&:active?) %>
+                  <% if slot_count.positive? %>
+                    <p class="text-sm text-base-content/70"><%= t("spaces.space_card.weekly_slots", count: slot_count) %></p>
+                  <% end %>
+                </div>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="mt-4 text-base-content/70"><%= t(".no_spaces") %></p>
+      <% end %>
+    </div>
+
+    <aside class="card h-fit border border-base-300 bg-base-100 shadow-md lg:sticky lg:top-4">
+      <div class="card-body gap-4">
+        <h2 class="card-title"><%= t(".contact.heading") %></h2>
+        <p class="text-sm text-base-content/70"><%= t(".contact.text") %></p>
+        <%= link_to t(".contact.cta"), new_care_home_hosting_request_path(@care_home), class: "btn btn-primary btn-block" %>
+      </div>
+    </aside>
+  </div>
+
+  <% if details&.coordinates? %>
+    <div class="mt-10 overflow-hidden rounded-box border border-base-300">
+      <iframe title="<%= t("spaces.show.map_title", care_home: @care_home.name) %>" src="<%= details.osm_embed_url %>"
+              class="h-80 w-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  <% end %>
+</div>

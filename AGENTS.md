@@ -30,7 +30,8 @@ Run `bin/ci` (or at least the tests and Standard) before opening a PR.
 
 **Every interface text goes through i18n**, never a literal in Ruby, ERB or JS.
 - Texts live in `config/locales/*.fr.yml`, one file per area: `accounts`,
-  `spaces`, `coworking`, `guides`, `mailers`, `models`, and app-wide `fr.yml`.
+  `spaces`, `care_homes`, `coworking`, `guides`, `mailers`, `models`, and
+  app-wide `fr.yml`.
 - Views and controllers use lazy lookups: `t(".title")` in
   `spaces/index.html.erb` reads `fr.spaces.index.title`. Rails derives partial
   keys without the underscore (`spaces/_space_card` → `spaces.space_card`).

@@ -1,0 +1,10 @@
+<%= t(".greeting", name: @request.contact_name) %>
+
+<%= t(".intro", care_home: @request.care_home.name) %>
+
+<%= t(".next") %>
+
+<%= HostingRequest.human_attribute_name(:message) %> :
+<%= @request.message %>
+
+<%= t(".signature") %>

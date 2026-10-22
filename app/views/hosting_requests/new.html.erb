@@ -1,0 +1,62 @@
+<% content_for :title, t(".title", care_home: @care_home.name) %>
+<% spaces = @care_home.spaces.listed %>
+
+<div class="mx-auto max-w-3xl">
+  <%= link_to t(".back", care_home: @care_home.name), @care_home, class: "link link-hover text-sm font-medium" %>
+  <h1 class="mt-6 text-4xl font-bold"><%= t(".heading") %></h1>
+  <p class="mt-4 text-lg text-base-content/70"><%= t(".intro", care_home: @care_home.name) %></p>
+
+  <%= form_with model: [@care_home, @hosting_request], class: "card mt-8 border border-base-300 bg-base-100 shadow-sm" do |form| %>
+    <div class="card-body gap-6 p-6 sm:p-8">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend"><%= HostingRequest.human_attribute_name(:kind) %></legend>
+        <div class="flex flex-wrap gap-6">
+          <% HostingRequest.human_enum_options(:kind).each do |label, value| %>
+            <label class="label cursor-pointer gap-2">
+              <%= form.radio_button :kind, value, class: "radio radio-primary" %>
+              <span><%= label %></span>
+            </label>
+          <% end %>
+        </div>
+      </fieldset>
+
+      <% if spaces.any? %>
+        <label class="form-control w-full">
+          <span class="label-text mb-2 font-medium"><%= HostingRequest.human_attribute_name(:space) %></span>
+          <%= form.collection_select :space_id, spaces, :id, :name, { include_blank: t(".any_space") }, class: "select w-full" %>
+          <%= render "shared/field_errors", model: @hosting_request, field: :space %>
+        </label>
+      <% end %>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <% [[:organization_name, :text_field, "organization"], [:contact_name, :text_field, "name"], [:email, :email_field, "email"], [:phone, :telephone_field, "tel"]].each do |field, input, autocomplete| %>
+          <label class="form-control w-full">
+            <span class="label-text mb-2 font-medium"><%= HostingRequest.human_attribute_name(field) %></span>
+            <%= form.public_send input, field, required: field != :phone, autocomplete:, class: "input w-full" %>
+            <%= render "shared/field_errors", model: @hosting_request, field: %>
+          </label>
+        <% end %>
+      </div>
+
+      <% [:message, :schedule].each do |field| %>
+        <label class="form-control w-full">
+          <span class="label-text block font-medium"><%= HostingRequest.human_attribute_name(field) %></span>
+          <span class="label-text-alt mb-2 block text-base-content/60"><%= t(".hints.#{field}") %></span>
+          <%= form.text_area field, required: field == :message, rows: (field == :message) ? 5 : 3, class: "textarea w-full" %>
+          <%= render "shared/field_errors", model: @hosting_request, field: %>
+        </label>
+      <% end %>
+
+      <%# Hidden from people; bots fill it in (see HostingRequestsController#create). %>
+      <div class="hidden" aria-hidden="true">
+        <%= label_tag :website, t(".website") %>
+        <%= text_field_tag :website, nil, tabindex: -1, autocomplete: "off" %>
+      </div>
+
+      <p class="text-sm text-base-content/60"><%= t(".privacy", care_home: @care_home.name) %></p>
+      <div class="card-actions justify-end">
+        <%= form.submit t(".submit"), class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

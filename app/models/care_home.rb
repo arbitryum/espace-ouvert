@@ -2,8 +2,11 @@ class CareHome < ApplicationRecord
   LEGAL_STATUSES = %w[associatif public prive].freeze
 
   belongs_to :address_details, class_name: "Address", optional: true, inverse_of: :care_homes
+  # The establishment account that manages it, linked in the back office.
+  belongs_to :ehpad_profile, optional: true
   has_many :spaces, dependent: :destroy
   has_many :coworking_projects, dependent: :nullify
+  has_many :hosting_requests, dependent: :destroy
 
   validates :name, :address, presence: true
   validates :legal_status, inclusion: {in: LEGAL_STATUSES}, allow_blank: true
@@ -24,6 +27,13 @@ class CareHome < ApplicationRecord
     details.update!(result.merge(label: normalized_address))
     update!(address: normalized_address, address_details: details)
     details
+  end
+
+  # Who receives its hosting requests: its approved account, otherwise its
+  # contact email, otherwise the admins.
+  def request_recipients
+    account_email = ehpad_profile.user.email_address if ehpad_profile&.approved?
+    Array(account_email.presence || contact_email.presence || User.where(admin: true).pluck(:email_address))
   end
 
   def to_s = name
