@@ -1,5 +1,5 @@
-# App-wide texts. Each area has its own file: accounts, spaces, coworking,
-# guides, mailers, models (Active Record names, enums and errors).
+# App-wide texts. Each area has its own file: accounts, spaces, care_homes,
+# coworking, guides, mailers, models (Active Record names, enums and errors).
 fr:
   app_name: Espace-ouvert
   back_home: "← Retour à l'accueil"

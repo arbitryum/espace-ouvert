@@ -37,4 +37,24 @@ class AdminTest < ActionDispatch::IntegrationTest
 
     assert_equal "Paris", CareHome.find_by!(name: "Maison Neuve").address_details.city
   end
+
+  test "admin links a care home to an account and reads its requests" do
+    sign_in_as users(:admin)
+    care_home = create_care_home(name: "EHPAD Les Tilleuls")
+    request = care_home.hosting_requests.create!(organization_name: "Les Petits Pas", contact_name: "Léa",
+      email: "lea@example.org", message: "Un atelier théâtre.")
+
+    Geocoder.stub(:geocode, nil) do
+      patch madmin_care_home_path(care_home), params: {care_home: {ehpad_profile_id: ehpad_profiles(:approved).id}}
+    end
+    assert_equal ehpad_profiles(:approved), care_home.reload.ehpad_profile
+
+    get madmin_hosting_requests_path
+    assert_response :success
+    assert_match "Les Petits Pas", response.body
+
+    get madmin_hosting_request_path(request)
+    assert_response :success
+    assert_match "Un atelier théâtre.", response.body
+  end
 end

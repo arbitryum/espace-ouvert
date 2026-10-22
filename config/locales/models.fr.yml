@@ -1,6 +1,16 @@
 fr:
   activerecord:
     attributes:
+      hosting_request:
+        kind: Vous cherchez un espace pour
+        space: Espace
+        organization_name: Structure
+        contact_name: Votre nom
+        email: Email
+        phone: Téléphone
+        message: Votre besoin
+        schedule: Créneaux souhaités
+        status: Statut
       user:
         email_address: Email
         password: Mot de passe
@@ -26,6 +36,14 @@ fr:
           draft: Brouillon
           published: Publié
           archived: Archivé
+      hosting_request:
+        kind:
+          association: Activités associatives
+          coworking: Coworking
+        status:
+          pending: En attente
+          accepted: Acceptée
+          refused: Refusée
       coworking_project:
         status:
           draft: Brouillon
@@ -35,6 +53,10 @@ fr:
           closed: Terminé
     errors:
       models:
+        hosting_request:
+          attributes:
+            space:
+              other_care_home: appartient à un autre établissement
         user:
           attributes:
             password:

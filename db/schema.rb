@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_17_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -71,7 +71,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_17_100000) do
     t.string "group_name", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "ehpad_profile_id"
     t.index ["address_details_id"], name: "index_care_homes_on_address_details_id"
+    t.index ["ehpad_profile_id"], name: "index_care_homes_on_ehpad_profile_id"
   end
 
   create_table "coworking_projects", force: :cascade do |t|
@@ -119,6 +121,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_17_100000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_guide_readers_on_email_address", unique: true
+  end
+
+  create_table "hosting_requests", force: :cascade do |t|
+    t.bigint "care_home_id", null: false
+    t.bigint "space_id"
+    t.string "kind", default: "association", null: false
+    t.string "organization_name", null: false
+    t.string "contact_name", null: false
+    t.string "email", null: false
+    t.string "phone", default: "", null: false
+    t.text "message", null: false
+    t.text "schedule", default: "", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["care_home_id", "status"], name: "index_hosting_requests_on_care_home_id_and_status"
+    t.index ["care_home_id"], name: "index_hosting_requests_on_care_home_id"
+    t.index ["space_id"], name: "index_hosting_requests_on_space_id"
   end
 
   create_table "nonprofit_organizations", force: :cascade do |t|
@@ -183,8 +203,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_17_100000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "care_homes", "addresses", column: "address_details_id", on_delete: :nullify
+  add_foreign_key "care_homes", "ehpad_profiles", on_delete: :nullify
   add_foreign_key "coworking_projects", "care_homes", on_delete: :nullify
   add_foreign_key "ehpad_profiles", "users", on_delete: :cascade
+  add_foreign_key "hosting_requests", "care_homes", on_delete: :cascade
+  add_foreign_key "hosting_requests", "spaces", on_delete: :nullify
   add_foreign_key "recurring_availabilities", "spaces", on_delete: :cascade
   add_foreign_key "sessions", "users"
   add_foreign_key "space_images", "spaces", on_delete: :cascade

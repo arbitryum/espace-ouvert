@@ -1,0 +1,34 @@
+# Care home pages and the hosting requests sent from them.
+fr:
+  care_homes:
+    show:
+      all_spaces: "← Tous les espaces"
+      legal_status: "Statut : %{status}"
+      group: "Groupe : %{group}"
+      spaces:
+        zero: Aucun espace proposé
+        one: L'espace proposé
+        other: Les %{count} espaces proposés
+      no_spaces: Cet établissement ne propose pas d'espace pour le moment.
+      contact:
+        heading: Vous souhaitez être accueilli ?
+        text: Présentez votre structure et votre besoin. L'établissement vous répondra directement.
+        cta: Contacter l'établissement
+  hosting_requests:
+    new:
+      title: Contacter %{care_home}
+      back: "← %{care_home}"
+      heading: Contacter l'établissement
+      intro: Votre demande sera transmise à %{care_home}, qui vous répondra directement par email.
+      any_space: Pas d'espace en particulier
+      hints:
+        message: Votre structure, vos activités, le nombre de personnes, ce dont vous avez besoin.
+        schedule: Jours, horaires, fréquence (facultatif).
+      website: Site web
+      privacy: >-
+        Vos coordonnées sont transmises à %{care_home} pour qu'il puisse vous
+        répondre, et conservées par Espace-ouvert pour suivre les mises en relation.
+      submit: Envoyer la demande
+    create:
+      notice: Votre demande a été envoyée. L'établissement vous répondra par email.
+      too_many: Trop de demandes envoyées depuis votre connexion. Réessayez dans une heure.

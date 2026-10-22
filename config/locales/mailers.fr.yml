@@ -24,3 +24,17 @@ fr:
       cta: Choisir mon mot de passe
       validity: Ce lien est valable %{days} jours.
       signature: L'équipe Espace-ouvert
+  hosting_requests_mailer:
+    received:
+      subject: "Demande d'accueil : %{organization}"
+      greeting: Bonjour,
+      intro: "%{organization} souhaite être accueilli dans votre établissement (%{kind})."
+      space: "Espace demandé : %{space}"
+      reply: Répondez directement à cet email pour écrire à la structure.
+      signature: L'équipe Espace-ouvert
+    acknowledgment:
+      subject: Votre demande à %{care_home}
+      greeting: Bonjour %{name},
+      intro: Votre demande a bien été transmise à %{care_home}.
+      next: L'établissement vous répondra directement par email.
+      signature: L'équipe Espace-ouvert

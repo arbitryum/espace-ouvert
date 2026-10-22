@@ -18,6 +18,10 @@ Rails.application.routes.draw do
     get "location-suggestions", on: :collection, to: "location_suggestions#index", as: :location_suggestions
   end
 
+  resources :care_homes, path: "etablissements", only: :show do
+    resources :hosting_requests, path: "demandes", only: %i[new create], path_names: {new: "nouvelle"}
+  end
+
   get "coworking", to: "coworking#show", as: :coworking
   namespace :coworking do
     get "projets", to: "projects#index", as: :projects

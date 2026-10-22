@@ -1,0 +1,16 @@
+<p><%= t(".greeting") %></p>
+<p><%= t(".intro", organization: @request.organization_name, kind: @request.human_enum_name(:kind)) %></p>
+<% if @request.space %><p><%= t(".space", space: @request.space.name) %></p><% end %>
+<ul>
+  <li><%= HostingRequest.human_attribute_name(:contact_name) %> : <%= @request.contact_name %></li>
+  <li><%= HostingRequest.human_attribute_name(:email) %> : <%= mail_to @request.email %></li>
+  <% if @request.phone.present? %><li><%= HostingRequest.human_attribute_name(:phone) %> : <%= @request.phone %></li><% end %>
+</ul>
+<p><strong><%= HostingRequest.human_attribute_name(:message) %></strong></p>
+<%= simple_format @request.message %>
+<% if @request.schedule.present? %>
+  <p><strong><%= HostingRequest.human_attribute_name(:schedule) %></strong></p>
+  <%= simple_format @request.schedule %>
+<% end %>
+<p><%= t(".reply") %></p>
+<p><%= t(".signature") %></p>
