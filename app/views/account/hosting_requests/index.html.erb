@@ -1,0 +1,66 @@
+<% content_for :title, t(".title") %>
+
+<div class="mx-auto max-w-4xl">
+  <h1 class="text-4xl font-bold"><%= t(".title") %></h1>
+  <% if @profile.care_homes.any? %>
+    <p class="mt-4 text-lg text-base-content/70"><%= t(".intro", care_homes: @profile.care_homes.map(&:name).to_sentence) %></p>
+  <% else %>
+    <div class="alert alert-info mt-8"><span><%= t(".no_care_home") %></span></div>
+  <% end %>
+
+  <% if @profile.care_homes.any? && @hosting_requests.empty? %>
+    <p class="mt-8 text-base-content/70"><%= t(".empty") %></p>
+  <% end %>
+
+  <div class="mt-8 space-y-6">
+    <% @hosting_requests.each do |request| %>
+      <article id="<%= dom_id(request) %>" class="card border border-base-300 bg-base-100 shadow-sm">
+        <div class="card-body gap-4">
+          <div class="flex flex-wrap items-start justify-between gap-2">
+            <div>
+              <h2 class="card-title"><%= request.organization_name %></h2>
+              <p class="text-sm text-base-content/70">
+                <%= t(".received", date: l(request.created_at, format: :long)) %> ·
+                <%= request.human_enum_name(:kind) %> ·
+                <%= [request.care_home.name, request.space&.name].compact.join(" – ") %>
+              </p>
+            </div>
+            <%= hosting_request_status_badge(request) %>
+          </div>
+
+          <ul class="text-sm">
+            <li><%= t(".contact") %> : <%= request.contact_name %></li>
+            <li><%= HostingRequest.human_attribute_name(:email) %> : <%= mail_to request.email, class: "link" %></li>
+            <% if request.phone.present? %>
+              <li><%= HostingRequest.human_attribute_name(:phone) %> : <%= request.phone %></li>
+            <% end %>
+          </ul>
+          <div>
+            <h3 class="font-semibold"><%= t(".need") %></h3>
+            <%= simple_format request.message, class: "text-base-content/80" %>
+          </div>
+          <% if request.schedule.present? %>
+            <div>
+              <h3 class="font-semibold"><%= HostingRequest.human_attribute_name(:schedule) %></h3>
+              <%= simple_format request.schedule, class: "text-base-content/80" %>
+            </div>
+          <% end %>
+
+          <% if request.pending? %>
+            <div class="card-actions justify-end">
+              <%= link_to t(".refuse"), refusal_account_hosting_request_path(request), class: "btn btn-outline" %>
+              <%= button_to t(".accept"), accept_account_hosting_request_path(request), method: :patch, class: "btn btn-primary" %>
+            </div>
+          <% elsif request.accepted? %>
+            <div class="flex flex-wrap items-center justify-end gap-4">
+              <p class="text-sm text-base-content/70"><%= t(".accepted_hint", date: l((request.answered_at || request.updated_at).to_date, format: :long)) %></p>
+              <%= acceptance_mail_to(request, class: "btn btn-primary") { t(".write", organization: request.organization_name) } %>
+            </div>
+          <% else %>
+            <p class="text-right text-sm text-base-content/70"><%= t(".refused_hint", date: l((request.answered_at || request.updated_at).to_date, format: :long)) %></p>
+          <% end %>
+        </div>
+      </article>
+    <% end %>
+  </div>
+</div>

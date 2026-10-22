@@ -13,6 +13,7 @@ fr:
     account_bar:
       signed_in_as: "Connecté : %{email}"
       back_office: Administration
+      hosting_requests: Mes demandes
       sign_out: Se déconnecter
     home_button:
       label: Accueil

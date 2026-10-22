@@ -1,0 +1,22 @@
+<% content_for :title, t(".title", organization: @hosting_request.organization_name) %>
+
+<div class="mx-auto max-w-2xl">
+  <%= link_to t(".back"), account_hosting_requests_path, class: "link link-hover text-sm font-medium" %>
+  <h1 class="mt-6 text-3xl font-bold"><%= t(".title", organization: @hosting_request.organization_name) %></h1>
+  <p class="mt-4 text-base-content/70"><%= t(".intro", organization: @hosting_request.organization_name) %></p>
+
+  <%= form_with model: @hosting_request, url: refuse_account_hosting_request_path(@hosting_request), method: :patch,
+        class: "card mt-8 border border-base-300 bg-base-100 shadow-sm" do |form| %>
+    <div class="card-body gap-4">
+      <label class="form-control w-full">
+        <span class="label-text block font-medium"><%= t(".reason") %></span>
+        <span class="label-text-alt mb-2 block text-base-content/60"><%= t(".reason_hint") %></span>
+        <%= form.text_area :refusal_reason, rows: 4, class: "textarea w-full" %>
+      </label>
+      <div class="card-actions justify-end">
+        <%= link_to t(".cancel"), account_hosting_requests_path, class: "btn btn-ghost" %>
+        <%= form.submit t(".submit"), class: "btn btn-error" %>
+      </div>
+    </div>
+  <% end %>
+</div>

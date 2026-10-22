@@ -12,9 +12,16 @@ class HostingRequest < ApplicationRecord
   validates :organization_name, :contact_name, :email, :message, presence: true
   validates :organization_name, :contact_name, :email, length: {maximum: 200}
   validates :phone, length: {maximum: 30}
-  validates :message, :schedule, length: {maximum: 5000}
+  validates :message, :schedule, :refusal_reason, length: {maximum: 5000}
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}, allow_blank: true
   validate :space_of_the_care_home
+
+  # The requests of the care homes an establishment account manages, pending first.
+  scope :for_profile, ->(profile) { where(care_home: profile.care_homes).in_order_of(:status, %w[pending accepted refused]).order(created_at: :desc) }
+
+  def accept! = update!(status: "accepted", answered_at: Time.current)
+
+  def refuse!(reason) = update!(status: "refused", refusal_reason: reason.to_s.strip, answered_at: Time.current)
 
   def to_s = "#{organization_name} → #{care_home}"
 

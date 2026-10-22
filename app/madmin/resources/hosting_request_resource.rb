@@ -13,6 +13,8 @@ class HostingRequestResource < Madmin::Resource
   attribute :phone
   attribute :message
   attribute :schedule
+  attribute :answered_at
+  attribute :refusal_reason
 
   scope :pending
   scope :accepted

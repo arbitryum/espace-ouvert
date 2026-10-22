@@ -1,0 +1,4 @@
+<p><%= t(".greeting", name: @request.contact_name) %></p>
+<p><%= t(".intro", care_home: @request.care_home.name, organization: @request.organization_name) %></p>
+<p><%= t(".others_html", link: link_to(t(".directory"), spaces_url)) %></p>
+<p><%= t(".signature") %></p>

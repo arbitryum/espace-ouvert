@@ -30,7 +30,21 @@ fr:
       greeting: Bonjour,
       intro: "%{organization} souhaite être accueilli dans votre établissement (%{kind})."
       space: "Espace demandé : %{space}"
+      contact: Contact
+      need: Besoin
       reply: Répondez directement à cet email pour écrire à la structure.
+      account: "Acceptez ou refusez la demande depuis votre espace : %{url}"
+      account_link: Accepter ou refuser la demande depuis votre espace
+      signature: L'équipe Espace-ouvert
+    refusal:
+      subject: Votre demande à %{care_home}
+      greeting: Bonjour %{name},
+      intro: >-
+        %{care_home} ne peut malheureusement pas accueillir %{organization}
+        pour le moment.
+      others: "D'autres établissements proposent peut-être des espaces près de chez vous : %{url}"
+      others_html: D'autres établissements proposent peut-être des espaces près de chez vous, dans %{link}.
+      directory: l'annuaire Espace-ouvert
       signature: L'équipe Espace-ouvert
     acknowledgment:
       subject: Votre demande à %{care_home}

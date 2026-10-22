@@ -36,7 +36,11 @@ module Authentication
   end
 
   def after_authentication_url
-    session.delete(:return_to_after_authenticating) || root_url
+    return_to = session.delete(:return_to_after_authenticating)
+    return return_to if return_to
+
+    # Establishments land on the requests sent to them.
+    Current.user.ehpad_profile&.approved? ? account_hosting_requests_url : root_url
   end
 
   def start_new_session_for(user)
