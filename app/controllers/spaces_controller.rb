@@ -1,10 +1,10 @@
 class SpacesController < ApplicationController
   def index
-    @search = SpaceSearch.new(params.permit(:care_home, :location, :department, :near_lat, :near_lon, :near_mode, :radius_km))
+    @search = SpaceSearch.new(params.permit(:city, :location, :department, :near_lat, :near_lon, :near_mode, :radius_km, :weekday, :moment))
     @spaces = @search.results
     flash.now[:alert] = t(".#{@search.warning}") if @search.warning
     @view_mode = (params[:view_mode] == "map") ? "map" : "list"
-    @care_home_options = CareHome.where(id: Space.listed.select(:care_home_id)).order(:name)
+    @city_options = Address.joins(:care_homes).where(care_homes: {id: Space.listed.select(:care_home_id)}).where.not(city: "").distinct.order(:city).pluck(:city)
   end
 
   def show

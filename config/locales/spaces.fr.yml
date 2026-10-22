@@ -4,15 +4,27 @@ fr:
     index:
       title: Accueil d'association
       heading_html: Trouvez l'espace dont les associations<br>de votre territoire ont besoin
-      care_home: Établissement
-      all_care_homes: Tous les établissements
+      city: Ville
+      all_cities: Toutes les villes
       location: Localisation
       location_placeholder: Ajouter une localisation
       remove_around_me: Retirer autour de moi
       radius: Rayon
       radius_option: "%{km} km"
+      weekday: Jour
+      all_weekdays: Tous les jours
+      moment: Moment
+      all_moments: Toute la journée
+      moments:
+        morning: Matin
+        afternoon: Après-midi
+        evening: Soirée
       submit: Filtrer
       reset: Réinitialiser
+      count:
+        zero: Aucun espace
+        one: 1 espace
+        other: "%{count} espaces"
       view_modes:
         list: Liste
         map: Carte
@@ -45,6 +57,7 @@ fr:
         one: 1 créneau hebdomadaire
         other: "%{count} créneaux hebdomadaires"
       more: Plus d'infos
+      slots_unknown: Créneaux à confirmer
     carousel:
       previous: Image précédente
       next: Image suivante

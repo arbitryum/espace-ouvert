@@ -11,15 +11,15 @@
   </div>
 <% end %>
 
-<%= form_with url: spaces_path, method: :get, class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8",
+<%= form_with url: spaces_path, method: :get, class: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_2fr_1fr_1fr_auto] items-end gap-4 mb-8",
       data: { controller: "location-filter", turbo: false,
               location_filter_suggestions_url_value: location_suggestions_spaces_path,
               location_filter_messages_value: t(".location_filter"),
               action: "click@document->location-filter#closeOnOutsideClick" } do |form| %>
   <label class="form-control w-full">
-    <div class="label"><span class="label-text"><%= t(".care_home") %></span></div>
-    <%= form.select :care_home, options_from_collection_for_select(@care_home_options, :id, :name, @search.care_home),
-          { include_blank: t(".all_care_homes") }, class: "select select-bordered w-full" %>
+    <div class="label"><span class="label-text"><%= t(".city") %></span></div>
+    <%= form.select :city, options_for_select(@city_options, @search.city),
+          { include_blank: t(".all_cities") }, class: "select select-bordered w-full" %>
   </label>
 
   <div class="form-control w-full">
@@ -46,23 +46,39 @@
     </div>
   </div>
 
+  <label class="form-control w-full">
+    <div class="label"><span class="label-text"><%= t(".weekday") %></span></div>
+    <%= form.select :weekday, options_for_select((0..6).map { |day| [RecurringAvailability.weekday_name(day), day] }, @search.weekday),
+          { include_blank: t(".all_weekdays") }, class: "select select-bordered w-full" %>
+  </label>
+
+  <label class="form-control w-full">
+    <div class="label"><span class="label-text"><%= t(".moment") %></span></div>
+    <%= form.select :moment, options_for_select(SpaceSearch::MOMENTS.keys.map { |moment| [t(".moments.#{moment}"), moment] }, @search.moment),
+          { include_blank: t(".all_moments") }, class: "select select-bordered w-full" %>
+  </label>
+
   <%= hidden_field_tag :near_lat, @search.near_lat, data: { location_filter_target: "latitude" } %>
   <%= hidden_field_tag :near_lon, @search.near_lon, data: { location_filter_target: "longitude" } %>
   <%= hidden_field_tag :near_mode, @search.near_mode, data: { location_filter_target: "mode" } %>
   <%= hidden_field_tag :department, @search.department, data: { location_filter_target: "department" } %>
   <%= hidden_field_tag :view_mode, @view_mode %>
 
-  <div class="md:col-span-2 lg:col-span-2 flex items-end gap-2">
+  <div class="flex gap-2 sm:col-span-2 lg:col-span-1">
     <button type="submit" class="btn btn-primary flex-1"><%= t(".submit") %></button>
     <%= link_to t(".reset"), spaces_path, class: "btn btn-outline flex-1" %>
   </div>
 
-  <p class="text-sm text-base-content/70 md:col-span-2 lg:col-span-4" data-location-filter-target="status"></p>
+  <p class="text-sm text-base-content/70 sm:col-span-2 lg:col-span-5 empty:hidden" data-location-filter-target="status"></p>
 <% end %>
 
-<div class="join mb-6">
-  <%= link_to t(".view_modes.list"), view_mode_url("list"), class: "btn join-item #{@view_mode == "list" ? "btn-primary" : "btn-outline"}" %>
-  <%= link_to t(".view_modes.map"), view_mode_url("map"), class: "btn join-item #{@view_mode == "map" ? "btn-primary" : "btn-outline"}" %>
+<div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+  <p class="text-sm text-base-content/70"><%= t(".count", count: @spaces.size) %></p>
+  <%# Phones show the list or the map; wider screens show both side by side. %>
+  <div class="join lg:hidden">
+    <%= link_to t(".view_modes.list"), view_mode_url("list"), class: "btn btn-sm join-item #{@view_mode == "list" ? "btn-primary" : "btn-outline"}" %>
+    <%= link_to t(".view_modes.map"), view_mode_url("map"), class: "btn btn-sm join-item #{@view_mode == "map" ? "btn-primary" : "btn-outline"}" %>
+  </div>
 </div>
 
 <% if @spaces.empty? %>
@@ -70,10 +86,16 @@
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
     <span><%= t(".empty") %></span>
   </div>
-<% elsif @view_mode == "map" %>
-  <%= render "map", markers: spaces_map_markers(@spaces) %>
 <% else %>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <%= render partial: "space_card", collection: @spaces, as: :space %>
+  <div class="grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]" data-controller="spaces-map"
+       data-spaces-map-markers-value="<%= spaces_map_markers(@spaces).to_json %>" data-spaces-map-messages-value="<%= t("spaces.map.popup").to_json %>">
+    <div class="<%= "hidden lg:block" if @view_mode == "map" %>">
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <%= render partial: "space_card", collection: @spaces, as: :space, locals: { search: @search } %>
+      </div>
+    </div>
+    <div class="<%= "hidden lg:block" if @view_mode == "list" %>">
+      <%= render "map" %>
+    </div>
   </div>
 <% end %>
