@@ -1,4 +1,4 @@
-# Espaces Ouverts
+# Espace-ouvert
 
 Web application that lets care homes (EHPAD) publish the spaces they open to
 nonprofit organizations, and lets those organizations browse them. A second

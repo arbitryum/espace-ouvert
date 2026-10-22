@@ -1,4 +1,4 @@
-# Care homes and spaces from the Espaces Ouverts website, loaded by Seeds::Spaces.
+# Care homes and spaces from the Espace-ouvert website, loaded by Seeds::Spaces.
 care_homes:
 - name: Alice Prin
   address: 9 Rue Maria Helena Vieira da Silva, 75014 Paris

@@ -7,20 +7,20 @@ fr:
       intro: "Voici votre accès au guide du coworking en EHPAD, à destination des EHPAD :"
       cta: Accéder au guide
       validity: Ce lien est valable %{days} jours. Une fois ouvert, le guide reste accessible depuis ce navigateur.
-      signature: L'équipe Espaces Ouverts
+      signature: L'équipe Espace-ouvert
   passwords_mailer:
     reset:
-      subject: Choisir un nouveau mot de passe - Espaces Ouverts
+      subject: Choisir un nouveau mot de passe - Espace-ouvert
       greeting: Bonjour,
-      intro: "Vous avez demandé à changer le mot de passe de votre compte Espaces Ouverts :"
+      intro: "Vous avez demandé à changer le mot de passe de votre compte Espace-ouvert :"
       cta: Choisir un nouveau mot de passe
       validity: "Ce lien est valable %{minutes} minutes. Si vous n'avez rien demandé, ignorez cet email : votre mot de passe reste inchangé."
-      signature: L'équipe Espaces Ouverts
+      signature: L'équipe Espace-ouvert
   admin_invitations_mailer:
     invitation:
-      subject: Votre accès administrateur - Espaces Ouverts
+      subject: Votre accès administrateur - Espace-ouvert
       greeting: Bonjour,
-      intro: "Vous êtes invité à administrer Espaces Ouverts. Choisissez votre mot de passe pour activer votre compte :"
+      intro: "Vous êtes invité à administrer Espace-ouvert. Choisissez votre mot de passe pour activer votre compte :"
       cta: Choisir mon mot de passe
       validity: Ce lien est valable %{days} jours.
-      signature: L'équipe Espaces Ouverts
+      signature: L'équipe Espace-ouvert

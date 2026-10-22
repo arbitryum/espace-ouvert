@@ -1,4 +1,4 @@
-# Working on Espaces Ouverts
+# Working on Espace-ouvert
 
 Rules and context for anyone changing this app, human or agent. The README
 describes what the app does and how to run it; this file says how we work on it.

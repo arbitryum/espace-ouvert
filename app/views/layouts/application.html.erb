@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <title><%= content_for?(:title) ? t(".title", page: yield(:title)) : t("app_name") %></title>
+    <title><%= content_for?(:title) ? t(".title_html", page: yield(:title)) : t("app_name") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="application-name" content="<%= t("app_name") %>">
     <%# Required by the OpenStreetMap tile policy: send the origin as referrer on tile requests. %>
