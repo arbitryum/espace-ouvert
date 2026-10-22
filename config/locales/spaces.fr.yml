@@ -4,6 +4,12 @@ fr:
     index:
       title: Accueil d'association
       heading_html: Trouvez l'espace dont les associations<br>de votre territoire ont besoin
+      # PLACEHOLDER: Mathilde's text to come.
+      intro: >-
+        Des EHPAD et résidences pour personnes âgées ouvrent leurs espaces aux
+        associations du quartier. Trouvez un lieu pour vos activités, et
+        contactez l'établissement en présentant votre projet.
+      register: "Vous voulez accueillir ? Référencez votre établissement"
       city: Ville
       all_cities: Toutes les villes
       location: Localisation
@@ -46,6 +52,14 @@ fr:
         position_unavailable: Position introuvable.
         geolocation_timeout: La géolocalisation a expiré.
         geolocation_failed: Impossible de récupérer votre position.
+      documents:
+        heading: Les documents pour bien démarrer
+        # PLACEHOLDER: Mathilde's text to come.
+        intro: >-
+          Le contrat d'accueil et le guide du bien vivre ensemble vous aident à
+          cadrer la collaboration avec l'établissement.
+        download: "Télécharger (%{type}, %{size})"
+        open: Ouvrir le document (%{site})
     space_card:
       distance: à %{distance} km
       name: Nom espace

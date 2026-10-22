@@ -56,4 +56,26 @@ class AdminTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "Un atelier théâtre le mercredi.", response.body
   end
+
+  test "admin uploads a shared document" do
+    sign_in_as users(:admin)
+
+    post madmin_shared_documents_path, params: {shared_document: {title: "Contrat d'accueil", published: "1", position: "1",
+                                                                  file: fixture_file_upload("document.pdf", "application/pdf")}}
+
+    document = SharedDocument.sole
+    assert document.published?
+    assert document.file.attached?
+  end
+
+  test "admin adds a linked document, and is told a document needs a file or a link" do
+    sign_in_as users(:admin)
+
+    post madmin_shared_documents_path, params: {shared_document: {title: "Charte", url: "https://drive.google.com/file/d/abc/view"}}
+    assert_equal "https://drive.google.com/file/d/abc/view", SharedDocument.sole.url
+
+    post madmin_shared_documents_path, params: {shared_document: {title: "Vide"}}
+    assert_response :unprocessable_content
+    assert_match "Ajoutez un fichier ou un lien.", response.body
+  end
 end

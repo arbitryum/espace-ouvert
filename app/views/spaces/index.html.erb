@@ -4,8 +4,10 @@
   <div class="bg-base-200">
     <div class="max-w-6xl mx-auto px-4 py-8">
       <%= render "shared/home_button" %>
-      <div class="max-w-6xl mx-auto py-8">
-        <h1 class="text-4xl md:text-5xl font-bold text-primary text-center"><%= t(".heading_html") %></h1>
+      <div class="mx-auto max-w-6xl py-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-primary"><%= t(".heading_html") %></h1>
+        <p class="mx-auto mt-6 max-w-3xl text-lg text-base-content/70"><%= t(".intro") %></p>
+        <%= link_to t(".register"), new_registration_path, class: "btn btn-outline btn-primary mt-6" %>
       </div>
     </div>
   </div>
@@ -88,4 +90,31 @@
       <%= render partial: "space_card", collection: @spaces, as: :space, locals: { search: @search } %>
     </div>
   <% end %>
+<% end %>
+
+<% if @documents.any? %>
+  <section class="mt-16 rounded-box bg-base-200 p-6 sm:p-8" aria-labelledby="documents-title">
+    <h2 id="documents-title" class="text-2xl font-bold"><%= t(".documents.heading") %></h2>
+    <p class="mt-2 max-w-2xl text-base-content/70"><%= t(".documents.intro") %></p>
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      <% @documents.each do |document| %>
+        <li class="card border border-base-300 bg-base-100">
+          <div class="card-body gap-2 p-5">
+            <h3 class="font-semibold"><%= document.title %></h3>
+            <% if document.description.present? %>
+              <p class="text-sm text-base-content/70"><%= document.description %></p>
+            <% end %>
+            <% if document.link? %>
+              <%= link_to t(".documents.open", site: document.link_host), document.url, target: "_blank", rel: "noopener noreferrer",
+                    class: "link link-primary mt-1 text-sm font-medium" %>
+            <% else %>
+              <%= link_to rails_blob_path(document.file, disposition: "attachment"), class: "link link-primary mt-1 text-sm font-medium" do %>
+                <%= t(".documents.download", type: document.file.filename.extension.upcase, size: number_to_human_size(document.file.byte_size)) %>
+              <% end %>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </section>
 <% end %>
