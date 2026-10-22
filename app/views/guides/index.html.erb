@@ -33,12 +33,12 @@
           <span class="label-text mb-2 font-medium"><%= t(".request.email") %></span>
           <%= form.email_field :email_address, required: true, autocomplete: "email", class: "input input-md w-full" %>
         </label>
-        <p class="text-sm text-base-content/60"><%= t(".request.privacy") %></p>
+        <p class="text-sm text-base-content/70"><%= t(".request.privacy") %></p>
         <div class="card-actions justify-end">
           <button class="btn btn-secondary" type="submit"><%= t(".request.submit") %></button>
         </div>
         <% unless authenticated? %>
-          <p class="text-sm text-base-content/60">
+          <p class="text-sm text-base-content/70">
             <%= t(".request.sign_in_html", link: link_to(t(".request.sign_in_link"), new_session_path, class: "link")) %>
           </p>
         <% end %>

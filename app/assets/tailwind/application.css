@@ -12,7 +12,9 @@
 }
 
 /* The colors of the Softr site the app replaces (espace-ouvert.softr.app):
-   deep purple, navy text and cream backgrounds. Light only, like that site. */
+   deep purple, navy text and cream backgrounds. Light only, like that site.
+   Info and success are darker than daisyUI's so white text on them, and
+   the colors themselves as text, reach WCAG AA (4.5:1). */
 @plugin "./daisyui-theme.mjs" {
   name: "espaces-ouverts";
   default: true;
@@ -29,9 +31,9 @@
   --color-accent-content: #152237;
   --color-neutral: #152237;
   --color-neutral-content: #ffffff;
-  --color-info: #3b82c4;
+  --color-info: #2b6aa6;
   --color-info-content: #ffffff;
-  --color-success: #2f8f5b;
+  --color-success: #217448;
   --color-success-content: #ffffff;
   --color-warning: #e0a526;
   --color-warning-content: #152237;
@@ -48,6 +50,12 @@
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* daisyUI outlines fields at 20% of the text color (1.6:1); WCAG asks 3:1 for
+   the edge of a form field. */
+.input, .select, .textarea, .file-input {
+  --input-color: color-mix(in oklab, var(--color-base-content) 55%, #0000);
+}
 
 /* Poppins for headings and Open Sans for text, as Mathilde chose.
    Self-hosted (app/assets/fonts, SIL Open Font License) so pages make no
