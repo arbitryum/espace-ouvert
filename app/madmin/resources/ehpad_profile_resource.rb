@@ -1,5 +1,6 @@
 class EhpadProfileResource < Madmin::Resource
-  # Approving a profile lets its user sign in.
+  # Approving a profile lets its user sign in, and publishes the spaces entered
+  # when registering.
   attribute :id, form: false
   attribute :establishment_name, index: true
   attribute :contact_name, index: true

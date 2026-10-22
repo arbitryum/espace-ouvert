@@ -66,13 +66,27 @@ fr:
       admin_invitation:
         email_address: Email
       ehpad_registration:
-        establishment_name: Nom de l'établissement
-        establishment_address: Adresse de l'établissement
-        contact_name: Nom du contact
-        email_address: Email professionnel
+        establishment_name: Nom de votre établissement
+        legal_status: Statut
+        group_name: Groupe auquel appartient votre établissement (facultatif)
+        street: Numéro et rue
+        postal_code: Code postal
+        city: Ville
+        contact_name: Nom et prénom du référent projet
+        email_address: Adresse email du référent projet
         password: Mot de passe
         password_confirmation: Confirmer le mot de passe
         modules: Dispositifs
+        coworking_space: >-
+          Vous avez dans votre établissement un espace clos qui pourrait accueillir
+          une petite équipe en coworking, quelques jours par semaine ?
+        coworking_photos: Photos de l'espace
+        spaces: Espaces
+      ehpad_registration/space_input:
+        name: Nom de l'espace
+        description: Description de l'espace
+        slots: Disponibilités de l'espace
+        photos: Photos de l'espace
     errors:
       models:
         admin_invitation:
@@ -83,3 +97,19 @@ fr:
           attributes:
             modules:
               none_selected: Sélectionnez au moins un dispositif.
+            coworking_space:
+              needed_for_coworking: >-
+                Malheureusement, il faut avoir un espace à mettre à disposition pour
+                participer au coworking. Décochez le coworking pour continuer.
+            spaces:
+              none: Ajoutez au moins un espace.
+              invalid: "L'espace %{number} est à compléter."
+        ehpad_registration/space_input:
+          attributes:
+            slots:
+              invalid_times: "le %{day} : indiquez une heure de début et une heure de fin, dans cet ordre"
+      # Photo checks shared by the registration form and its spaces.
+      messages:
+        too_many_photos: "contient trop de photos (6 au plus)"
+        photo_type: "doivent être des images JPEG, PNG, WebP ou HEIC"
+        photo_size: "ne doivent pas dépasser 15 Mo chacune"

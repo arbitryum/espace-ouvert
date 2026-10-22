@@ -9,19 +9,44 @@
   </div>
 
   <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_16rem]">
-    <%= form_with model: @registration, url: registrations_path, class: "card border border-base-300 bg-base-100 shadow-sm" do |form| %>
+    <%= form_with model: @registration, url: registrations_path, multipart: true, class: "card min-w-0 border border-base-300 bg-base-100 shadow-sm",
+          data: { controller: "registration-form" } do |form| %>
       <div class="card-body gap-8 p-6 sm:p-8">
         <fieldset class="fieldset">
           <legend class="fieldset-legend text-lg"><%= t(".establishment.legend") %></legend>
-          <p class="label mb-3"><%= t(".establishment.help") %></p>
-          <div class="grid gap-6 sm:grid-cols-2">
-            <% [:establishment_name, :establishment_address, :contact_name].each do |field| %>
-              <label class="form-control w-full <%= "sm:col-span-2" if field == :establishment_address %>">
-                <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(field) %></span>
-                <%= form.text_field field, required: true, class: "input input-md w-full" %>
-                <%= render "shared/field_errors", model: @registration, field: %>
-              </label>
-            <% end %>
+          <p class="label mb-3 whitespace-normal"><%= t(".establishment.help") %></p>
+          <div class="grid items-end gap-6 sm:grid-cols-2">
+            <label class="form-control w-full sm:col-span-2">
+              <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:establishment_name) %></span>
+              <%= form.text_field :establishment_name, required: true, autocomplete: "organization", class: "input input-md w-full" %>
+              <%= render "shared/field_errors", model: @registration, field: :establishment_name %>
+            </label>
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:legal_status) %></span>
+              <%= form.select :legal_status, CareHome::LEGAL_STATUSES.map { |status| [CareHome.human_enum_name(:legal_status, status), status] },
+                    { include_blank: true }, required: true, class: "select w-full" %>
+              <%= render "shared/field_errors", model: @registration, field: :legal_status %>
+            </label>
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:group_name) %></span>
+              <%= form.text_field :group_name, class: "input input-md w-full" %>
+              <%= render "shared/field_errors", model: @registration, field: :group_name %>
+            </label>
+            <label class="form-control w-full sm:col-span-2">
+              <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:street) %></span>
+              <%= form.text_field :street, required: true, autocomplete: "address-line1", class: "input input-md w-full" %>
+              <%= render "shared/field_errors", model: @registration, field: :street %>
+            </label>
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:postal_code) %></span>
+              <%= form.text_field :postal_code, required: true, inputmode: "numeric", pattern: "[0-9]{5}", maxlength: 5, autocomplete: "postal-code", class: "input input-md w-full" %>
+              <%= render "shared/field_errors", model: @registration, field: :postal_code %>
+            </label>
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:city) %></span>
+              <%= form.text_field :city, required: true, autocomplete: "address-level2", class: "input input-md w-full" %>
+              <%= render "shared/field_errors", model: @registration, field: :city %>
+            </label>
           </div>
         </fieldset>
 
@@ -29,9 +54,14 @@
 
         <fieldset class="fieldset" data-controller="password-rules">
           <legend class="fieldset-legend text-lg"><%= t(".account.legend") %></legend>
-          <p class="label mb-3"><%= t(".account.help") %></p>
+          <p class="label mb-3 whitespace-normal"><%= t(".account.help") %></p>
           <div class="grid gap-6 sm:grid-cols-2">
-            <label class="form-control w-full sm:col-span-2">
+            <label class="form-control w-full">
+              <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:contact_name) %></span>
+              <%= form.text_field :contact_name, required: true, autocomplete: "name", class: "input input-md w-full" %>
+              <%= render "shared/field_errors", model: @registration, field: :contact_name %>
+            </label>
+            <label class="form-control w-full">
               <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:email_address) %></span>
               <%= form.email_field :email_address, required: true, autocomplete: "username", class: "input input-md w-full" %>
               <span class="label-text-alt mt-2"><%= t(".account.email_help") %></span>
@@ -56,14 +86,14 @@
 
         <fieldset class="fieldset">
           <legend class="fieldset-legend text-lg"><%= t(".modules.legend") %></legend>
-          <p class="label mb-3"><%= t(".modules.help") %></p>
+          <p class="label mb-3 whitespace-normal"><%= t(".modules.help") %></p>
           <% @registration.errors[:modules].each do |message| %>
             <p class="mb-3 text-sm text-error"><%= message %></p>
           <% end %>
           <div class="grid gap-3 sm:grid-cols-2">
             <%= form.collection_check_boxes :modules, EhpadRegistration::MODULES, :itself, ->(mod) { t(".modules.#{mod}.label") } do |choice| %>
               <label class="flex cursor-pointer items-start gap-3 rounded-box border border-base-300 p-4 transition hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                <%= choice.check_box class: "checkbox checkbox-primary mt-1" %>
+                <%= choice.check_box class: "checkbox checkbox-primary mt-1", data: { registration_form_target: "module", action: "registration-form#update" } %>
                 <span>
                   <span class="block font-semibold"><%= choice.text %></span>
                   <span class="mt-1 block text-sm text-base-content/60"><%= t(".modules.#{choice.value}.description") %></span>
@@ -72,6 +102,53 @@
             <% end %>
           </div>
         </fieldset>
+
+        <%# Shown when its module is ticked; hidden sections' fields are disabled, so not sent. %>
+        <fieldset class="fieldset gap-4" data-module="coworking" data-registration-form-target="section">
+          <legend class="fieldset-legend text-lg"><%= t(".coworking.legend") %></legend>
+          <div>
+            <p class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:coworking_space) %></p>
+            <div class="flex gap-6">
+              <% %w[yes no].each do |answer| %>
+                <label class="label cursor-pointer gap-2">
+                  <%= form.radio_button :coworking_space, answer, class: "radio radio-primary", data: { action: "registration-form#update" } %>
+                  <span><%= t(".coworking.#{answer}") %></span>
+                </label>
+              <% end %>
+            </div>
+            <%= render "shared/field_errors", model: @registration, field: :coworking_space, full: false %>
+          </div>
+          <div class="alert alert-success" data-answer="yes" hidden><span><%= t(".coworking.yes_message") %></span></div>
+          <div class="alert alert-warning" data-answer="no" hidden><span><%= t(".coworking.no_message") %></span></div>
+          <label class="form-control w-full">
+            <span class="label-text block font-medium"><%= EhpadRegistration.human_attribute_name(:coworking_photos) %></span>
+            <span class="label-text-alt mb-2 block text-base-content/60"><%= t(".photos_hint", count: EhpadRegistration::MAX_PHOTOS) %></span>
+            <%= form.file_field :coworking_photos, multiple: true, accept: EhpadRegistration::PHOTO_TYPES.join(","), class: "file-input w-full" %>
+            <%= render "shared/field_errors", model: @registration, field: :coworking_photos, full: false %>
+          </label>
+        </fieldset>
+
+        <fieldset class="fieldset gap-4" data-module="spaces" data-registration-form-target="section">
+          <legend class="fieldset-legend text-lg"><%= t(".spaces.legend") %></legend>
+          <p class="text-base-content/70"><%= t(".spaces.intro") %></p>
+          <% @registration.errors[:spaces].each do |message| %>
+            <p class="text-sm text-error"><%= message %></p>
+          <% end %>
+          <div class="space-y-4" data-registration-form-target="spaces">
+            <% inputs = @registration.spaces.presence || [EhpadRegistration::SpaceInput.new] %>
+            <% inputs.each_with_index do |input, index| %>
+              <%= render "space_fields", input:, index: %>
+            <% end %>
+          </div>
+          <template data-registration-form-target="template">
+            <%= render "space_fields", input: EhpadRegistration::SpaceInput.new, index: "__INDEX__" %>
+          </template>
+          <button type="button" class="btn btn-outline btn-sm w-fit" data-action="registration-form#addSpace"><%= t(".spaces.add") %></button>
+        </fieldset>
+
+        <% if @registration.errors.any? %>
+          <p class="text-sm text-base-content/60"><%= t(".photos_again") %></p>
+        <% end %>
 
         <div class="card-actions items-center justify-end gap-3">
           <%= link_to t(".cancel"), root_path, class: "btn btn-ghost" %>

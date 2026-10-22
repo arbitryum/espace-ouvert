@@ -7,6 +7,8 @@ class CareHome < ApplicationRecord
   has_many :spaces, dependent: :destroy
   has_many :coworking_projects, dependent: :nullify
   has_many :hosting_requests, dependent: :destroy
+  # Photos of the space offered to a coworking team (registration form).
+  has_many_attached :coworking_photos
 
   validates :name, :address, presence: true
   validates :legal_status, inclusion: {in: LEGAL_STATUSES}, allow_blank: true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_22_220000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_23_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -72,6 +72,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_220000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "ehpad_profile_id"
+    t.boolean "offers_coworking", default: false, null: false
     t.index ["address_details_id"], name: "index_care_homes_on_address_details_id"
     t.index ["ehpad_profile_id"], name: "index_care_homes_on_ehpad_profile_id"
   end

@@ -1,0 +1,48 @@
+<%# One association space of the registration form; index is __INDEX__ in the template. %>
+<% prefix = "ehpad_registration[spaces][#{index}]" %>
+<div class="rounded-box border border-base-300 p-5" data-registration-form-target="space">
+  <div class="mb-4 flex items-center justify-between gap-4">
+    <h3 class="font-semibold"><%= t("registrations.new.spaces.space") %></h3>
+    <button type="button" class="btn btn-ghost btn-sm" data-action="registration-form#removeSpace"><%= t("registrations.new.spaces.remove") %></button>
+  </div>
+  <% input.errors.full_messages.each do |message| %>
+    <p class="mb-2 text-sm text-error"><%= message %></p>
+  <% end %>
+
+  <div class="grid gap-4">
+    <label class="form-control w-full">
+      <span class="label-text mb-2 block font-medium"><%= EhpadRegistration::SpaceInput.human_attribute_name(:name) %></span>
+      <%= text_field_tag "#{prefix}[name]", input.name, id: nil, required: true, maxlength: 200, class: "input w-full" %>
+    </label>
+    <label class="form-control w-full">
+      <span class="label-text block font-medium"><%= EhpadRegistration::SpaceInput.human_attribute_name(:description) %></span>
+      <span class="label-text-alt mb-2 block text-base-content/60"><%= t("registrations.new.spaces.description_hint") %></span>
+      <%= text_area_tag "#{prefix}[description]", input.description, id: nil, required: true, rows: 3, class: "textarea w-full" %>
+    </label>
+
+    <div>
+      <p class="label-text font-medium"><%= EhpadRegistration::SpaceInput.human_attribute_name(:slots) %></p>
+      <p class="label-text-alt mb-2 text-base-content/60"><%= t("registrations.new.spaces.slots_hint") %></p>
+      <div class="grid gap-2">
+        <% input.slots.each do |day, slot| %>
+          <div class="grid grid-cols-[6.5rem_minmax(0,1fr)_minmax(0,1fr)] items-center gap-2 sm:gap-3">
+            <label class="label cursor-pointer gap-2">
+              <%= check_box_tag "#{prefix}[slots][#{day}][enabled]", "1", slot[:enabled], id: nil, class: "checkbox checkbox-primary checkbox-sm" %>
+              <span><%= RecurringAvailability.weekday_name(day) %></span>
+            </label>
+            <%= time_field_tag "#{prefix}[slots][#{day}][start_time]", slot[:start_time], id: nil, step: 900, class: "input input-sm w-full min-w-0",
+                  "aria-label": t("registrations.new.spaces.start", day: RecurringAvailability.weekday_name(day)) %>
+            <%= time_field_tag "#{prefix}[slots][#{day}][end_time]", slot[:end_time], id: nil, step: 900, class: "input input-sm w-full min-w-0",
+                  "aria-label": t("registrations.new.spaces.end", day: RecurringAvailability.weekday_name(day)) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <label class="form-control w-full">
+      <span class="label-text block font-medium"><%= EhpadRegistration::SpaceInput.human_attribute_name(:photos) %></span>
+      <span class="label-text-alt mb-2 block text-base-content/60"><%= t("registrations.new.photos_hint", count: EhpadRegistration::MAX_PHOTOS) %></span>
+      <%= file_field_tag "#{prefix}[photos][]", id: nil, multiple: true, accept: EhpadRegistration::PHOTO_TYPES.join(","), class: "file-input w-full" %>
+    </label>
+  </div>
+</div>

@@ -24,21 +24,48 @@ fr:
         la publication de vos espaces.
       establishment:
         legend: Votre établissement
-        help: Ces informations nous permettent d'identifier votre structure.
+        help: Son adresse complète nous permet de le placer sur la carte.
       account:
-        legend: Votre compte
-        help: Vous utiliserez ces informations pour suivre votre demande.
-        email_help: Vous l'utiliserez pour vous connecter.
+        legend: Le référent du projet
+        help: >-
+          Il recevra les demandes des structures et y répondra depuis son
+          compte, avec cet email et ce mot de passe.
+        email_help: Les demandes y seront envoyées. Elle sert aussi à vous connecter.
         password_help: Au moins 8 caractères, sans être uniquement numérique.
       modules:
-        legend: Choisissez vos dispositifs
-        help: Sélectionnez au moins un parcours pour votre établissement.
-        spaces:
-          label: Accueil d'association
-          description: Proposer des espaces aux associations.
+        legend: Vous souhaitez
+        help: Cochez une ou les deux possibilités.
         coworking:
-          label: Coworking en EHPAD
-          description: Accueillir des équipes en coworking.
+          label: Accueillir une équipe en coworking
+          description: Quelques jours par semaine, une petite équipe en coworking dans mon établissement.
+        spaces:
+          label: Accueillir des activités associatives
+          description: Ponctuellement, des activités associatives dans mes espaces.
+      coworking:
+        legend: Concernant l'accueil d'une équipe en coworking
+        "yes": Oui
+        "no": Non
+        yes_message: >-
+          Vous faites désormais partie de notre annuaire d'établissements prêts à
+          accueillir une équipe en coworking. Nous ne manquerons pas de vous
+          relayer les demandes que nous recevrons pour vous !
+        no_message: >-
+          Malheureusement, il faut avoir un espace à mettre à disposition pour
+          participer à ce projet dans les meilleures conditions.
+      spaces:
+        legend: Concernant l'accueil d'activités associatives
+        intro: Il ne vous reste plus qu'à renseigner les espaces que vous pouvez mettre à disposition.
+        space: Espace
+        remove: Retirer
+        add: Ajouter un espace
+        description_hint: Superficie, mobilier sur place…
+        slots_hint: Cochez les jours où l'espace est disponible et indiquez les horaires de début et de fin.
+        start: Début le %{day}
+        end: Fin le %{day}
+      photos_hint:
+        one: Facultatif, 1 photo au plus (JPEG, PNG, WebP ou HEIC, 15 Mo chacune).
+        other: Facultatif, %{count} photos au plus (JPEG, PNG, WebP ou HEIC, 15 Mo chacune).
+      photos_again: En cas d'erreur, les photos sont à choisir de nouveau.
       cancel: Annuler
       submit: Envoyer la demande
       next_steps:
@@ -49,6 +76,9 @@ fr:
           - Votre compte est activé après validation.
     create:
       notice: Votre demande a été envoyée. Elle sera examinée par notre équipe.
+      coworking_notice: >-
+        Vous ferez partie de notre annuaire d'établissements prêts à accueillir une
+        équipe en coworking dès sa validation.
     pending:
       title: Demande envoyée
       heading: Demande envoyée
