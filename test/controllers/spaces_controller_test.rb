@@ -162,4 +162,13 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
     assert_select "section h3", {text: "Brouillon", count: 0}
     assert_select "section a[href*='/rails/active_storage/blobs/']", /Télécharger \(PDF, \d+ octets\)/
   end
+
+  test "a linked document opens in a new tab" do
+    SharedDocument.create!(title: "Charte du bien vivre ensemble", published: true,
+      url: "https://drive.google.com/file/d/1wUtVUnbmlJzHJjkyYBmcNpPBTg92mgs1/view?usp=sharing")
+
+    get spaces_path
+
+    assert_select "section a[href^='https://drive.google.com/'][target=_blank][rel~=noopener]", "Ouvrir le document (drive.google.com)"
+  end
 end

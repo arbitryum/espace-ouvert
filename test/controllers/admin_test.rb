@@ -67,4 +67,15 @@ class AdminTest < ActionDispatch::IntegrationTest
     assert document.published?
     assert document.file.attached?
   end
+
+  test "admin adds a linked document, and is told a document needs a file or a link" do
+    sign_in_as users(:admin)
+
+    post madmin_shared_documents_path, params: {shared_document: {title: "Charte", url: "https://drive.google.com/file/d/abc/view"}}
+    assert_equal "https://drive.google.com/file/d/abc/view", SharedDocument.sole.url
+
+    post madmin_shared_documents_path, params: {shared_document: {title: "Vide"}}
+    assert_response :unprocessable_content
+    assert_match "Ajoutez un fichier ou un lien.", response.body
+  end
 end

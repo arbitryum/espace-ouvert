@@ -191,6 +191,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_110000) do
   create_table "shared_documents", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", default: "", null: false
+    t.string "url", default: "", null: false
     t.integer "position", default: 0, null: false
     t.boolean "published", default: false, null: false
     t.datetime "created_at", null: false

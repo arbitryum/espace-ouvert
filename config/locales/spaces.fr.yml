@@ -59,6 +59,7 @@ fr:
           Le contrat d'accueil et le guide du bien vivre ensemble vous aident à
           cadrer la collaboration avec l'établissement.
         download: "Télécharger (%{type}, %{size})"
+        open: Ouvrir le document (%{site})
     space_card:
       distance: à %{distance} km
       name: Nom espace

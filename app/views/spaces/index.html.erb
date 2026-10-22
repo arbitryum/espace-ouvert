@@ -104,8 +104,13 @@
             <% if document.description.present? %>
               <p class="text-sm text-base-content/70"><%= document.description %></p>
             <% end %>
-            <%= link_to rails_blob_path(document.file, disposition: "attachment"), class: "link link-primary mt-1 text-sm font-medium" do %>
-              <%= t(".documents.download", type: document.file.filename.extension.upcase, size: number_to_human_size(document.file.byte_size)) %>
+            <% if document.link? %>
+              <%= link_to t(".documents.open", site: document.link_host), document.url, target: "_blank", rel: "noopener noreferrer",
+                    class: "link link-primary mt-1 text-sm font-medium" %>
+            <% else %>
+              <%= link_to rails_blob_path(document.file, disposition: "attachment"), class: "link link-primary mt-1 text-sm font-medium" do %>
+                <%= t(".documents.download", type: document.file.filename.extension.upcase, size: number_to_human_size(document.file.byte_size)) %>
+              <% end %>
             <% end %>
           </div>
         </li>

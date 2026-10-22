@@ -81,7 +81,11 @@ fr:
     errors:
       models:
         shared_document:
+          file_or_link: Ajoutez un fichier ou un lien.
+          not_both: Choisissez un fichier ou un lien, pas les deux.
           attributes:
+            url:
+              invalid: doit être une adresse web (https://…)
             file:
               content_type: doit être un PDF, un document Word ou OpenDocument
               too_large: ne doit pas dépasser 20 Mo

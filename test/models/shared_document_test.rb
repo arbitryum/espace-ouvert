@@ -20,4 +20,22 @@ class SharedDocumentTest < ActiveSupport::TestCase
 
     assert_equal [contract, guide], SharedDocument.visible.to_a
   end
+
+  test "is either a file or a web link" do
+    link = "https://docs.google.com/document/d/abc/edit?usp=sharing"
+    document = SharedDocument.new(title: "Contrat", url: " #{link} ")
+    assert document.valid?
+    assert_equal link, document.url
+
+    neither = SharedDocument.new(title: "Contrat")
+    assert_not neither.valid?
+    assert_includes neither.errors[:base], "Ajoutez un fichier ou un lien."
+
+    both = SharedDocument.new(title: "Contrat", url: link, file: fixture_file_upload("document.pdf", "application/pdf"))
+    assert_includes both.tap(&:validate).errors[:base], "Choisissez un fichier ou un lien, pas les deux."
+
+    %w[javascript:alert(1) docs.google.com/document mailto:x@example.org].each do |url|
+      assert_includes SharedDocument.new(title: "Contrat", url:).tap(&:validate).errors[:url], "doit être une adresse web (https://…)", url
+    end
+  end
 end
