@@ -6,7 +6,7 @@ module Account::HostingRequestsHelper
              signature: request.care_home.ehpad_profile&.contact_name.to_s}
     mail_to request.email, cc: Current.user.email_address,
       subject: t("account.hosting_requests.acceptance_mail.subject", **texts),
-      body: t("account.hosting_requests.acceptance_mail.body", **texts), **options, &
+      body: t("account.hosting_requests.acceptance_mail.body.#{request.kind}", **texts), **options, &
   end
 
   STATUS_BADGES = {"pending" => "badge-warning", "accepted" => "badge-success", "refused" => "badge-ghost"}.freeze

@@ -43,7 +43,9 @@ class Account::HostingRequestsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     link = css_select("a.btn-primary[href^='mailto:lea@example.org']").first
     assert_includes link["href"], "cc=approved%40example.com"
-    assert_includes CGI.unescape(link["href"]), "EHPAD Les Tilleuls serait heureux d'accueillir Les Petits Pas"
+    body = CGI.unescape(link["href"])
+    assert_includes body, "Merci pour votre sollicitation ! Nous serions ravis d'accueillir vos activités"
+    assert_includes body, "Je suis disponible : [renseigner vos disponibilités]"
   end
 
   test "refusing keeps the reason for us and emails the visitor" do

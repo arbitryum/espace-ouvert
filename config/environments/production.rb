@@ -49,8 +49,12 @@ Rails.application.configure do
   # Replace the default in-process memory cache store with a durable alternative.
   # config.cache_store = :mem_cache_store
 
-  # Replace the default in-process and non-durable queuing backend for Active Job.
-  # config.active_job.queue_adapter = :resque
+  # Durable jobs (emails, recurring tasks in config/recurring.yml) with Solid
+  # Queue, in the main database, running inside Puma (config/puma.rb).
+  # SOLID_QUEUE_IN_PUMA turns it on once its tables exist: when they don't,
+  # its supervisor fails and stops Puma, and Scalingo starts a release before
+  # migrating. Without it, jobs run in-process (async).
+  config.active_job.queue_adapter = (ENV["SOLID_QUEUE_IN_PUMA"] == "true") ? :solid_queue : :async
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

@@ -106,6 +106,10 @@ Merging to `main` deploys the Scalingo app `espaces-ouverts-production`.
 - **Run:** `Procfile` starts Puma and runs the migrations on `postdeploy`.
 - **Photos:** stored on Scaleway Object Storage (Active Storage `scaleway`
   service, `config/storage.yml`).
+- **Jobs:** Solid Queue runs inside Puma (`SOLID_QUEUE_IN_PUMA=true`), with
+  its tables in the main database: emails, and the recurring tasks of
+  `config/recurring.yml` (every Monday, a reminder to establishments with
+  requests pending for a week or more).
 - **Emails:** sent through Brevo's SMTP relay, from `no-reply@arbitryum.fr`.
   Brevo only accepts SMTP from allowlisted IPs, so Scalingo's egress IPs must
   stay authorized there.

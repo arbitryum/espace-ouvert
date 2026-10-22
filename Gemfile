@@ -64,3 +64,5 @@ gem "rails-i18n", "~> 8.1"
 gem "aws-sdk-s3", "~> 1.233"
 
 gem "minitest-mock", "~> 5.27", group: :test
+
+gem "solid_queue", "~> 1.7"

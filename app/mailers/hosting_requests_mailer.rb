@@ -13,7 +13,16 @@ class HostingRequestsMailer < ApplicationMailer
   # To the visitor, when the care home refuses. The reason isn't shared.
   def refusal(request)
     @request = request
+    # The directory matching what they were looking for.
+    @directory_url = request.coworking? ? coworking_projects_url : spaces_url
     mail to: request.email, subject: default_i18n_subject(care_home: request.care_home.name)
+  end
+
+  # To an establishment whose requests wait for an answer (see HostingRequestReminders).
+  def reminder(profile, count)
+    @count = count
+    @url = account_hosting_requests_url
+    mail to: profile.user.email_address
   end
 
   # To the visitor, confirming the request went through.
