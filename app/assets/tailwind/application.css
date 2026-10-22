@@ -89,27 +89,9 @@
   margin: 0;
 }
 
-/* Spaces map: muted tiles, so the markers stand out. */
-.spaces-map .leaflet-tile-pane {
-  filter: grayscale(1) contrast(0.9) brightness(1.08);
-}
-
-/* Markers of the spaces map: a dot in the theme's color, enlarged while the
-   matching card is hovered. */
-.spaces-map-marker span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 9999px;
-  background: var(--color-primary);
-  border: 3px solid var(--color-base-100);
-  box-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
-  transition: transform 150ms, background-color 150ms;
-}
-
-.spaces-map-marker.is-active span {
-  background: var(--color-secondary);
-  transform: scale(1.4);
+/* Leaflet's default blue marker turns red while its card is hovered. */
+.leaflet-marker-icon.is-active {
+  filter: hue-rotate(150deg) saturate(1.5);
 }
 
 /* Coworking guide pages, imported from Notion (see GuideImport). */
