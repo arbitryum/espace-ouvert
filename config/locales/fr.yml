@@ -51,24 +51,37 @@ fr:
         notice: Invitation envoyée à %{email}.
   home:
     index:
-      eyebrow: Espaces Ouverts
-      heading: Des lieux qui créent du lien
+      tagline: >-
+        Les espaces sous-utilisés des établissements, partagés avec les
+        structures du quartier pour leurs activités.
       intro: >-
-        Choisissez votre parcours pour découvrir les espaces et les initiatives
-        qui rapprochent les EHPAD de leur quartier.
-      products_heading: Que recherchez-vous ?
-      products_intro: Explorez l'un de nos deux dispositifs.
-      spaces:
-        badge: Associations
-        title: Accueil d'association
+        Nous mettons en lien des établissements qui ont des espaces
+        sous-utilisés et des structures qui cherchent des lieux pour leurs
+        activités.
+      about:
+        heading: Le projet en bref
         text: >-
-          Trouvez un espace disponible en EHPAD pour organiser des activités
-          associatives ouvertes aux habitants du quartier.
-        cta: Je cherche un espace pour mes activités associatives
-      coworking:
-        badge: Coworking
-        title: Coworking en EHPAD
-        text: >-
-          Découvrez les établissements qui accueillent des équipes de coworking
-          et préparez votre projet avec les bonnes ressources.
-        cta: Je cherche un espace pour faire du coworking
+          Depuis 2024, nous accompagnons des EHPAD et résidences pour
+          personnes âgées à s'ouvrir sur l'extérieur en accueillant, de façon
+          récurrente ou ponctuelle, des associations ou des startups au sein
+          de leurs espaces vacants.
+        support: Ce projet a été rendu possible grâce au soutien de Klésia et de la fondation OCIRP.
+        register: Inscrire son établissement
+      how:
+        heading: Comment ça marche ?
+        steps:
+          - Consultez notre annuaire d'établissements partenaires de la démarche.
+          - >-
+            Formulez une demande auprès des établissements répondant à vos
+            critères géographiques, en détaillant votre besoin.
+          - >-
+            Si l'établissement peut vous accueillir, utilisez les documents et
+            astuces de notre boîte à outils pour cadrer la collaboration.
+        coworking: Je cherche un espace pour faire du coworking
+        spaces: Je cherche un espace pour mes activités associatives
+      figures:
+        heading: En chiffres
+        care_homes:
+          one: établissement inscrit dans l'annuaire, prêt à vous accueillir
+          other: établissements inscrits dans l'annuaire, prêts à vous accueillir
+        directory: Voir l'annuaire
