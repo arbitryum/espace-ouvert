@@ -111,15 +111,31 @@ fr:
       refuse:
         notice: "Demande refusée : %{organization}. Nous les en avons informés."
       # The email the establishment edits before sending, opened by "Écrire à".
+      # [renseigner vos disponibilités] is for the establishment to fill in.
       acceptance_mail:
         subject: Votre demande d'accueil à %{care_home}
-        body: |-
-          Bonjour %{name},
+        body:
+          coworking: |-
+            Bonjour %{name},
 
-          Merci pour votre demande. %{care_home} serait heureux d'accueillir %{organization}.
+            Merci pour votre demande ! Nous serions ravis d'échanger avec vous pour en savoir plus sur votre besoin et pourquoi pas organiser une première visite pour que vous puissiez vous projeter dans l'établissement et que nous puissions discuter des conditions d'accueil.
 
-          Pouvons-nous convenir d'un moment pour en parler et préparer votre venue ?
+            Je suis disponible : [renseigner vos disponibilités]
 
-          Bien cordialement,
-          %{signature}
-          %{care_home}
+            Merci pour votre retour et à bientôt !
+
+            %{signature}
+            %{care_home}
+          association: |-
+            Bonjour %{name},
+
+            Merci pour votre sollicitation ! Nous serions ravis d'accueillir vos activités et d'échanger avec vous pour en savoir plus sur votre besoin (et pourquoi pas organiser une première visite pour que vous puissiez vous projeter dans l'établissement).
+
+            Je suis disponible : [renseigner vos disponibilités]
+
+            Nous pourrons en profiter pour échanger sur les conditions d'accueil.
+
+            Merci pour votre retour et à bientôt !
+
+            %{signature}
+            %{care_home}

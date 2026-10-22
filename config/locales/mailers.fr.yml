@@ -1,5 +1,8 @@
 # Emails. Each mailer action's subject is picked up by Action Mailer.
 fr:
+  layouts:
+    mailer:
+      signature: L'Équipe Espace-Ouvert by Arbitryum
   guide_mailer:
     access_link:
       subject: Votre accès au guide du coworking en EHPAD
@@ -7,7 +10,6 @@ fr:
       intro: "Voici votre accès au guide du coworking en EHPAD, à destination des EHPAD :"
       cta: Accéder au guide
       validity: Ce lien est valable %{days} jours. Une fois ouvert, le guide reste accessible depuis ce navigateur.
-      signature: L'équipe Espace-ouvert
   passwords_mailer:
     reset:
       subject: Choisir un nouveau mot de passe - Espace-ouvert
@@ -15,7 +17,6 @@ fr:
       intro: "Vous avez demandé à changer le mot de passe de votre compte Espace-ouvert :"
       cta: Choisir un nouveau mot de passe
       validity: "Ce lien est valable %{minutes} minutes. Si vous n'avez rien demandé, ignorez cet email : votre mot de passe reste inchangé."
-      signature: L'équipe Espace-ouvert
   admin_invitations_mailer:
     invitation:
       subject: Votre accès administrateur - Espace-ouvert
@@ -23,32 +24,47 @@ fr:
       intro: "Vous êtes invité à administrer Espace-ouvert. Choisissez votre mot de passe pour activer votre compte :"
       cta: Choisir mon mot de passe
       validity: Ce lien est valable %{days} jours.
-      signature: L'équipe Espace-ouvert
   hosting_requests_mailer:
     received:
-      subject: "Demande d'accueil : %{organization}"
+      subject: "Nouvelle demande : %{organization}"
       greeting: Bonjour,
-      intro: "%{organization} souhaite être accueilli dans votre établissement (%{kind})."
+      intro:
+        coworking: Vous avez reçu une nouvelle demande de %{organization} pour occuper vos espaces pour du coworking.
+        association: Vous avez reçu une nouvelle demande de %{organization} pour occuper vos espaces pour des activités associatives.
+      account: >-
+        Vous pouvez consulter le profil de %{organization} et son besoin sur
+        votre compte, et accepter ou refuser la demande : %{url}
+      account_html: >-
+        Vous pouvez consulter le profil de %{organization} et son besoin sur
+        votre compte, et %{link}.
+      account_link: accepter ou refuser la demande
       space: "Espace demandé : %{space}"
       contact: Contact
       need: Besoin
       reply: Répondez directement à cet email pour écrire à la structure.
-      account: "Acceptez ou refusez la demande depuis votre espace : %{url}"
-      account_link: Accepter ou refuser la demande depuis votre espace
-      signature: L'équipe Espace-ouvert
+      closing: Bonne journée,
     refusal:
       subject: Votre demande à %{care_home}
       greeting: Bonjour %{name},
-      intro: >-
-        %{care_home} ne peut malheureusement pas accueillir %{organization}
-        pour le moment.
-      others: "D'autres établissements proposent peut-être des espaces près de chez vous : %{url}"
-      others_html: D'autres établissements proposent peut-être des espaces près de chez vous, dans %{link}.
-      directory: l'annuaire Espace-ouvert
-      signature: L'équipe Espace-ouvert
+      intro:
+        coworking: Malheureusement, %{care_home} ne peut pas vous accueillir en coworking.
+        association: Malheureusement, %{care_home} ne peut pas accueillir les activités de votre association.
+      others: "N'hésitez pas à consulter la carte pour trouver d'autres espaces : %{url}"
+      others_html: N'hésitez pas à consulter %{link} pour trouver d'autres espaces.
+      map: la carte
+      closing: Bonne continuation,
+    reminder:
+      subject: Des demandes vous attendent sur Espace-ouvert
+      greeting: Bonjour,
+      pending:
+        one: Vous avez toujours 1 demande en attente sur votre compte.
+        other: Vous avez toujours %{count} demandes en attente sur votre compte.
+      cta: "Rendez-vous sur votre compte pour les consulter et les accepter ou refuser : %{url}"
+      cta_html: Rendez-vous sur %{link} pour les consulter et les accepter ou refuser.
+      account: votre compte
+      thanks: Merci !
     acknowledgment:
       subject: Votre demande à %{care_home}
       greeting: Bonjour %{name},
       intro: Votre demande a bien été transmise à %{care_home}.
       next: L'établissement vous répondra directement par email.
-      signature: L'équipe Espace-ouvert

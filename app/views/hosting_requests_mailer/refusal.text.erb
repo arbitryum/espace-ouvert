@@ -1,7 +1,7 @@
 <%= t(".greeting", name: @request.contact_name) %>
 
-<%= t(".intro", care_home: @request.care_home.name, organization: @request.organization_name) %>
+<%= t(".intro.#{@request.kind}", care_home: @request.care_home.name) %>
 
-<%= t(".others", url: spaces_url) %>
+<%= t(".others", url: @directory_url) %>
 
-<%= t(".signature") %>
+<%= t(".closing") %>

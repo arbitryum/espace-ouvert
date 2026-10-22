@@ -1,6 +1,10 @@
 <%= t(".greeting") %>
 
-<%= t(".intro", organization: @request.organization_name, kind: @request.human_enum_name(:kind)) %>
+<%= t(".intro.#{@request.kind}", organization: @request.organization_name) %>
+
+<% if @account_url %>
+<%= t(".account", organization: @request.organization_name, url: @account_url) %>
+<% else %>
 <% if @request.space %><%= t(".space", space: @request.space.name) %>
 <% end %>
 <%= t(".contact") %> : <%= @request.contact_name %>
@@ -15,8 +19,6 @@
 <% end %>
 
 <%= t(".reply") %>
-<% if @account_url %>
-<%= t(".account", url: @account_url) %>
 <% end %>
 
-<%= t(".signature") %>
+<%= t(".closing") %>

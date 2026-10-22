@@ -114,8 +114,15 @@ The `.agents/skills/daisyui` skill documents daisyUI components.
     egress IPs;
   - it rejects unvalidated senders *after* accepting the message, so failures
     only show in Brevo, not in the app;
-  - `deliver_later` runs in-process (async adapter);
+  - `deliver_later` goes through Solid Queue (see below);
   - in development, emails are written to `tmp/mails/`.
+- **Jobs run on Solid Queue inside Puma**, in the main database, when
+  `SOLID_QUEUE_IN_PUMA=true`; otherwise in-process (async adapter).
+  - Recurring tasks are in `config/recurring.yml` (the weekly reminder of
+    pending requests), not cron.
+  - Without its tables, Solid Queue's supervisor fails and stops Puma. A
+    deploy that adds Solid Queue tables (a gem upgrade) can crash the release
+    that runs before the migration: turn the flag off for that deploy.
 - **Geocoding** of care home addresses uses OpenStreetMap's Nominatim. Be
   gentle with it, and stub it in tests. Nominatim forbids autocomplete and
   searches the whole world, so the location box of `/spaces` uses
