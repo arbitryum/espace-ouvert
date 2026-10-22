@@ -1,11 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Location box of the space filters: autocomplete from the geocoder,
-// and an "Autour de moi" option using the browser's geolocation.
+// Location box of the space filters: autocomplete of French communes and
+// departments, and an "Autour de moi" option using the browser's geolocation.
+// Picking one of them runs the search.
 export default class extends Controller {
   static targets = [
     "dropdown", "input", "panel", "radius", "suggestions", "searchStatus", "status",
-    "aroundMeChip", "aroundMeLabel", "latitude", "longitude", "mode",
+    "aroundMeChip", "aroundMeLabel", "latitude", "longitude", "mode", "department",
   ]
   // messages: texts from config/locales/spaces.fr.yml (spaces.index.location_filter)
   static values = { suggestionsUrl: String, messages: Object }
@@ -14,9 +15,10 @@ export default class extends Controller {
     this.refreshAroundMe()
   }
 
+  // Keeps the current suggestions while the next ones load.
   open() {
     this.panelTarget.classList.remove("hidden")
-    this.renderSuggestions([])
+    if (this.suggestionsTarget.childElementCount === 0) this.renderSuggestions([], this.message("type_more"))
   }
 
   close() {
@@ -35,37 +37,40 @@ export default class extends Controller {
 
     const query = this.inputTarget.value.trim()
     clearTimeout(this.searchTimer)
+    // Responses can arrive out of order: only the latest search may render.
+    const request = (this.latestRequest = (this.latestRequest || 0) + 1)
     if (query.length < 2) {
-      this.searchStatusTarget.textContent = this.message("type_more")
+      this.renderSuggestions([], this.message("type_more"))
       return
     }
 
-    this.searchTimer = setTimeout(() => this.fetchSuggestions(query), 250)
+    this.searchStatusTarget.textContent = this.message("searching")
+    this.searchTimer = setTimeout(() => this.fetchSuggestions(query, request), 250)
   }
 
-  async fetchSuggestions(query) {
-    this.searchStatusTarget.textContent = this.message("searching")
+  async fetchSuggestions(query, request) {
     try {
       const response = await fetch(`${this.suggestionsUrlValue}?q=${encodeURIComponent(query)}`)
       if (!response.ok) throw new Error("Suggestion request failed")
       const payload = await response.json()
-      this.renderSuggestions(payload.results || [])
+      if (request === this.latestRequest) this.renderSuggestions(payload.results || [])
     } catch {
+      if (request !== this.latestRequest) return
       this.clearSuggestions()
       this.searchStatusTarget.textContent = this.message("unavailable")
     }
   }
 
-  renderSuggestions(items) {
+  renderSuggestions(items, status = null) {
     this.suggestionsTarget.replaceChildren(
       this.suggestionButton(this.message("around_me"), this.message("use_my_position"), () => this.activateAroundMe()),
       ...items.map((item) => {
-        const subtitle = [item.type, item.city, item.postcode].filter(Boolean).join(" • ")
-        return this.suggestionButton(item.label || item.name || "", subtitle, () => this.select(item))
+        const subtitle = [this.message(item.kind), item.context].filter(Boolean).join(" • ")
+        return this.suggestionButton(item.label, subtitle, () => this.select(item))
       }),
     )
     this.suggestionsTarget.classList.remove("hidden")
-    this.searchStatusTarget.textContent = items.length ? this.message("suggestions", { count: items.length }) : this.message("no_suggestions")
+    this.searchStatusTarget.textContent = status ?? (items.length ? this.message("suggestions", { count: items.length }) : this.message("no_suggestions"))
   }
 
   suggestionButton(title, subtitle, onClick) {
@@ -92,14 +97,15 @@ export default class extends Controller {
   }
 
   select(item) {
-    this.inputTarget.value = item.label || item.name || ""
-    if (item.latitude != null && item.longitude != null) {
-      this.setCoordinates(item.latitude, item.longitude, "location")
-    } else {
+    this.inputTarget.value = item.label
+    if (item.kind === "department") {
       this.clearCoordinates()
+      this.departmentTarget.value = item.department_code
+    } else {
+      this.setCoordinates(item.latitude, item.longitude, "location")
     }
-    this.clearSuggestions()
-    this.refreshAroundMe()
+    this.close()
+    this.element.requestSubmit()
   }
 
   activateAroundMe() {
@@ -114,7 +120,8 @@ export default class extends Controller {
         this.setCoordinates(position.coords.latitude, position.coords.longitude, "around_me")
         this.statusTarget.textContent = ""
         this.refreshAroundMe()
-        this.clearSuggestions()
+        this.close()
+        this.element.requestSubmit()
       },
       (error) => {
         const errors = { 1: "geolocation_denied", 2: "position_unavailable", 3: "geolocation_timeout" }
@@ -140,10 +147,12 @@ export default class extends Controller {
     }
   }
 
+  // A point and a department exclude each other: setting one clears the other.
   setCoordinates(latitude, longitude, mode) {
     this.latitudeTarget.value = String(latitude)
     this.longitudeTarget.value = String(longitude)
     this.modeTarget.value = mode
+    this.departmentTarget.value = ""
   }
 
   clearCoordinates() {

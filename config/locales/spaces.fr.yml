@@ -17,7 +17,7 @@ fr:
         list: Liste
         map: Carte
       empty: Aucun espace disponible pour le moment.
-      geocoder_unavailable: Recherche de localisation indisponible, résultats basés sur les données locales.
+      places_unavailable: Recherche de communes indisponible, résultats basés sur les adresses des établissements.
       invalid_radius: Rayon invalide pour la recherche autour de moi.
       # Used by the location-filter Stimulus controller.
       location_filter:
@@ -26,6 +26,8 @@ fr:
         unavailable: Service de suggestions indisponible.
         suggestions: "%{count} suggestion(s)"
         no_suggestions: Aucune suggestion.
+        city: Commune
+        department: Département
         around_me: Autour de moi
         around_me_radius: Autour de moi (%{radius}km)
         use_my_position: Utiliser ma position actuelle

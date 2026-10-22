@@ -1,6 +1,6 @@
 class SpacesController < ApplicationController
   def index
-    @search = SpaceSearch.new(params.permit(:care_home, :location, :near_lat, :near_lon, :near_mode, :radius_km))
+    @search = SpaceSearch.new(params.permit(:care_home, :location, :department, :near_lat, :near_lon, :near_mode, :radius_km))
     @spaces = @search.results
     flash.now[:alert] = t(".#{@search.warning}") if @search.warning
     @view_mode = (params[:view_mode] == "map") ? "map" : "list"
