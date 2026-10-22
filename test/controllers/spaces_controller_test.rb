@@ -96,7 +96,17 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
     assert_select "td", "Lundi"
     assert_select "td span", "09:30 – 12:00"
     assert_select "td", {text: "Mardi", count: 0}
-    assert_match "Le matin", response.body
+    assert_no_match "Le matin", response.body
+  end
+
+  test "detail shows the availability text when the space has no active slot" do
+    space = create_space(name: "Free text", availability: "À la demande.")
+    space.recurring_availabilities.create!(weekday: 1, start_time: "14:00", end_time: "15:00", active: false)
+
+    get space_path(space)
+
+    assert_select "table", 0
+    assert_match "À la demande.", response.body
   end
 
   test "availability shows one row per day, with each of its ranges" do
