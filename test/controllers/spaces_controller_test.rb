@@ -142,4 +142,24 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
     marker = JSON.parse(css_select("[data-controller=directory-map]").first["data-directory-map-markers-value"]).first
     assert_equal [true, "Complet"], marker.values_at("full", "tag")
   end
+
+  test "the page introduces the directory and offers to register a care home" do
+    get spaces_path
+
+    assert_select "a[href=?]", new_registration_path, text: "Vous voulez accueillir ? Référencez votre établissement"
+    assert_select "#documents-title", 0
+  end
+
+  test "published documents are offered for download" do
+    SharedDocument.create!(title: "Contrat d'accueil", description: "À signer avec l'établissement.", published: true,
+      file: fixture_file_upload("document.pdf", "application/pdf"))
+    SharedDocument.create!(title: "Brouillon", file: fixture_file_upload("document.pdf", "application/pdf"))
+
+    get spaces_path
+
+    assert_select "#documents-title", "Les documents pour bien démarrer"
+    assert_select "section h3", "Contrat d'accueil"
+    assert_select "section h3", {text: "Brouillon", count: 0}
+    assert_select "section a[href*='/rails/active_storage/blobs/']", /Télécharger \(PDF, \d+ octets\)/
+  end
 end

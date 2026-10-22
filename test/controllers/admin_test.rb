@@ -56,4 +56,15 @@ class AdminTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "Un atelier théâtre le mercredi.", response.body
   end
+
+  test "admin uploads a shared document" do
+    sign_in_as users(:admin)
+
+    post madmin_shared_documents_path, params: {shared_document: {title: "Contrat d'accueil", published: "1", position: "1",
+                                                                  file: fixture_file_upload("document.pdf", "application/pdf")}}
+
+    document = SharedDocument.sole
+    assert document.published?
+    assert document.file.attached?
+  end
 end

@@ -9,6 +9,7 @@ namespace :madmin, path: "admin" do
   resources :recurring_availabilities
   resources :coworking_projects
   resources :guide_pages
+  resources :shared_documents
   resources :guide_readers
   resources :nonprofit_organizations
   resources :users

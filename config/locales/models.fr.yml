@@ -80,6 +80,11 @@ fr:
           closed: Terminé
     errors:
       models:
+        shared_document:
+          attributes:
+            file:
+              content_type: doit être un PDF, un document Word ou OpenDocument
+              too_large: ne doit pas dépasser 20 Mo
         hosting_request:
           attributes:
             space:
