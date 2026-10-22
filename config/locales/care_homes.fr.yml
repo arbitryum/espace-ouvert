@@ -20,10 +20,21 @@ fr:
       back: "← %{care_home}"
       heading: Contacter l'établissement
       intro: Votre demande sera transmise à %{care_home}, qui vous répondra directement par email.
+      about_you: À propos de vous
+      about_need: À propos de votre besoin
+      organization_name:
+        coworking: Nom de votre structure
+        association: Nom de votre association
+      activity:
+        coworking: Activité principale de votre structure (en une phrase)
+        association: Activité principale de votre association (en une phrase)
       any_space: Pas d'espace en particulier
+      no_slots: Cet établissement n'a pas encore détaillé ses créneaux. Indiquez les jours et horaires qui vous conviendraient.
       hints:
-        message: Votre structure, vos activités, le nombre de personnes, ce dont vous avez besoin.
-        schedule: Jours, horaires, fréquence (facultatif).
+        contribution: >-
+          Cela peut être une ouverture de l'activité aux familles ou aux
+          professionnels, une activité organisée spécialement pour les
+          résidents, une représentation artistique…
       website: Site web
       privacy: >-
         Vos coordonnées sont transmises à %{care_home} pour qu'il puisse vous
@@ -32,3 +43,23 @@ fr:
     create:
       notice: Votre demande a été envoyée. L'établissement vous répondra par email.
       too_many: Trop de demandes envoyées depuis votre connexion. Réessayez dans une heure.
+    # Short labels of a request's answers (HostingRequestsHelper#hosting_request_details).
+    details:
+      contact: Contact
+      email: Email
+      phone: Téléphone
+      activity: Activité principale
+      website: Site internet
+      team_size: Collaborateurs
+      days_per_week: Jours par semaine
+      weekdays: Jours
+      needs: Besoins spécifiques
+      compensation: Rétribution envisagée
+      space: Espace
+      activity_type: Activité prévue
+      attendees: Adhérents par activité
+      slots: Créneaux
+      contribution: Animation proposée
+      message: Besoin
+      schedule: Créneaux souhaités
+      extra: À ajouter

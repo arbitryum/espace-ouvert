@@ -1,4 +1,6 @@
 class HostingRequestsMailer < ApplicationMailer
+  helper HostingRequestsHelper
+
   # To the care home (see CareHome#request_recipients): replying writes to the
   # visitor. Admins get a blind copy to follow the requests.
   def received(request)

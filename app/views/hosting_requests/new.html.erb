@@ -1,56 +1,179 @@
 <% content_for :title, t(".title", care_home: @care_home.name) %>
 <% spaces = @care_home.spaces.listed %>
+<% slot_choices = @care_home.slot_choices %>
+<% weekday_options = HostingRequest::WEEKDAYS.map { |day| [day, RecurringAvailability.weekday_name(day)] } %>
+<% need_options = HostingRequest::NEEDS.map { |need| [need, t("activerecord.enums.hosting_request.needs.#{need}")] } %>
 
 <div class="mx-auto max-w-3xl">
   <%= link_to t(".back", care_home: @care_home.name), @care_home, class: "link link-hover text-sm font-medium" %>
   <h1 class="mt-6 text-4xl font-bold"><%= t(".heading") %></h1>
   <p class="mt-4 text-lg text-base-content/70"><%= t(".intro", care_home: @care_home.name) %></p>
 
-  <%= form_with model: [@care_home, @hosting_request], class: "card mt-8 border border-base-300 bg-base-100 shadow-sm" do |form| %>
-    <div class="card-body gap-6 p-6 sm:p-8">
+  <%= form_with model: [@care_home, @hosting_request], class: "card mt-8 border border-base-300 bg-base-100 shadow-sm",
+        data: { controller: "hosting-request-form" } do |form| %>
+    <div class="card-body gap-8 p-6 sm:p-8">
       <fieldset class="fieldset">
         <legend class="fieldset-legend"><%= HostingRequest.human_attribute_name(:kind) %></legend>
         <div class="flex flex-wrap gap-6">
           <% HostingRequest.human_enum_options(:kind).each do |label, value| %>
             <label class="label cursor-pointer gap-2">
-              <%= form.radio_button :kind, value, class: "radio radio-primary" %>
+              <%= form.radio_button :kind, value, class: "radio radio-primary",
+                    data: { hosting_request_form_target: "kind", action: "hosting-request-form#update" } %>
               <span><%= label %></span>
             </label>
           <% end %>
         </div>
       </fieldset>
 
-      <% if spaces.any? %>
-        <label class="form-control w-full">
-          <span class="label-text mb-2 font-medium"><%= HostingRequest.human_attribute_name(:space) %></span>
-          <%= form.collection_select :space_id, spaces, :id, :name, { include_blank: t(".any_space") }, class: "select w-full" %>
-          <%= render "shared/field_errors", model: @hosting_request, field: :space %>
-        </label>
-      <% end %>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend text-lg"><%= t(".about_you") %></legend>
+        <div class="grid gap-6 sm:grid-cols-2">
+          <% [[:last_name, :text_field, "family-name"], [:first_name, :text_field, "given-name"], [:email, :email_field, "email"]].each do |field, input, autocomplete| %>
+            <label class="form-control w-full <%= "sm:col-span-2" if field == :email %>">
+              <span class="label-text mb-2 block font-medium"><%= HostingRequest.human_attribute_name(field) %></span>
+              <%= form.public_send input, field, required: true, autocomplete:, class: "input w-full" %>
+              <%= render "shared/field_errors", model: @hosting_request, field:, full: false %>
+            </label>
+          <% end %>
+        </div>
+      </fieldset>
 
-      <div class="grid gap-6 sm:grid-cols-2">
-        <% [[:organization_name, :text_field, "organization"], [:contact_name, :text_field, "name"], [:email, :email_field, "email"], [:phone, :telephone_field, "tel"]].each do |field, input, autocomplete| %>
-          <label class="form-control w-full">
-            <span class="label-text mb-2 font-medium"><%= HostingRequest.human_attribute_name(field) %></span>
-            <%= form.public_send input, field, required: field != :phone, autocomplete:, class: "input w-full" %>
-            <%= render "shared/field_errors", model: @hosting_request, field: %>
-          </label>
-        <% end %>
-      </div>
+      <%# Each kind's questions; the hidden kind's fields are disabled, so not sent. %>
+      <% HostingRequest.kinds.each_key do |kind| %>
+        <div class="space-y-8" data-kind="<%= kind %>" data-hosting-request-form-target="section">
+          <div class="grid gap-6 sm:grid-cols-2">
+            <label class="form-control w-full <%= "sm:col-span-2" unless kind == "coworking" %>">
+              <span class="label-text mb-2 block font-medium"><%= t(".organization_name.#{kind}") %></span>
+              <%= form.text_field :organization_name, id: "hosting_request_organization_name_#{kind}", required: true, autocomplete: "organization", class: "input w-full" %>
+              <%= render "shared/field_errors", model: @hosting_request, field: :organization_name, full: false %>
+            </label>
+            <% if kind == "coworking" %>
+              <label class="form-control w-full">
+                <span class="label-text mb-2 block font-medium"><%= HostingRequest.human_attribute_name(:website) %></span>
+                <%= form.url_field :website, autocomplete: "url", placeholder: "https://", class: "input w-full" %>
+                <%= render "shared/field_errors", model: @hosting_request, field: :website, full: false %>
+              </label>
+            <% end %>
+            <label class="form-control w-full sm:col-span-2">
+              <span class="label-text mb-2 block font-medium"><%= t(".activity.#{kind}") %></span>
+              <%= form.text_field :activity, id: "hosting_request_activity_#{kind}", required: true, maxlength: 300, class: "input w-full" %>
+              <%= render "shared/field_errors", model: @hosting_request, field: :activity, full: false %>
+            </label>
+          </div>
 
-      <% [:message, :schedule].each do |field| %>
-        <label class="form-control w-full">
-          <span class="label-text block font-medium"><%= HostingRequest.human_attribute_name(field) %></span>
-          <span class="label-text-alt mb-2 block text-base-content/60"><%= t(".hints.#{field}") %></span>
-          <%= form.text_area field, required: field == :message, rows: (field == :message) ? 5 : 3, class: "textarea w-full" %>
-          <%= render "shared/field_errors", model: @hosting_request, field: %>
-        </label>
+          <fieldset class="fieldset gap-6">
+            <legend class="fieldset-legend text-lg"><%= t(".about_need") %></legend>
+
+            <% if kind == "coworking" %>
+              <div class="grid items-end gap-6 sm:grid-cols-2">
+                <% [[:team_size, 50], [:days_per_week, 5]].each do |field, max| %>
+                  <label class="form-control w-full">
+                    <span class="label-text mb-2 block font-medium"><%= HostingRequest.human_attribute_name(field) %></span>
+                    <%= form.number_field field, min: 1, max:, required: true, class: "input w-full" %>
+                    <%= render "shared/field_errors", model: @hosting_request, field:, full: false %>
+                  </label>
+                <% end %>
+              </div>
+
+              <div>
+                <p class="label-text mb-2 font-medium"><%= HostingRequest.human_attribute_name(:weekdays) %></p>
+                <div class="flex flex-wrap gap-x-6 gap-y-2">
+                  <%= form.collection_check_boxes :weekdays, weekday_options, :first, :last do |box| %>
+                    <label class="label cursor-pointer gap-2"><%= box.check_box(class: "checkbox checkbox-primary checkbox-sm") %><span><%= box.text %></span></label>
+                  <% end %>
+                  <label class="label cursor-pointer gap-2">
+                    <%= form.check_box :flexible_days, class: "checkbox checkbox-primary checkbox-sm" %>
+                    <span><%= HostingRequest.human_attribute_name(:flexible_days) %></span>
+                  </label>
+                </div>
+                <%= render "shared/field_errors", model: @hosting_request, field: :weekdays, full: false %>
+              </div>
+
+              <div>
+                <p class="label-text mb-2 font-medium"><%= HostingRequest.human_attribute_name(:needs) %></p>
+                <div class="flex flex-wrap gap-x-6 gap-y-2">
+                  <%= form.collection_check_boxes :needs, need_options, :first, :last do |box| %>
+                    <label class="label cursor-pointer gap-2"><%= box.check_box(class: "checkbox checkbox-primary checkbox-sm") %><span><%= box.text %></span></label>
+                  <% end %>
+                </div>
+                <%= form.text_field :needs_other, placeholder: HostingRequest.human_attribute_name(:needs_other), maxlength: 200, class: "input mt-3 w-full" %>
+              </div>
+
+              <div>
+                <p class="label-text mb-2 font-medium"><%= HostingRequest.human_attribute_name(:compensation) %></p>
+                <div class="flex flex-wrap gap-x-6 gap-y-2">
+                  <% HostingRequest.human_enum_options(:compensation).each do |label, value| %>
+                    <label class="label cursor-pointer gap-2">
+                      <%= form.radio_button :compensation, value, required: true, class: "radio radio-primary radio-sm" %>
+                      <span><%= label %></span>
+                    </label>
+                  <% end %>
+                </div>
+                <%= render "shared/field_errors", model: @hosting_request, field: :compensation, full: false %>
+              </div>
+            <% else %>
+              <% if spaces.any? %>
+                <label class="form-control w-full">
+                  <span class="label-text mb-2 block font-medium"><%= HostingRequest.human_attribute_name(:space) %></span>
+                  <%= form.collection_select :space_id, spaces, :id, :name, { include_blank: t(".any_space") }, class: "select w-full",
+                        data: { hosting_request_form_target: "space", action: "hosting-request-form#filterSlots" } %>
+                  <%= render "shared/field_errors", model: @hosting_request, field: :space, full: false %>
+                </label>
+              <% end %>
+
+              <label class="form-control w-full">
+                <span class="label-text mb-2 block font-medium"><%= HostingRequest.human_attribute_name(:activity_type) %></span>
+                <%= form.text_area :activity_type, rows: 3, required: true, class: "textarea w-full" %>
+                <%= render "shared/field_errors", model: @hosting_request, field: :activity_type, full: false %>
+              </label>
+
+              <label class="form-control w-full sm:w-1/2">
+                <span class="label-text mb-2 block font-medium"><%= HostingRequest.human_attribute_name(:attendees) %></span>
+                <%= form.number_field :attendees, min: 1, max: 500, required: true, class: "input w-full" %>
+                <%= render "shared/field_errors", model: @hosting_request, field: :attendees, full: false %>
+              </label>
+
+              <div>
+                <p class="label-text mb-2 font-medium"><%= HostingRequest.human_attribute_name(:slots) %></p>
+                <% if slot_choices.any? %>
+                  <div class="grid gap-2 sm:grid-cols-2">
+                    <% slot_choices.each do |space_id, label| %>
+                      <label class="label cursor-pointer gap-2" data-hosting-request-form-target="slot" data-space-id="<%= space_id %>">
+                        <%= check_box_tag "hosting_request[slots][]", label, @hosting_request.slots.include?(label),
+                              id: nil, class: "checkbox checkbox-primary checkbox-sm" %>
+                        <span><%= label %></span>
+                      </label>
+                    <% end %>
+                  </div>
+                  <%= hidden_field_tag "hosting_request[slots][]", "", id: nil %>
+                <% else %>
+                  <span class="label-text-alt mb-2 block text-base-content/60"><%= t(".no_slots") %></span>
+                  <%= form.text_area :schedule, rows: 2, class: "textarea w-full" %>
+                <% end %>
+                <%= render "shared/field_errors", model: @hosting_request, field: :slots, full: false %>
+              </div>
+
+              <label class="form-control w-full">
+                <span class="label-text block font-medium"><%= HostingRequest.human_attribute_name(:contribution) %></span>
+                <span class="label-text-alt mb-2 block text-base-content/60"><%= t(".hints.contribution") %></span>
+                <%= form.text_area :contribution, rows: 3, class: "textarea w-full" %>
+                <%= render "shared/field_errors", model: @hosting_request, field: :contribution, full: false %>
+              </label>
+            <% end %>
+
+            <label class="form-control w-full">
+              <span class="label-text mb-2 block font-medium"><%= HostingRequest.human_attribute_name(:extra) %></span>
+              <%= form.text_area :extra, id: "hosting_request_extra_#{kind}", rows: 2, maxlength: 500, class: "textarea w-full" %>
+              <%= render "shared/field_errors", model: @hosting_request, field: :extra, full: false %>
+            </label>
+          </fieldset>
+        </div>
       <% end %>
 
       <%# Hidden from people; bots fill it in (see HostingRequestsController#create). %>
       <div class="hidden" aria-hidden="true">
-        <%= label_tag :website, t(".website") %>
-        <%= text_field_tag :website, nil, tabindex: -1, autocomplete: "off" %>
+        <%= label_tag :website_url, t(".website") %>
+        <%= text_field_tag :website_url, nil, tabindex: -1, autocomplete: "off" %>
       </div>
 
       <p class="text-sm text-base-content/60"><%= t(".privacy", care_home: @care_home.name) %></p>

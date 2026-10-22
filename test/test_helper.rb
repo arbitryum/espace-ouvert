@@ -24,5 +24,12 @@ module ActiveSupport
     def create_address(**attributes)
       Address.create!(raw_address: "Adresse #{SecureRandom.hex(4)}", **attributes)
     end
+
+    # A valid association request; pass kind: "coworking" with its answers for the other kind.
+    def create_hosting_request(care_home, **attributes)
+      care_home.hosting_requests.create!(first_name: "Léa", last_name: "Martin", email: "lea@example.org",
+        organization_name: "Les Petits Pas", activity: "Théâtre pour enfants", activity_type: "Un atelier théâtre le mercredi.",
+        attendees: 12, **attributes)
+    end
   end
 end

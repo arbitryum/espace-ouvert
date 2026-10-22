@@ -29,6 +29,16 @@ class CareHome < ApplicationRecord
     details
   end
 
+  # The weekly slots of its listed spaces, as [space id, label] for the request
+  # form, which keeps the label.
+  def slot_choices
+    spaces.listed.includes(:recurring_availabilities).flat_map do |space|
+      space.recurring_availabilities.select(&:active?).map do |slot|
+        [space.id, "#{space.name} – #{slot.weekday_name} #{slot.time_range}"]
+      end
+    end
+  end
+
   # Who receives its hosting requests: its approved account, otherwise its
   # contact email, otherwise the admins.
   def request_recipients
