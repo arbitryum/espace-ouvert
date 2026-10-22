@@ -28,4 +28,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_select ".stats", 0
   end
+
+  test "page titles escape apostrophes once" do
+    get spaces_path
+
+    assert_select "title", "Accueil d'association - Espace-ouvert"
+    assert_no_match "&amp;#39;", response.body
+  end
 end

@@ -1,13 +1,14 @@
 # App-wide texts. Each area has its own file: accounts, spaces, coworking,
 # guides, mailers, models (Active Record names, enums and errors).
 fr:
-  app_name: Espaces Ouverts
+  app_name: Espace-ouvert
   back_home: "← Retour à l'accueil"
   layouts:
     application:
-      title: "%{page} - Espaces Ouverts"
+      # _html: the page title is already escaped.
+      title_html: "%{page} - Espace-ouvert"
       contact: "💌 Écrivez-nous : %{email}"
-      copyright_html: "&copy; %{year} Espaces Ouverts. Tous droits réservés."
+      copyright_html: "&copy; %{year} Espace-ouvert. Tous droits réservés."
   shared:
     account_bar:
       signed_in_as: "Connecté : %{email}"

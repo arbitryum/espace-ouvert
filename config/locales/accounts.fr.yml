@@ -73,7 +73,7 @@ fr:
     invalid_link: Cette invitation n'est plus valable. Demandez-en une nouvelle à un administrateur.
     edit:
       title: Bienvenue
-      intro: "Vous êtes invité à administrer Espaces Ouverts. Choisissez le mot de passe de votre compte %{email} :"
+      intro: "Vous êtes invité à administrer Espace-ouvert. Choisissez le mot de passe de votre compte %{email} :"
       submit: Enregistrer le mot de passe
     update:
       notice: Votre mot de passe est enregistré. Bienvenue !
