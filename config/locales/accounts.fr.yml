@@ -33,10 +33,10 @@ fr:
         legend: Choisissez vos dispositifs
         help: Sélectionnez au moins un parcours pour votre établissement.
         spaces:
-          label: Espace Ouvert
+          label: Accueil d'association
           description: Proposer des espaces aux associations.
         coworking:
-          label: Coworking
+          label: Coworking en EHPAD
           description: Accueillir des équipes en coworking.
       cancel: Annuler
       submit: Envoyer la demande
