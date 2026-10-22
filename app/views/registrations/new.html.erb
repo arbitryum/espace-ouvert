@@ -15,7 +15,9 @@
         <fieldset class="fieldset">
           <legend class="fieldset-legend text-lg"><%= t(".establishment.legend") %></legend>
           <p class="label mb-3 whitespace-normal"><%= t(".establishment.help") %></p>
-          <div class="grid items-end gap-6 sm:grid-cols-2">
+          <div class="grid items-end gap-6 sm:grid-cols-2" data-controller="address-autocomplete"
+               data-address-autocomplete-url-value="<%= address_suggestions_path %>"
+               data-address-autocomplete-messages-value="<%= t(".address").to_json %>">
             <label class="form-control w-full sm:col-span-2">
               <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:establishment_name) %></span>
               <%= form.text_field :establishment_name, required: true, autocomplete: "organization", class: "input input-md w-full" %>
@@ -32,19 +34,32 @@
               <%= form.text_field :group_name, class: "input input-md w-full" %>
               <%= render "shared/field_errors", model: @registration, field: :group_name %>
             </label>
-            <label class="form-control w-full sm:col-span-2">
-              <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:street) %></span>
-              <%= form.text_field :street, required: true, autocomplete: "address-line1", class: "input input-md w-full" %>
-              <%= render "shared/field_errors", model: @registration, field: :street %>
-            </label>
+            <%# The browser's own autofill list would cover the suggestions. %>
+            <div class="relative sm:col-span-2">
+              <label class="form-control w-full">
+                <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:street) %></span>
+                <span class="label-text-alt mb-2 block text-base-content/70"><%= t(".address.hint") %></span>
+                <%= form.text_field :street, required: true, autocomplete: "off", class: "input input-md w-full",
+                      role: "combobox", aria: { autocomplete: "list", expanded: false, controls: "registration-address-suggestions" },
+                      data: { address_autocomplete_target: "street",
+                              action: "input->address-autocomplete#search keydown->address-autocomplete#navigate blur->address-autocomplete#close" } %>
+                <%= render "shared/field_errors", model: @registration, field: :street %>
+              </label>
+              <ul id="registration-address-suggestions" role="listbox" aria-label="<%= t(".address.listbox") %>" hidden
+                  class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-box border border-base-300 bg-base-100 shadow-lg"
+                  data-address-autocomplete-target="listbox"></ul>
+              <p class="sr-only" aria-live="polite" data-address-autocomplete-target="status"></p>
+            </div>
             <label class="form-control w-full">
               <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:postal_code) %></span>
-              <%= form.text_field :postal_code, required: true, inputmode: "numeric", pattern: "[0-9]{5}", maxlength: 5, autocomplete: "postal-code", class: "input input-md w-full" %>
+              <%= form.text_field :postal_code, required: true, inputmode: "numeric", pattern: "[0-9]{5}", maxlength: 5, autocomplete: "postal-code", class: "input input-md w-full",
+                    data: { address_autocomplete_target: "postalCode" } %>
               <%= render "shared/field_errors", model: @registration, field: :postal_code %>
             </label>
             <label class="form-control w-full">
               <span class="label-text mb-2 font-medium"><%= EhpadRegistration.human_attribute_name(:city) %></span>
-              <%= form.text_field :city, required: true, autocomplete: "address-level2", class: "input input-md w-full" %>
+              <%= form.text_field :city, required: true, autocomplete: "address-level2", class: "input input-md w-full",
+                    data: { address_autocomplete_target: "city" } %>
               <%= render "shared/field_errors", model: @registration, field: :city %>
             </label>
           </div>

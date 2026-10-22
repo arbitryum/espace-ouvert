@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get "inscription", to: "registrations#new", as: :new_registration
     post "inscription", to: "registrations#create", as: :registrations
     get "inscription/en-attente", to: "registrations#pending", as: :pending_registration
+    get "inscription/adresses", to: "address_suggestions#index", as: :address_suggestions
     get "connexion", to: "sessions#new", as: :new_session
     post "connexion", to: "sessions#create", as: :session
     delete "deconnexion", to: "sessions#destroy", as: :destroy_session
