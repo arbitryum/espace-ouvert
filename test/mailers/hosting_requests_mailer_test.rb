@@ -37,4 +37,25 @@ class HostingRequestsMailerTest < ActionMailer::TestCase
     assert_equal "Votre demande à EHPAD Les Tilleuls", mail.subject
     assert_includes mail.text_part.decoded, "Votre demande a bien été transmise à EHPAD Les Tilleuls."
   end
+
+  test "the visitor is told about a refusal, without the reason" do
+    @request.refuse!("Salle en travaux")
+
+    mail = HostingRequestsMailer.refusal(@request)
+
+    assert_equal ["lea@example.org"], mail.to
+    body = mail.text_part.decoded
+    assert_includes body, "EHPAD Les Tilleuls ne peut malheureusement pas accueillir Les Petits Pas"
+    assert_includes body, "/spaces"
+    assert_not_includes body, "travaux"
+  end
+
+  test "an account's email links to its requests page" do
+    @request.care_home.update!(ehpad_profile: ehpad_profiles(:approved))
+
+    mail = HostingRequestsMailer.received(@request)
+
+    assert_equal ["approved@example.com"], mail.to
+    assert_includes mail.text_part.decoded, "/comptes/etablissement/demandes"
+  end
 end

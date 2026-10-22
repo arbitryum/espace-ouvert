@@ -11,10 +11,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_select "div.mx-auto.max-w-2xl"
   end
 
-  test "approved establishment signs in" do
+  test "approved establishment signs in and lands on its requests" do
     post session_path, params: {email_address: "approved@example.com", password: "password"}
 
-    assert_redirected_to root_path
+    assert_redirected_to account_hosting_requests_path
     assert cookies[:session_id]
   end
 
