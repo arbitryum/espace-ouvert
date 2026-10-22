@@ -4,26 +4,27 @@ import L from "leaflet"
 const PARIS = [48.8566, 2.3522]
 const MARKER_SIZE = 22
 
-// Leaflet map next to the list of spaces on the index page. Hovering a card
-// highlights its marker.
+// Leaflet map beside the cards of a directory (spaces, coworking projects).
+// Hovering a card highlights its marker. See shared/_directory.html.erb.
 export default class extends Controller {
   static targets = ["map", "noMarkers"]
-  // messages: texts from config/locales/spaces.fr.yml (spaces.map.popup)
+  // markers: {id, title, subtitle, address, distance_km, text, image_url, image_alt, url, latitude, longitude}
+  // messages: texts from config/locales/fr.yml (shared.directory.popup)
   static values = { markers: Array, messages: Object }
 
   connect() {
     this.map = L.map(this.mapTarget, { scrollWheelZoom: false }).setView(PARIS, 12)
-    // Grayed out in CSS (.spaces-map) so the markers stand out.
+    // Grayed out in CSS (.directory-map) so the markers stand out.
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(this.map)
 
     this.markers = new Map()
     this.bounds = this.markersValue.map((marker) => {
-      const leafletMarker = L.marker([marker.latitude, marker.longitude], { icon: this.icon(), title: marker.name })
+      const leafletMarker = L.marker([marker.latitude, marker.longitude], { icon: this.icon(), title: marker.title })
         .addTo(this.map)
         .on("click", () => { this.viewBeforePopup = { center: this.map.getCenter(), zoom: this.map.getZoom() } })
-        .bindPopup(this.popupContent(marker), { maxWidth: 320, minWidth: 240, autoPan: true, className: "spaces-map-popup" })
+        .bindPopup(this.popupContent(marker), { maxWidth: 320, minWidth: 240, autoPan: true, className: "directory-map-popup" })
       this.markers.set(String(marker.id), leafletMarker)
       return [marker.latitude, marker.longitude]
     })
@@ -76,7 +77,7 @@ export default class extends Controller {
 
   icon() {
     return L.divIcon({
-      className: "spaces-map-marker",
+      className: "directory-map-marker",
       html: "<span></span>",
       iconSize: [MARKER_SIZE, MARKER_SIZE],
       popupAnchor: [0, -MARKER_SIZE / 2],
@@ -90,18 +91,20 @@ export default class extends Controller {
     if (marker.image_url) {
       const image = this.append(wrapper, "img", "w-full h-32 object-cover rounded-box mb-3")
       image.src = marker.image_url
-      image.alt = marker.image_alt || marker.name
+      image.alt = marker.image_alt || marker.title
     }
-    this.append(wrapper, "h3", "font-semibold text-base mb-1", marker.name)
-    this.append(wrapper, "p", "text-sm text-base-content mb-2", marker.care_home_name)
+    this.append(wrapper, "h3", "font-semibold text-base mb-1", marker.title)
+    if (marker.subtitle) this.append(wrapper, "p", "text-sm text-base-content mb-2", marker.subtitle)
     if (marker.address) this.append(wrapper, "p", "text-xs text-base-content/90 mb-2", marker.address)
     if (marker.distance_km != null) {
       const distance = Number(marker.distance_km).toFixed(1).replace(".", ",")
       this.append(wrapper, "div", "badge badge-outline badge-sm rounded-sm! mb-2", this.messagesValue.distance.replace("%{distance}", distance))
     }
-    if (marker.availability) this.append(wrapper, "p", "text-xs text-base-content/90 mb-3 whitespace-pre-wrap", marker.availability)
-    const link = this.append(wrapper, "a", "btn btn-sm btn-outline w-full", this.messagesValue.more)
-    link.href = marker.detail_url
+    if (marker.text) this.append(wrapper, "p", "text-xs text-base-content/90 mb-3 whitespace-pre-wrap", marker.text)
+    if (marker.url) {
+      const link = this.append(wrapper, "a", "btn btn-sm btn-outline w-full", this.messagesValue.more)
+      link.href = marker.url
+    }
 
     return wrapper
   }

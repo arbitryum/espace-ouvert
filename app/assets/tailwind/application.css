@@ -77,26 +77,26 @@
   }
 }
 
-/* Leaflet popups on the spaces map follow the daisyUI theme. */
-.leaflet-popup.spaces-map-popup .leaflet-popup-content-wrapper,
-.leaflet-popup.spaces-map-popup .leaflet-popup-tip {
+/* Leaflet popups on the directory maps follow the daisyUI theme. */
+.leaflet-popup.directory-map-popup .leaflet-popup-content-wrapper,
+.leaflet-popup.directory-map-popup .leaflet-popup-tip {
   background: var(--color-base-100);
   color: var(--color-base-content);
   border: 1px solid var(--color-base-300);
 }
 
-.leaflet-popup.spaces-map-popup .leaflet-popup-content {
+.leaflet-popup.directory-map-popup .leaflet-popup-content {
   margin: 0;
 }
 
-/* Spaces map: muted tiles, so the markers stand out. */
-.spaces-map .leaflet-tile-pane {
+/* Directory maps: muted tiles, so the markers stand out. */
+.directory-map .leaflet-tile-pane {
   filter: grayscale(1) contrast(0.9) brightness(1.08);
 }
 
-/* Markers of the spaces map: a dot in the theme's color, enlarged while the
+/* Markers of the directory maps: a dot in the theme's color, enlarged while the
    matching card is hovered. */
-.spaces-map-marker span {
+.directory-map-marker span {
   display: block;
   width: 100%;
   height: 100%;
@@ -107,7 +107,7 @@
   transition: transform 150ms, background-color 150ms;
 }
 
-.spaces-map-marker.is-active span {
+.directory-map-marker.is-active span {
   background: var(--color-secondary);
   transform: scale(1.4);
 }

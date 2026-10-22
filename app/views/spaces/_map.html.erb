@@ -1,8 +1,0 @@
-<% content_for :head do %>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<% end %>
-
-<div class="spaces-map h-[70vh] overflow-hidden rounded-box border border-base-300 lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)]"
-     data-spaces-map-target="map"></div>
-<p class="mt-2 hidden text-sm text-base-content/70" data-spaces-map-target="noMarkers"><%= t(".no_markers") %></p>
