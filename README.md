@@ -45,7 +45,7 @@ Notable code:
 - `Places` (app/services): geo.api.gouv.fr client for the location box of `/spaces`: suggests French communes and departments, and finds the commune of a typed place.
 - `GuideImport` (app/services): imports the guide from a Notion export.
 - `GuideAccess` (controller concern): who may read the guide.
-- Stimulus controllers (app/javascript/controllers): carousel, Leaflet map, location filter, password visibility and rules.
+- Stimulus controllers (app/javascript/controllers): carousel, directory map (Leaflet, shared by spaces and coworking projects), location filter, password visibility and rules.
 
 ## Setup
 

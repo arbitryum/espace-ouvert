@@ -34,3 +34,6 @@ fr:
         heading: Les projets à découvrir
         intro: Découvrez les projets publiés et les établissements qui ouvrent leurs portes au coworking.
         empty: Aucun projet coworking n'est publié pour le moment.
+        count:
+          one: 1 projet
+          other: "%{count} projets"

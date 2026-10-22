@@ -1,0 +1,7 @@
+<%# Phones show the list or the map; wider screens show both side by side. %>
+<div class="join lg:hidden">
+  <% %w[list map].each do |mode| %>
+    <%= link_to t(".#{mode}"), url_for(request.query_parameters.merge(view_mode: mode)),
+          class: "btn btn-sm join-item #{view_mode == mode ? "btn-primary" : "btn-outline"}" %>
+  <% end %>
+</div>

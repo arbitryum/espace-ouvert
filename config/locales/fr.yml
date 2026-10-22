@@ -15,6 +15,15 @@ fr:
       sign_out: Se déconnecter
     home_button:
       label: Accueil
+    view_mode_toggle:
+      list: Liste
+      map: Carte
+    directory:
+      no_markers: Aucun repère cartographique disponible pour les résultats actuels.
+      # Used by the directory-map Stimulus controller.
+      popup:
+        distance: à %{distance} km
+        more: Plus d'infos
     password_field:
       show: Afficher le mot de passe
       hide: Masquer le mot de passe
