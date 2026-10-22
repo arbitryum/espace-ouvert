@@ -19,11 +19,64 @@ class SpaceSearchTest < ActiveSupport::TestCase
     assert_equal [recent, old], search
   end
 
-  test "filters by care home" do
-    space = create_space(name: "Here")
-    create_space(name: "Elsewhere")
+  test "filters by city" do
+    paris = space_at("Paris", city: "Paris")
+    space_at("Montreuil", city: "Montreuil")
 
-    assert_equal [space], search(care_home: space.care_home_id.to_s)
+    assert_equal [paris], search(city: "Paris")
+  end
+
+  def slot(space, weekday, from, to, active: true)
+    space.recurring_availabilities.create!(weekday:, start_time: from, end_time: to, active:)
+  end
+
+  test "filters by weekday and moment, keeping spaces without slots last" do
+    monday_morning = create_space(name: "Lundi matin", days: -3)
+    slot(monday_morning, 0, "09:00", "12:00")
+    monday_evening = create_space(name: "Lundi soir", days: -2)
+    slot(monday_evening, 0, "17:00", "20:00")
+    tuesday = create_space(name: "Mardi", days: -1)
+    slot(tuesday, 1, "09:00", "17:00")
+    unknown = create_space(name: "Texte libre", days: -4)
+    inactive = create_space(name: "Inactif", days: -5)
+    slot(inactive, 0, "09:00", "12:00", active: false)
+
+    assert_equal [monday_evening, monday_morning, unknown, inactive], search(weekday: "0")
+    assert_equal [monday_evening, unknown, inactive], search(weekday: "0", moment: "evening")
+    assert_equal [tuesday, monday_morning, unknown, inactive], search(moment: "morning")
+  end
+
+  test "a slot matches a moment it overlaps" do
+    space = create_space(name: "Après-midi")
+    slot(space, 2, "10:00", "16:00")
+
+    assert_equal [space], search(moment: "morning")
+    assert_equal [space], search(moment: "afternoon")
+    assert_empty search(moment: "evening")
+  end
+
+  test "marks spaces without slots only when filtering by slot" do
+    space = create_space(name: "Texte libre")
+
+    assert_not SpaceSearch.new({}).slots_unknown?(space)
+    assert SpaceSearch.new(moment: "evening").slots_unknown?(space)
+  end
+
+  test "ignores unknown weekdays and moments" do
+    space = create_space(name: "Ici")
+    search = SpaceSearch.new(weekday: "9", moment: "night")
+
+    assert_not search.slot_filter?
+    assert_equal [space], search.results.to_a
+  end
+
+  test "keeps the distance order within slot matches" do
+    near = space_at("Proche", latitude: 48.8566, longitude: 2.3522)
+    far = space_at("Loin", latitude: 48.90, longitude: 2.40)
+    [near, far].each { |space| slot(space, 0, "09:00", "12:00") }
+
+    results = search(near_lat: "48.8566", near_lon: "2.3522", radius_km: "20", weekday: "0")
+    assert_equal [near, far], results
   end
 
   test "filters by location in the care home address" do

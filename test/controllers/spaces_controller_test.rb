@@ -37,6 +37,28 @@ class SpacesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".carousel img[alt=Salle][loading=eager][src*='/representations/']"
   end
 
+  test "shows the list and the map side by side, with city options" do
+    care_home = create_care_home
+    care_home.update!(address_details: create_address(city: "Montreuil", latitude: 48.86, longitude: 2.44))
+    create_space(name: "Space liste", care_home:)
+
+    get spaces_path
+
+    assert_select "[data-controller=spaces-map] [data-spaces-map-id-param]", 1
+    assert_select "[data-controller=spaces-map] [data-spaces-map-target=map]"
+    assert_select "select[name=city] option[value=Montreuil]"
+    assert_select "p", text: "1 espace"
+  end
+
+  test "marks spaces without slots when filtering by slot" do
+    create_space(name: "Texte libre")
+
+    get spaces_path(weekday: "0", moment: "morning")
+
+    assert_select ".badge", text: "Créneaux à confirmer"
+    assert_select "select[name=weekday] option[selected][value='0']"
+  end
+
   test "map mode includes one marker per geocoded space" do
     care_home = create_care_home(name: "Maison Carte")
     care_home.update!(address_details: create_address(raw_address: "9 Rue Maria Helena Vieira da Silva, 75014 Paris",

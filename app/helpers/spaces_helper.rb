@@ -9,6 +9,7 @@ module SpacesHelper
 
       first_image = space.images.first
       {
+        id: space.id,
         name: space.name,
         care_home_name: space.care_home.name,
         address: details.concise_label.presence || space.care_home.address,

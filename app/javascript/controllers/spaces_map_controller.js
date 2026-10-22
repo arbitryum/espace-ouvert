@@ -2,25 +2,32 @@ import { Controller } from "@hotwired/stimulus"
 import L from "leaflet"
 
 const PARIS = [48.8566, 2.3522]
+const MARKER_SIZE = 22
 
-// Leaflet map of the spaces listed on the index page.
+// Leaflet map next to the list of spaces on the index page. Hovering a card
+// highlights its marker.
 export default class extends Controller {
+  static targets = ["map", "noMarkers"]
   // messages: texts from config/locales/spaces.fr.yml (spaces.map.popup)
   static values = { markers: Array, messages: Object }
 
   connect() {
-    this.map = L.map(this.element).setView(PARIS, 12)
+    this.map = L.map(this.mapTarget, { scrollWheelZoom: false }).setView(PARIS, 12)
+    // Grayed out in CSS (.spaces-map) so the markers stand out.
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors",
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(this.map)
 
-    const bounds = this.markersValue.map((marker) => {
-      L.marker([marker.latitude, marker.longitude])
+    this.markers = new Map()
+    this.bounds = this.markersValue.map((marker) => {
+      const leafletMarker = L.marker([marker.latitude, marker.longitude], { icon: this.icon(), title: marker.name })
         .addTo(this.map)
         .on("click", () => { this.viewBeforePopup = { center: this.map.getCenter(), zoom: this.map.getZoom() } })
         .bindPopup(this.popupContent(marker), { maxWidth: 320, minWidth: 240, autoPan: true, className: "spaces-map-popup" })
+      this.markers.set(String(marker.id), leafletMarker)
       return [marker.latitude, marker.longitude]
     })
+    this.noMarkersTarget.classList.toggle("hidden", this.bounds.length > 0)
 
     // Return to where the visitor was once they close a popup.
     this.map.on("popupclose", () => {
@@ -29,15 +36,51 @@ export default class extends Controller {
       this.viewBeforePopup = null
     })
 
-    if (bounds.length === 1) {
-      this.map.setView(bounds[0], 14)
-    } else if (bounds.length > 1) {
-      this.map.fitBounds(bounds, { padding: [30, 30] })
-    }
+    // The map is hidden on phones in list mode: fit it once it has a size.
+    this.fitted = false
+    this.resizeObserver = new ResizeObserver(() => this.resize())
+    this.resizeObserver.observe(this.mapTarget)
   }
 
   disconnect() {
+    this.resizeObserver?.disconnect()
     this.map?.remove()
+  }
+
+  resize() {
+    if (this.mapTarget.clientWidth === 0) return
+    this.map.invalidateSize()
+    if (this.fitted) return
+
+    this.fitted = true
+    if (this.bounds.length === 1) {
+      this.map.setView(this.bounds[0], 14)
+    } else if (this.bounds.length > 1) {
+      this.map.fitBounds(this.bounds, { padding: [30, 30] })
+    }
+  }
+
+  highlight({ params: { id } }) {
+    const marker = this.markers.get(String(id))
+    if (!marker) return
+    marker.getElement()?.classList.add("is-active")
+    marker.setZIndexOffset(1000)
+  }
+
+  unhighlight({ params: { id } }) {
+    const marker = this.markers.get(String(id))
+    if (!marker) return
+    marker.getElement()?.classList.remove("is-active")
+    marker.setZIndexOffset(0)
+  }
+
+  icon() {
+    return L.divIcon({
+      className: "spaces-map-marker",
+      html: "<span></span>",
+      iconSize: [MARKER_SIZE, MARKER_SIZE],
+      popupAnchor: [0, -MARKER_SIZE / 2],
+    })
   }
 
   popupContent(marker) {

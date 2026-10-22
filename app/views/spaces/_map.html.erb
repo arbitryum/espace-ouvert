@@ -3,14 +3,6 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <% end %>
 
-<div class="card bg-base-200 shadow-md mb-6">
-  <div class="card-body p-0">
-    <div class="w-full h-[32rem] rounded-box" data-controller="spaces-map" data-spaces-map-markers-value="<%= markers.to_json %>"
-         data-spaces-map-messages-value="<%= t(".popup").to_json %>"></div>
-  </div>
-</div>
-<% if markers.empty? %>
-  <div class="alert alert-info mb-6">
-    <span><%= t(".no_markers") %></span>
-  </div>
-<% end %>
+<div class="spaces-map h-[70vh] overflow-hidden rounded-box border border-base-300 lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)]"
+     data-spaces-map-target="map"></div>
+<p class="mt-2 hidden text-sm text-base-content/70" data-spaces-map-target="noMarkers"><%= t(".no_markers") %></p>

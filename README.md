@@ -18,7 +18,7 @@ architecture, known pitfalls, Git and deploy workflow.
 | Path | Page |
 | --- | --- |
 | `/` | Home, choose between the two tracks |
-| `/spaces`, `/spaces/:id` | Space directory (list or map, filters) and detail |
+| `/spaces`, `/spaces/:id` | Space directory (list beside a map, filters) and detail |
 | `/coworking`, `/coworking/projets` | Coworking home and published projects |
 | `/coworking/guide` | Coworking guide, readable after requesting access by email |
 | `/comptes/inscription`, `/comptes/connexion` | Establishment sign-up and sign-in |
@@ -39,7 +39,7 @@ architecture, known pitfalls, Git and deploy workflow.
 
 Notable code:
 
-- `SpaceSearch` (app/models): filters of the space directory (care home, free-text location, distance around a point).
+- `SpaceSearch` (app/models): filters of the space directory (city, department, free-text location, distance around a point, weekly slot).
 - `EhpadRegistration` (app/models): sign-up form creating the user and its pending profile.
 - `Geocoder` (app/services): Nominatim (OpenStreetMap) client, for care home addresses.
 - `Places` (app/services): geo.api.gouv.fr client for the location box of `/spaces`: suggests French communes and departments, and finds the commune of a typed place.
