@@ -9,6 +9,8 @@ fr:
       title_html: "%{page} - Espace-ouvert"
       contact: "💌 Écrivez-nous : %{email}"
       copyright_html: "&copy; %{year} Espace-ouvert. Tous droits réservés."
+      credits: Un projet développé par Arbitryum, avec le soutien de Klésia et la fondation OCIRP.
+      partners: Arbitryum, Fondation OCIRP, Klésia
   shared:
     account_bar:
       signed_in_as: "Connecté : %{email}"

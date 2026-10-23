@@ -9,8 +9,8 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%# The Softr site's icon. %>
     <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
@@ -31,9 +31,13 @@
       <%= yield %>
     </div>
 
-    <footer id="footer" class="bg-base-200 py-4 text-center text-sm text-base-content/70">
+    <%# Like the Softr site's: logo, who runs it, and its partners' logos. %>
+    <footer id="footer" class="bg-base-200 px-4 py-10 text-center text-sm text-base-content/70">
       <p class="pb-8"><%= t(".contact", email: "sab@arbitryum.fr") %></p>
-      <%= t(".copyright_html", year: Date.current.year) %>
+      <%= image_tag "logo.png", alt: t("app_name"), width: 1000, height: 250, class: "mx-auto h-auto w-56" %>
+      <p class="mt-4 italic"><%= t(".credits") %></p>
+      <%= image_tag "footer_logos.png", alt: t(".partners"), width: 1000, height: 250, class: "mx-auto mt-2 h-auto w-full max-w-md" %>
+      <p class="mt-6 text-xs"><%= t(".copyright_html", year: Date.current.year) %></p>
     </footer>
   </body>
 </html>
