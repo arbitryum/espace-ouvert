@@ -141,23 +141,30 @@ The `.agents/skills/daisyui` skill documents daisyUI components.
 - CI is **CircleCI** (`.circleci/config.yml`): `lint` (Standard, Brakeman,
   bundler-audit, importmap audit), then `rails_test`. GitHub Actions aren't used.
 - **Merging to `main` deploys production** (Scalingo app
-  `espaces-ouverts-production`): migrations run on `postdeploy`. After a merge,
-  check that:
+  `espace-ouvert-production`, served at https://espace-ouvert.arbitryum.fr
+  through Cloudflare): migrations run on `postdeploy`. After a merge, check
+  that:
+  - a deployment started for the merge commit: when the GitHub link is
+    redone (as after renaming the repository), a merge can go undeployed;
+    `scalingo --app espace-ouvert-production integration-link-manual-deploy main`
+    deploys it;
   - the deploy succeeded and `/up` returns 200 (a failed deploy keeps the
     previous release running);
   - its log shows `Postdeploy hook succeeded`
-    (`scalingo --app espaces-ouverts-production deployment-logs <id>`): a
+    (`scalingo --app espace-ouvert-production deployment-logs <id>`): a
     deploy that followed another within a minute once skipped it, and the
     new table's page answered 500;
   - no migration is pending: the newest file in `db/migrate` is the latest
     version in production's `schema_migrations` (read it through the
     database tunnel, see "Production tasks" in the README). If one is, run
-    `scalingo --app espaces-ouverts-production run --detached bundle exec rails db:migrate`,
+    `scalingo --app espace-ouvert-production run --detached bundle exec rails db:migrate`,
     then restart the app.
 
 ## Working with production
 
-- Read configuration with `scalingo --app espaces-ouverts-production env-get VAR`.
+- The Scaleway bucket keeps the project's old name,
+  `espaces-ouverts-production`: buckets can't be renamed.
+- Read configuration with `scalingo --app espace-ouvert-production env-get VAR`.
   Never print secrets (SMTP key, S3 keys). Set them so they don't show up:
   `env-set VAR="$(pbpaste)" > /dev/null`.
 - Run data tasks (imports, cleanups) from a local checkout through a database

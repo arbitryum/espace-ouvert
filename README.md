@@ -99,7 +99,8 @@ CircleCI runs them on every push (`.circleci/config.yml`).
 
 ## Deployment
 
-Merging to `main` deploys the Scalingo app `espaces-ouverts-production`.
+Merging to `main` deploys the Scalingo app `espace-ouvert-production`, served at
+https://espace-ouvert.arbitryum.fr.
 
 - **Build:** the APT buildpack installs libvips from `Aptfile`, then the Ruby
   buildpack runs (`.buildpacks`).
@@ -122,19 +123,19 @@ Data tasks run from a local checkout against the production database, through a
 tunnel. Open the tunnel in one terminal:
 
 ```sh
-scalingo --app espaces-ouverts-production db-tunnel --port 10001 SCALINGO_POSTGRESQL_URL
+scalingo --app espace-ouvert-production db-tunnel --port 10001 SCALINGO_POSTGRESQL_URL
 ```
 
 Then run the task in another, reading credentials from Scalingo so none are
 typed or printed. For example, to import the guide:
 
 ```sh
-RAILS_ENV=production SECRET_KEY_BASE=dummy ACTIVE_STORAGE_SERVICE=scaleway AWS_STORAGE_BUCKET_NAME=espaces-ouverts-production DATABASE_URL="$(scalingo -a espaces-ouverts-production env-get SCALINGO_POSTGRESQL_URL 2>/dev/null | sed -E 's#@[^/]+/#@127.0.0.1:10001/#')" AWS_ACCESS_KEY_ID="$(scalingo -a espaces-ouverts-production env-get AWS_ACCESS_KEY_ID 2>/dev/null)" AWS_SECRET_ACCESS_KEY="$(scalingo -a espaces-ouverts-production env-get AWS_SECRET_ACCESS_KEY 2>/dev/null)" bin/rails guide:import DIR="path/to/Notion export"
+RAILS_ENV=production SECRET_KEY_BASE=dummy ACTIVE_STORAGE_SERVICE=scaleway AWS_STORAGE_BUCKET_NAME=espaces-ouverts-production DATABASE_URL="$(scalingo -a espace-ouvert-production env-get SCALINGO_POSTGRESQL_URL 2>/dev/null | sed -E 's#@[^/]+/#@127.0.0.1:10001/#')" AWS_ACCESS_KEY_ID="$(scalingo -a espace-ouvert-production env-get AWS_ACCESS_KEY_ID 2>/dev/null)" AWS_SECRET_ACCESS_KEY="$(scalingo -a espace-ouvert-production env-get AWS_SECRET_ACCESS_KEY 2>/dev/null)" bin/rails guide:import DIR="path/to/Notion export"
 ```
 
 Tasks that only need the app's own environment can run in a Scalingo container
 instead:
 
 ```sh
-scalingo --app espaces-ouverts-production run bin/rails images:variants
+scalingo --app espace-ouvert-production run bin/rails images:variants
 ```
