@@ -61,7 +61,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = {host: ENV.fetch("APP_HOST", "espaces-ouverts-production.osc-fr1.scalingo.io"), protocol: "https"}
+  config.action_mailer.default_url_options = {host: ENV.fetch("APP_HOST", "espace-ouvert.arbitryum.fr"), protocol: "https"}
 
   # Emails go through the SMTP server configured in the environment (see .env.example).
   config.action_mailer.delivery_method = :smtp
