@@ -13,17 +13,11 @@
   </div>
 <% end %>
 
-<%= form_with url: spaces_path, method: :get, class: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_2fr_1fr_1fr_auto] items-end gap-4 mb-8",
+<%= form_with url: spaces_path, method: :get, class: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_auto] items-end gap-4 mb-8",
       data: { controller: "location-filter", turbo: false,
               location_filter_suggestions_url_value: location_suggestions_spaces_path,
               location_filter_messages_value: t(".location_filter"),
               action: "click@document->location-filter#closeOnOutsideClick" } do |form| %>
-  <label class="form-control w-full">
-    <div class="label"><span class="label-text"><%= t(".city") %></span></div>
-    <%= form.select :city, options_for_select(@city_options, @search.city),
-          { include_blank: t(".all_cities") }, class: "select select-bordered w-full" %>
-  </label>
-
   <div class="form-control w-full">
     <label class="label" for="location"><span class="label-text"><%= t(".location") %></span></label>
     <div class="dropdown w-full" data-location-filter-target="dropdown">
