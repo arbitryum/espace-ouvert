@@ -13,14 +13,14 @@ executors:
           BUNDLE_RETRY: 3
           BUNDLE_PATH: vendor/bundle
           RAILS_ENV: test
-          DATABASE_URL: postgresql://espaces_ouverts:password@localhost:5432/espaces_ouverts_test
+          DATABASE_URL: postgresql://espace_ouvert:password@localhost:5432/espace_ouvert_test
   rails_with_postgres:
     docker:
       - *ruby_image
       - image: cimg/postgres:17.11
         environment:
-          POSTGRES_USER: espaces_ouverts
-          POSTGRES_DB: espaces_ouverts_test
+          POSTGRES_USER: espace_ouvert
+          POSTGRES_DB: espace_ouvert_test
           POSTGRES_PASSWORD: password
 
 commands:
