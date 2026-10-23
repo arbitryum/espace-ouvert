@@ -26,6 +26,8 @@ fr:
       popup:
         distance: à %{distance} km
         more: Plus d'infos
+        # One pin for several spaces of a care home; %{count} is filled in JS.
+        spaces_here: "%{count} espaces à cette adresse"
     password_field:
       show: Afficher le mot de passe
       hide: Masquer le mot de passe
