@@ -1,18 +1,17 @@
 # Filters the public space directory from the index page's query parameters:
-# by city; by location: around a point (a chosen commune or "autour de moi"),
-# by department, or by free text; and by weekly slot (day and moment).
+# by location: around a point (a chosen commune or "autour de moi"), by
+# department, or by free text; and by weekly slot (day and moment).
 class SpaceSearch
   EARTH_RADIUS_KM = 6371.0
   DEFAULT_RADIUS_KM = "20"
   # Hours of the day each moment covers; a slot matches when it overlaps them.
   MOMENTS = {"morning" => 6...12, "afternoon" => 12...18, "evening" => 18...24}.freeze
 
-  attr_reader :city, :location, :department, :near_mode, :radius_km, :near_lat, :near_lon, :weekday, :moment
+  attr_reader :location, :department, :near_mode, :radius_km, :near_lat, :near_lon, :weekday, :moment
   # Why results are degraded, if they are: :places_unavailable or :invalid_radius.
   attr_reader :warning
 
   def initialize(params)
-    @city = params[:city].to_s.strip
     @location = params[:location].to_s.strip
     @department = params[:department].to_s.strip
     @near_mode = params[:near_mode].to_s.strip
@@ -61,8 +60,7 @@ class SpaceSearch
   private
 
   def base_scope
-    spaces = Space.listed.includes(:recurring_availabilities, images: {image_attachment: {blob: {variant_records: {image_attachment: :blob}}}}, care_home: :address_details)
-    city.present? ? spaces.where(care_home_id: CareHome.joins(:address_details).where(addresses: {city:}).select(:id)) : spaces
+    Space.listed.includes(:recurring_availabilities, images: {image_attachment: {blob: {variant_records: {image_attachment: :blob}}}}, care_home: :address_details)
   end
 
   def filter_by_slot(spaces)

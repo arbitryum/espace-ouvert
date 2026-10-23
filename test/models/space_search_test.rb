@@ -28,13 +28,6 @@ class SpaceSearchTest < ActiveSupport::TestCase
     assert_equal [far, full], search(near_lat: "48.8566", near_lon: "2.3522", radius_km: "20")
   end
 
-  test "filters by city" do
-    paris = space_at("Paris", city: "Paris")
-    space_at("Montreuil", city: "Montreuil")
-
-    assert_equal [paris], search(city: "Paris")
-  end
-
   def slot(space, weekday, from, to, active: true)
     space.recurring_availabilities.create!(weekday:, start_time: from, end_time: to, active:)
   end

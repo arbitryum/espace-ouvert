@@ -10,8 +10,6 @@ fr:
         associations du quartier. Trouvez un lieu pour vos activités, et
         contactez l'établissement en présentant votre projet.
       register: "Vous voulez accueillir ? Référencez votre établissement"
-      city: Ville
-      all_cities: Toutes les villes
       location: Localisation
       location_placeholder: Ajouter une localisation
       remove_around_me: Retirer autour de moi
