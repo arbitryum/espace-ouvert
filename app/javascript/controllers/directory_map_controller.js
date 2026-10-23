@@ -9,6 +9,17 @@ const PARIS = [48.8566, 2.3522]
 // fingerprinted names: give it the worker's URL from the import map.
 setWorkerUrl(import.meta.resolve("maplibre-gl-worker"))
 
+// Asked once per page: each test creates a WebGL context, which browsers cap.
+let webgl2 = null
+function webgl2Available() {
+  if (webgl2 === null) {
+    const gl = document.createElement("canvas").getContext("webgl2")
+    gl?.getExtension("WEBGL_lose_context")?.loseContext()
+    webgl2 = Boolean(gl)
+  }
+  return webgl2
+}
+
 // Leaflet map beside the cards of a directory (spaces, coworking projects).
 // Hovering a card highlights its marker. See shared/_directory.html.erb.
 export default class extends Controller {
@@ -19,17 +30,7 @@ export default class extends Controller {
 
   connect() {
     this.map = L.map(this.mapTarget).setView(PARIS, 12)
-    // VersaTiles' muted style (open source, no key): much calmer than
-    // OpenStreetMap's own, so the markers stand out. Vector tiles, drawn by
-    // MapLibre inside Leaflet.
-    L.maplibreGL({
-      style: "https://tiles.versatiles.org/assets/styles/muted/style.json",
-      // The plugin would otherwise replace it with the style's own credits once
-      // loaded, which sometimes come back empty.
-      attributionControl: {
-        customAttribution: '&copy; <a href="https://versatiles.org" target="_blank">VersaTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>',
-      },
-    }).addTo(this.map)
+    this.backgroundLayer().addTo(this.map)
 
     this.markers = new Map()
     this.bounds = this.markersValue.map((marker) => {
@@ -64,6 +65,28 @@ export default class extends Controller {
     // the frame that starts it. Both read the map, so remove it once they ran.
     const map = this.map
     requestAnimationFrame(() => setTimeout(() => map?.remove(), 300))
+  }
+
+  // VersaTiles' muted style (open source, no key): much calmer than
+  // OpenStreetMap's own, so the markers stand out. Vector tiles, drawn by
+  // MapLibre inside Leaflet. MapLibre needs WebGL2, which some browsers turn off
+  // (Firefox without its GPU process, remote desktops): they get OpenStreetMap's
+  // image tiles instead of a grey map.
+  backgroundLayer() {
+    if (!webgl2Available()) {
+      return L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>',
+      })
+    }
+
+    return L.maplibreGL({
+      style: "https://tiles.versatiles.org/assets/styles/muted/style.json",
+      // The plugin would otherwise replace it with the style's own credits once
+      // loaded, which sometimes come back empty.
+      attributionControl: {
+        customAttribution: '&copy; <a href="https://versatiles.org" target="_blank">VersaTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>',
+      },
+    })
   }
 
   resize() {
