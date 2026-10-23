@@ -58,7 +58,12 @@ export default class extends Controller {
 
   disconnect() {
     this.resizeObserver?.disconnect()
-    this.map?.remove()
+    // Removing the map right away breaks callbacks it already queued, which
+    // neither Leaflet nor the plugin cancels: the MapLibre layer redraws on the
+    // next frame after a resize, and Leaflet ends a zoom animation 250 ms after
+    // the frame that starts it. Both read the map, so remove it once they ran.
+    const map = this.map
+    requestAnimationFrame(() => setTimeout(() => map?.remove(), 300))
   }
 
   resize() {
@@ -66,11 +71,13 @@ export default class extends Controller {
     this.map.invalidateSize()
     if (this.fitted) return
 
+    // Without animation: the MapLibre layer stops drawing from a zoomstart until
+    // its zoomend, and a first view needn't zoom in from Paris anyway.
     this.fitted = true
     if (this.bounds.length === 1) {
-      this.map.setView(this.bounds[0], 14)
+      this.map.setView(this.bounds[0], 14, { animate: false })
     } else if (this.bounds.length > 1) {
-      this.map.fitBounds(this.bounds, { padding: [30, 30] })
+      this.map.fitBounds(this.bounds, { padding: [30, 30], animate: false })
     }
   }
 
