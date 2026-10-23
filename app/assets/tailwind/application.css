@@ -16,7 +16,7 @@
    Info and success are darker than daisyUI's so white text on them, and
    the colors themselves as text, reach WCAG AA (4.5:1). */
 @plugin "./daisyui-theme.mjs" {
-  name: "espaces-ouverts";
+  name: "espace-ouvert";
   default: true;
   color-scheme: light;
   --color-base-100: #ffffff;

@@ -6,7 +6,7 @@ module Geocoder
   class Error < StandardError; end
 
   ENDPOINT = URI("https://nominatim.openstreetmap.org/search")
-  USER_AGENT = "espaces-ouverts/1.0"
+  USER_AGENT = "espace-ouvert/1.0"
 
   extend self
 
