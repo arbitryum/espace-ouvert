@@ -7,7 +7,7 @@ executors:
   rails:
     docker:
       - &ruby_image
-        image: cimg/ruby:3.4.11
+        image: cimg/ruby:4.0.7
         environment:
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
