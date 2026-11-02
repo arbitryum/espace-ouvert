@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Weekly dependency updates, grouped to keep the PR list short: one PR for non-major gems, one for Ruby, one for CI. Majors get their own PR. Importmap packages and daisyUI are vendored files, so they only show on the Dependency Dashboard: update them with bin/importmap update (or by downloading daisyUI again).",
+  "description": "Weekly dependency updates, grouped to keep the PR list short: one PR for non-major gems, one for Ruby, one for CI. Majors get their own PR. Minor and patch updates merge on their own once CI passes, except Ruby. Importmap packages and daisyUI are vendored files, so they only show on the Dependency Dashboard: update them with bin/importmap update (or by downloading daisyUI again).",
   "extends": [
     "config:recommended",
     ":semanticCommits",
@@ -147,6 +147,23 @@
         "maplibre-gl-worker"
       ],
       "enabled": false
+    },
+    {
+      "description": "Minor and patch updates merge on their own once CircleCI passes, through a PR so each merge keeps its CI result. Merging deploys production: check Monday's deploys afterwards.",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Ruby is never merged automatically: Scalingo's buildpack must support the new version.",
+      "matchDepNames": [
+        "ruby",
+        "cimg/ruby"
+      ],
+      "automerge": false
     }
   ]
 }
