@@ -5,7 +5,7 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/aspect-ratio";
 
-/* daisyUI 5.7.22, vendored as the daisyUI docs recommend for Rails:
+/* daisyUI 5.7.50, vendored as the daisyUI docs recommend for Rails:
    https://daisyui.com/docs/install/rails/ */
 @plugin "./daisyui.mjs" {
   themes: false;
