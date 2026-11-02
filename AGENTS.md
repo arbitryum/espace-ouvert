@@ -140,6 +140,11 @@ The `.agents/skills/daisyui` skill documents daisyUI components.
   tasks).
 - CI is **CircleCI** (`.circleci/config.yml`): `lint` (Standard, Brakeman,
   bundler-audit, importmap audit), then `rails_test`. GitHub Actions aren't used.
+- **Renovate** (`renovate.json`) opens the dependency PRs on Monday mornings,
+  grouped: non-major gems, Ruby, CircleCI orbs, then one PR per major.
+  Importmap packages and daisyUI are vendored, so their new versions only show
+  on the Dependency Dashboard issue: update them with `bin/importmap update`
+  (and download `maplibre-gl-worker.js` again), or daisyUI by hand.
 - **Merging to `main` deploys production** (Scalingo app
   `espace-ouvert-production`, served at https://espace-ouvert.arbitryum.fr
   through Cloudflare): migrations run on `postdeploy`. After a merge, check

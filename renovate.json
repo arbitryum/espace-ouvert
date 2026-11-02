@@ -1,0 +1,152 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Weekly dependency updates, grouped to keep the PR list short: one PR for non-major gems, one for Ruby, one for CI. Majors get their own PR. Importmap packages and daisyUI are vendored files, so they only show on the Dependency Dashboard: update them with bin/importmap update (or by downloading daisyUI again).",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":timezone(Europe/Paris)"
+  ],
+  "schedule": [
+    "before 6am on monday"
+  ],
+  "minimumReleaseAge": "3 days",
+  "labels": [
+    "dependencies"
+  ],
+  "prConcurrentLimit": 5,
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "description": "A known vulnerability is fixed now: no waiting period, no schedule.",
+    "labels": [
+      "security"
+    ],
+    "minimumReleaseAge": null,
+    "schedule": [
+      "at any time"
+    ]
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "before 6am on the first day of the month"
+    ]
+  },
+  "enabledManagers": [
+    "bundler",
+    "circleci",
+    "custom.regex"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": ".ruby-version as Rails writes it (ruby-4.0.9), which Renovate's ruby-version manager can't read. Scalingo and the Gemfile install this version.",
+      "managerFilePatterns": [
+        "/^\\.ruby-version$/"
+      ],
+      "matchStrings": [
+        "^(ruby-)?(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "ruby",
+      "datasourceTemplate": "ruby-version"
+    },
+    {
+      "customType": "regex",
+      "description": "Ruby version recorded in Gemfile.lock",
+      "managerFilePatterns": [
+        "/(^|/)Gemfile\\.lock$/"
+      ],
+      "matchStrings": [
+        "RUBY VERSION\\n\\s+ruby (?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "ruby",
+      "datasourceTemplate": "ruby-version"
+    },
+    {
+      "customType": "regex",
+      "description": "Importmap pins with a version comment (pin \"leaflet\" # @1.9.4)",
+      "managerFilePatterns": [
+        "/^config/importmap\\.rb$/"
+      ],
+      "matchStrings": [
+        "pin \"(?<depName>[^\"]+)\"[^\\n]*# @(?<currentValue>\\S+)"
+      ],
+      "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "description": "daisyUI, vendored in app/assets/tailwind (version in application.css)",
+      "managerFilePatterns": [
+        "/^app/assets/tailwind/application\\.css$/"
+      ],
+      "matchStrings": [
+        "daisyUI (?<currentValue>\\d+\\.\\d+\\.\\d+), vendored"
+      ],
+      "depNameTemplate": "daisyui",
+      "datasourceTemplate": "npm"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Gems: one PR for all minor and patch updates",
+      "matchManagers": [
+        "bundler"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "Ruby gems (non-major)"
+    },
+    {
+      "description": "Ruby: .ruby-version, Gemfile.lock and CircleCI's cimg/ruby image move together. Scalingo installs the version in .ruby-version, so give its buildpack a week to support it.",
+      "matchDepNames": [
+        "ruby",
+        "cimg/ruby"
+      ],
+      "groupName": "Ruby",
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "description": "CI: CircleCI orbs in one PR",
+      "matchManagers": [
+        "circleci"
+      ],
+      "matchDepTypes": [
+        "orb"
+      ],
+      "groupName": "CI",
+      "separateMajorMinor": false
+    },
+    {
+      "description": "Postgres image in CI: minor and patch only. Its major must follow the Scalingo add-on's version in production.",
+      "matchManagers": [
+        "circleci"
+      ],
+      "matchDepNames": [
+        "cimg/postgres"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Vendored front-end files (importmap pins, daisyUI): no PR, as Renovate can't download the new files. They show on the Dependency Dashboard; update them by hand.",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDatasources": [
+        "npm"
+      ],
+      "dependencyDashboardApproval": true,
+      "groupName": "vendored front-end files"
+    },
+    {
+      "description": "maplibre-gl-worker is a file of maplibre-gl, not a package: it moves with it",
+      "matchDepNames": [
+        "maplibre-gl-worker"
+      ],
+      "enabled": false
+    }
+  ]
+}
