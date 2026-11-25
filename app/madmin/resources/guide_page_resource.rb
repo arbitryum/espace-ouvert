@@ -13,5 +13,8 @@ class GuidePageResource < Madmin::Resource
 
   def self.default_sort_column = "section_position"
 
+  # GuidePage#to_param is the slug, so admin links carry it instead of the id.
+  def self.model_find(slug) = model.find_by!(slug:)
+
   def self.display_name(record) = record.to_s
 end
